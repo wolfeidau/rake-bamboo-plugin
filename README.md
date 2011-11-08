@@ -6,7 +6,7 @@ ruby version manager (RVM) to enable execution against different ruby versions.
 # Goals
 
 * Discover ruby installations managed by RVM and list them in bamboo.
-* Enable selection of a ruby installation and configuration of a rake file and some targets to execute.
+* Perform a rake build based on selection of a ruby runtime and entry of some build targets.
 * Parse the output of rspec2 run and display a table of results.
 
 # Links
