@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>au.id.wolfe.bamboo</groupId>
+    <artifactId>rake-bamboo-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>rake-bamboo-plugin</name>
+    <description>This is the ruby rake plugin for Atlassian Bamboo.</description>
+    <packaging>atlassian-plugin</packaging>
+
+    <organization>
+        <name>Mark Wolfe</name>
+        <url>http://www.wolfe.id.au/</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Mark Wolfe</name>
+            <email>mark@wolfe.id.au</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <bamboo.version>3.3</bamboo.version>
+        <bamboo.data.version>3.2.2</bamboo.data.version>
+        <amps.version>3.7</amps.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.atlassian.bamboo</groupId>
+            <artifactId>atlassian-bamboo-web</artifactId>
+            <version>${bamboo.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.6</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-bamboo-plugin</artifactId>
+                <version>3.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <productVersion>${bamboo.version}</productVersion>
+                    <productDataVersion>${bamboo.data.version}</productDataVersion>
+                </configuration>
+            </plugin>
+          
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,23 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    </plugin-info>
+
+    <component key="rvmRubyRuntimeService" name="RVM Ruby Runtime Service"
+        class="au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeService" />
+
+    <!-- internationalize your plugin -->
+    <resource type="i18n" name="au.id.wolfe.bamboo language" location="english"/>
+
+    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.RakeTask" key="rubyenv">
+        <configuration class="au.id.wolfe.bamboo.ruby.RakeConfigurator"/>
+        <capabilityDefaultsHelper class="au.id.wolfe.bamboo.ruby.RakeCapabilityDefaultsHelper"/>
+        <category name="builder"/>
+        <description>Build a Ruby project using rake.</description>
+        <resource type="freemarker" name="edit" location="rake/editRakeTask.ftl"/>
+        <resource type="freemarker" name="view" location="rake/viewRakeTask.ftl"/>
+    </taskType>
+
+</atlassian-plugin>
