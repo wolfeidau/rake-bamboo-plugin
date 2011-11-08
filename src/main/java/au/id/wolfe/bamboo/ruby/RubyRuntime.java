@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -61,6 +62,11 @@ public class RubyRuntime {
 
     public void setBinPath(String binPath) {
         this.binPath = binPath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
     }
 
     @Override

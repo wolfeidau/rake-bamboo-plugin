@@ -3,6 +3,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 import au.id.wolfe.bamboo.ruby.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.RubyRuntimeService;
 import com.google.common.collect.Lists;
+import com.sun.jna.Platform;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,11 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
 
         List<RubyRuntime> rubyRuntimeList = Lists.newLinkedList();
 
+        if (Platform.isWindows()) {
+            log.warn("No RVM on windows bro.");
+            return rubyRuntimeList;
+        }
+
         File rvmPath = getRvmPath();
 
         if (rvmPath == null) {
@@ -35,38 +41,20 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
 
         if (rubiesPath.exists() && gemsPath.exists()) {
 
-            for (File rubyPath : Lists.newArrayList(rubiesPath.listFiles(new RubyPathFilter()))) {
+            for (File rubyPath : rubiesPath.listFiles(new RubyPathFilter())) {
 
                 GemPathFilter gemPathFilter = new GemPathFilter(rubyPath.getName());
 
-                for (File gemSetPath : Lists.newArrayList(gemsPath.listFiles(gemPathFilter))) {
+                for (File gemSetPath : gemsPath.listFiles(gemPathFilter)) {
 
                     String gemSetName = getGlobalGemSetName(gemSetPath, rubyPath);
 
-                    StringBuilder rubyGemPath = new StringBuilder();
-
-                    rubyGemPath.append(gemSetPath.getAbsolutePath());
-
-                    File globalGemPath = getGlobalGemPath(gemsPath, rubyPath.getName());
-
-                    if (globalGemPath.exists()) {
-                        rubyGemPath.append(":");
-                        rubyGemPath.append(globalGemPath.getAbsolutePath());
-                    }
-
-                    RubyRuntime rubyRuntime = new RubyRuntime(
-                            gemSetName,
-                            getRubyExecutablePath(rubyPath),
-                            gemSetPath.getAbsolutePath(),
-                            rubyGemPath.toString(),
-                            gemSetPath.getAbsolutePath() + File.separator + "bin"
-                    );
+                    RubyRuntime rubyRuntime = buildRubyRuntime(gemSetName, rubyPath, gemSetPath);
 
                     log.debug("detected " + rubyRuntime);
 
                     rubyRuntimeList.add(rubyRuntime);
                 }
-
 
             }
 
@@ -76,11 +64,21 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
 
     }
 
-    private String getRubyExecutablePath(File rubyPath) {
+    RubyRuntime buildRubyRuntime(String gemSetName, File rubyPath, File gemSetPath) {
+        return new RubyRuntime(
+                gemSetName,
+                getRubyExecutablePath(rubyPath),
+                gemSetPath.getAbsolutePath(),
+                gemSetPath.getAbsolutePath(), // this needs more investigation can include 1.9.1 stuff.
+                gemSetPath.getAbsolutePath() + File.separator + "bin"
+        );
+    }
+
+    String getRubyExecutablePath(File rubyPath) {
         return rubyPath.getAbsolutePath() + File.separator + "bin" + File.separator + "ruby";
     }
 
-    private String getGlobalGemSetName(File gemSetPath, File rubyPath) {
+    String getGlobalGemSetName(File gemSetPath, File rubyPath) {
 
         if (gemSetPath.getName().equals(rubyPath.getName())) {
             return String.format("%s@default", rubyPath.getName());

@@ -1,7 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.RubyRuntime;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,7 +19,15 @@ public class RvmRubyRuntimeServiceTest {
 
         List<RubyRuntime> rubyRuntimes = rvmRubyRuntimeService.getRubyRuntimes();
 
-        assertTrue(rubyRuntimes.size() > 1);
+        RubyRuntime rubyRuntime = new RubyRuntime(
+                "ruby-1.9.3-p0@rails31",
+                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby",
+                "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31",
+                "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31",
+                "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin"
+        );
+
+        assertTrue(rubyRuntimes.contains(rubyRuntime));
 
     }
 
