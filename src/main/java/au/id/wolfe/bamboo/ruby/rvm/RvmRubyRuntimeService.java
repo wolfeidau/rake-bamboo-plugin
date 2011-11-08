@@ -12,7 +12,8 @@ import java.io.FileFilter;
 import java.util.List;
 
 /**
- * Locates the ruby version manager (RVM) installation then assembles a list of ruby runtimes.
+ * Locates the ruby version manager (RVM) installation then assembles a list of ruby runtimes. THis class currently
+ * uses the filesystem to discover ruby installations and their associated gem sets.
  */
 public class RvmRubyRuntimeService implements RubyRuntimeService {
 
