@@ -47,7 +47,7 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
 
                 for (File gemSetPath : gemsPath.listFiles(gemPathFilter)) {
 
-                    String gemSetName = getGlobalGemSetName(gemSetPath, rubyPath);
+                    String gemSetName = getGemSetName(rubyPath, gemSetPath);
 
                     RubyRuntime rubyRuntime = buildRubyRuntime(gemSetName, rubyPath, gemSetPath);
 
@@ -78,7 +78,7 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
         return rubyPath.getAbsolutePath() + File.separator + "bin" + File.separator + "ruby";
     }
 
-    String getGlobalGemSetName(File gemSetPath, File rubyPath) {
+    String getGemSetName(File rubyPath, File gemSetPath) {
 
         if (gemSetPath.getName().equals(rubyPath.getName())) {
             return String.format("%s@default", rubyPath.getName());
@@ -86,11 +86,6 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
 
         return gemSetPath.getName();
     }
-
-    File getGlobalGemPath(File gemPath, String rubyName) {
-        return new File(gemPath.getAbsolutePath() + File.separatorChar + rubyName + "@global");
-    }
-
 
     /**
      * Detects the file location of the RVM installation

@@ -1,10 +1,13 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.RubyRuntime;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -12,10 +15,15 @@ import static org.junit.Assert.assertTrue;
  */
 public class RvmRubyRuntimeServiceTest {
 
+    RvmRubyRuntimeService rvmRubyRuntimeService;
+
+    @Before
+    public void setup() {
+        rvmRubyRuntimeService = new RvmRubyRuntimeService();
+    }
+
     @Test
     public void testGetRubyRuntimes() throws Exception {
-
-        RvmRubyRuntimeService rvmRubyRuntimeService = new RvmRubyRuntimeService();
 
         List<RubyRuntime> rubyRuntimes = rvmRubyRuntimeService.getRubyRuntimes();
 
@@ -28,6 +36,19 @@ public class RvmRubyRuntimeServiceTest {
         );
 
         assertTrue(rubyRuntimes.contains(rubyRuntime));
+
+    }
+
+    @Test
+    public void testGetGemSetName() {
+
+        String gemSetNameDefault = rvmRubyRuntimeService.getGemSetName(new File("/Users/markw/.rvm/gems/ruby-1.9.3-p0"), new File("/Users/markw/.rvm/rubies/ruby-1.9.3-p0/"));
+
+        assertEquals("ruby-1.9.3-p0@default", gemSetNameDefault);
+
+        String gemSetNameRails31 = rvmRubyRuntimeService.getGemSetName(new File("/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31"), new File("/Users/markw/.rvm/rubies/ruby-1.9.3-p0/"));
+
+        assertEquals("ruby-1.9.3-p0@rails31", gemSetNameRails31);
 
     }
 
