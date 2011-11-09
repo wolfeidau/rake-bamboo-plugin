@@ -37,7 +37,14 @@
             <version>${bamboo.version}</version>
             <scope>provided</scope>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.atlassian.bamboo</groupId>
+            <artifactId>atlassian-bamboo-pageobjects</artifactId>
+            <version>${bamboo.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

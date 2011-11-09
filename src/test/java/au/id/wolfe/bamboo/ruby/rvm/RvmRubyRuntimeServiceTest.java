@@ -42,11 +42,17 @@ public class RvmRubyRuntimeServiceTest {
     @Test
     public void testGetGemSetName() {
 
-        String gemSetNameDefault = rvmRubyRuntimeService.getGemSetName(new File("/Users/markw/.rvm/gems/ruby-1.9.3-p0"), new File("/Users/markw/.rvm/rubies/ruby-1.9.3-p0/"));
+        String gemSetNameDefault = rvmRubyRuntimeService.getGemSetName(
+                new File("/Users/markw/.rvm/rubies/ruby-1.9.3-p0/"),
+                new File("/Users/markw/.rvm/gems/ruby-1.9.3-p0")
+        );
 
         assertEquals("ruby-1.9.3-p0@default", gemSetNameDefault);
 
-        String gemSetNameRails31 = rvmRubyRuntimeService.getGemSetName(new File("/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31"), new File("/Users/markw/.rvm/rubies/ruby-1.9.3-p0/"));
+        String gemSetNameRails31 = rvmRubyRuntimeService.getGemSetName(
+                new File("/Users/markw/.rvm/rubies/ruby-1.9.3-p0/"),
+                new File("/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31")
+        );
 
         assertEquals("ruby-1.9.3-p0@rails31", gemSetNameRails31);
 

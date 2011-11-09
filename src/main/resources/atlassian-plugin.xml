@@ -11,10 +11,11 @@
     <!-- internationalize your plugin -->
     <resource type="i18n" name="au.id.wolfe.bamboo language" location="english"/>
 
-    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.RakeTask" key="rubyenv">
+    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.RakeTask" key="task.builder.rake">
         <configuration class="au.id.wolfe.bamboo.ruby.RakeConfigurator"/>
         <capabilityDefaultsHelper class="au.id.wolfe.bamboo.ruby.RakeCapabilityDefaultsHelper"/>
         <category name="builder"/>
+        <executable key="ruby" nameKey="builder.ruby.executableName" pathHelpKey="builder.ruby.helpPath"/>
         <description>Build a Ruby project using rake.</description>
         <resource type="freemarker" name="edit" location="rake/editRakeTask.ftl"/>
         <resource type="freemarker" name="view" location="rake/viewRakeTask.ftl"/>
