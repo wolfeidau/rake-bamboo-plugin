@@ -4,6 +4,7 @@ import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
+import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
 import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,11 +21,11 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
     public static final String EDIT_MODE = "edit";
     public static final String MODE = "mode";
 
-    private final RubyRuntimeService rubyRuntimeService;
+    private static final String CTX_UI_CONFIG_BEAN = "uiConfigBean";
 
-    public RakeConfigurator(RubyRuntimeService rubyRuntimeService) {
-        this.rubyRuntimeService = rubyRuntimeService;
-    }
+    private RubyRuntimeService rubyRuntimeService;
+
+    private UIConfigSupport uiConfigBean;
 
     @NotNull
     @Override
@@ -41,8 +42,8 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         super.populateContextForCreate(context);
 
         context.put("ruby", "");
-
         context.put(MODE, CREATE_MODE);
+        context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);
     }
 
     @Override
@@ -52,6 +53,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
         context.put(MODE, EDIT_MODE);
+        context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);
     }
 
     @Override
@@ -73,4 +75,11 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         }
     }
 
+    public void setRubyRuntimeService(final RubyRuntimeService rubyRuntimeService) {
+        this.rubyRuntimeService = rubyRuntimeService;
+    }
+
+    public void setUiConfigBean(final UIConfigSupport uiConfigBean) {
+        this.uiConfigBean = uiConfigBean;
+    }
 }
