@@ -1,17 +1,27 @@
 package au.id.wolfe.bamboo.ruby;
 
 import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
- * Created by IntelliJ IDEA.
- * User: markw
- * Date: 10/11/11
- * Time: 2:22 PM
- * To change this template use File | Settings | File Templates.
+ * Needs more work that is for sure.
  */
 public class RakeTaskTest {
+
     @Before
     public void setUp() throws Exception {
 
+    }
+
+    @Test
+    public void testSplitTargets(){
+        List<String> targetList = RakeTask.splitTargets("db:migrate spec");
+
+        assertTrue(targetList.contains("db:migrate"));
+        assertTrue(targetList.contains("spec"));
     }
 }

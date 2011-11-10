@@ -11,6 +11,7 @@ import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.utils.process.ExternalProcess;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -62,6 +63,8 @@ public class RakeTask implements TaskType {
         String targets = config.get("targets");
         Preconditions.checkNotNull(targets);
 
+        List<String> targetList = splitTargets(targets);
+
         log.info("ruby install {}", getRubyInstallationDirectory(ruby));
 
         RubyRuntime rubyRuntime = rubyRuntimeService.getRubyRuntime(ruby);
@@ -72,7 +75,12 @@ public class RakeTask implements TaskType {
         env.put("GEM_HOME", rubyRuntime.getGemHome());
         env.put("GEM_PATH", rubyRuntime.getGemPath());
 
-        List<String> commandsList = Arrays.asList(rubyRuntime.getPath(), rakeScriptPath, targets);
+        List<String> commandsList = Lists.newLinkedList();
+
+        commandsList.add(rubyRuntime.getPath());
+        commandsList.add(rakeScriptPath);
+        commandsList.add(rakeScriptPath);
+        commandsList.addAll(targetList);
 
         ExternalProcess externalProcess = processService.createProcess(taskContext,
                 new ExternalProcessBuilder()
@@ -83,6 +91,16 @@ public class RakeTask implements TaskType {
         externalProcess.execute();
 
         return taskResultBuilder.checkReturnCode(externalProcess, 0).build();
+    }
+
+    static List<String> splitTargets(String targets) {
+
+        if (targets.matches(".*\\s.*")){
+            return Arrays.asList(targets.split("\\s"));
+        } else {
+            return Arrays.asList(targets);
+        }
+
     }
 
     private String getRubyInstallationDirectory(final String label) {
