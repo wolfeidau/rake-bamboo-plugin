@@ -9,4 +9,8 @@ public interface RubyRuntimeService {
 
     List<RubyRuntime> getRubyRuntimes();
 
+    RubyRuntime getRubyRuntime(String rvmRubyAndGemSetName);
+
+    String getPathToScript(RubyRuntime rubyRuntime, String command);
+
 }

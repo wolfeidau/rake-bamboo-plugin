@@ -34,8 +34,9 @@ public class RakeCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
         for (RubyRuntime rubyRuntime : rubyRuntimeList) {
             Capability capability = new CapabilityImpl(RakeTask.RUBY_CAPABILITY_PREFIX + "." + rubyRuntime.getName(), rubyRuntime.getPath());
             capabilitySet.addCapability(capability);
-
         }
+
+
 
         return capabilitySet;
     }

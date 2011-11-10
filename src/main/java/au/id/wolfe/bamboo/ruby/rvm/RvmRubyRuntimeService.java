@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.RubyRuntimeService;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.sun.jna.Platform;
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -43,13 +45,17 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
 
             for (File rubyPath : rubiesPath.listFiles(new RubyPathFilter())) {
 
-                GemPathFilter gemPathFilter = new GemPathFilter(rubyPath.getName());
+                String rubyName = rubyPath.getName();
+
+                GemPathFilter gemPathFilter = new GemPathFilter(rubyName);
 
                 for (File gemSetPath : gemsPath.listFiles(gemPathFilter)) {
 
-                    String gemSetName = getGemSetName(rubyPath, gemSetPath);
+                    String gemSetName = getGemSetName(rubyName, gemSetPath.getName());
 
-                    RubyRuntime rubyRuntime = buildRubyRuntime(gemSetName, rubyPath, gemSetPath);
+                    String globalGemSetPath = buildGlobalGemSetPath(rubyName, gemsPath.getAbsolutePath());
+
+                    RubyRuntime rubyRuntime = buildRubyRuntime(rubyPath, gemSetName, gemSetPath.getAbsolutePath(), globalGemSetPath);
 
                     log.debug("detected " + rubyRuntime);
 
@@ -61,30 +67,118 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
         }
 
         return rubyRuntimeList;
+    }
+
+    public RubyRuntime getRubyRuntime(String rvmRubyAndGemSetName) {
+
+        File rvmPath = getRvmPath();
+
+        if (rvmPath == null) {
+            throw new IllegalArgumentException("No RVM installation not found.");
+        }
+
+        File rubyPath = new File(rvmPath.getAbsolutePath() + File.separator + "rubies" + File.separator + getRubyName(rvmRubyAndGemSetName));
+        File gemsPath = new File(rvmPath.getAbsolutePath() + File.separator + "gems");
+
+        String gemSetPath = buildGemSetPath(gemsPath, rvmRubyAndGemSetName);
+
+        String globalGemSetPath = buildGlobalGemSetPath(getRubyName(rvmRubyAndGemSetName), gemsPath.getAbsolutePath());
+
+        return buildRubyRuntime(rubyPath, rvmRubyAndGemSetName, gemSetPath, globalGemSetPath);
 
     }
 
-    RubyRuntime buildRubyRuntime(String gemSetName, File rubyPath, File gemSetPath) {
+    @Override
+    public String getPathToScript(RubyRuntime rubyRuntime, String command){
+
+        Preconditions.checkNotNull(rubyRuntime, "Ruby runtime required.");
+        Preconditions.checkNotNull(rubyRuntime.getBinPath(), "Ruby runtime bin path not set.");
+
+        String[] tokens = rubyRuntime.getBinPath().split(":");
+
+        for (String pathToken:tokens){
+            File binPath = new File(pathToken);
+
+            if (binPath.exists()){
+
+                File[] binFileArray = binPath.listFiles();
+
+                for (File binFile: binFileArray){
+
+                    if (binFile.getName().equals(command)  && binFile.canExecute()){
+                        return binFile.getAbsolutePath();
+                    }
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("No command found with name = " + command);
+    }
+
+    public String getRubyName(String rvmRubyAndGemSetName) {
+        String[] tokens = rvmRubyAndGemSetName.split("@");
+        Preconditions.checkArgument(tokens.length == 2, "Invalid rvm identifier.");
+        return tokens[0];
+    }
+
+    String buildGemSetPath(File gemsPath, String rvmRubyAndGemSetName) {
+
+        if (rvmRubyAndGemSetName.endsWith("@default")){
+            String rubyName = getRubyName(rvmRubyAndGemSetName);
+            return new File(gemsPath.getAbsolutePath() + File.separator + rubyName).getAbsolutePath();
+        } else {
+            return new File(gemsPath.getAbsolutePath() + File.separator + rvmRubyAndGemSetName).getAbsolutePath();
+        }
+
+    }
+
+    String buildGlobalGemSetPath(String rubyName, String gemsPath) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(gemsPath);
+        sb.append(File.separator);
+        sb.append(rubyName);
+        sb.append("@global");
+
+        return sb.toString();
+    }
+
+    RubyRuntime buildRubyRuntime(File rubyPath, String gemSetName, String gemSetPath, String globalGemSetPath) {
+
+        String gemPath = String.format("%s:%s", gemSetPath, globalGemSetPath);
+        String binPath = String.format("%s:%s", buildBinPath(gemSetPath), buildBinPath(globalGemSetPath));
+
         return new RubyRuntime(
                 gemSetName,
                 getRubyExecutablePath(rubyPath),
-                gemSetPath.getAbsolutePath(),
-                gemSetPath.getAbsolutePath(), // this needs more investigation can include 1.9.1 stuff.
-                gemSetPath.getAbsolutePath() + File.separator + "bin"
+                gemSetPath,
+                gemPath,
+                binPath
         );
+    }
+
+    String buildBinPath(String gemSetPath) {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(gemSetPath);
+        sb.append(File.separator);
+        sb.append("bin");
+
+        return sb.toString();
     }
 
     String getRubyExecutablePath(File rubyPath) {
         return rubyPath.getAbsolutePath() + File.separator + "bin" + File.separator + "ruby";
     }
 
-    String getGemSetName(File rubyPath, File gemSetPath) {
+    String getGemSetName(String rubyName, String gemSetName) {
 
-        if (gemSetPath.getName().equals(rubyPath.getName())) {
-            return String.format("%s@default", rubyPath.getName());
+        if (rubyName.equals(gemSetName)) {
+            return String.format("%s@default", rubyName);
         }
 
-        return gemSetPath.getName();
+        return gemSetName;
     }
 
     /**
