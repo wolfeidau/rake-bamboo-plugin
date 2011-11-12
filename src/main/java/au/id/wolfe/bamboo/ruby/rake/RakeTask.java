@@ -20,13 +20,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Bamboo task which runs Ruby Rake
+ * Bamboo task which executes Ruby Rake.
+ *
+ * This class sets up populates environment required to run a ruby process, while enabling it to locate the gems
+ * associated with that installation.
+ *
  */
 public class RakeTask implements TaskType {
 
     public static final String RUBY_CAPABILITY_PREFIX = CapabilityDefaultsHelper.CAPABILITY_BUILDER_PREFIX + ".ruby";
 
     private static final Logger log = LoggerFactory.getLogger(RakeConfigurator.class);
+    
+    public static final String RAKE_COMMAND = "rake";
+    
+    public static final String MY_RUBY_HOME_ENV_VAR = "MY_RUBY_HOME";
+    public static final String GEM_HOME_ENV_VAR = "GEM_HOME";
+    public static final String GEM_PATH_ENV_VAR = "GEM_PATH";
 
     private final ProcessService processService;
     private final RubyRuntimeService rubyRuntimeService;
@@ -46,24 +56,24 @@ public class RakeTask implements TaskType {
 
         final ConfigurationMap config = taskContext.getConfigurationMap();
 
-        String ruby = config.get("ruby");
+        final String ruby = config.get("ruby");
         Preconditions.checkNotNull(ruby);
 
-        String targets = config.get("targets");
+        final String targets = config.get("targets");        
         Preconditions.checkNotNull(targets);
 
         List<String> targetList = splitTargets(targets);
 
         RubyRuntime rubyRuntime = rubyRuntimeService.getRubyRuntime(ruby);
-        String rakeScriptPath = rubyRuntimeService.getPathToScript(rubyRuntime, "rake");
+        String rakeScriptPath = rubyRuntimeService.getPathToScript(rubyRuntime, RAKE_COMMAND);
 
         log.info("ruby install {}", rubyRuntime.getRubyHome());
 
         Map<String, String> env = Maps.newHashMap();
 
-        env.put("MY_RUBY_HOME", rubyRuntime.getRubyHome());
-        env.put("GEM_HOME", rubyRuntime.getGemHome());
-        env.put("GEM_PATH", rubyRuntime.getGemPath());
+        env.put(MY_RUBY_HOME_ENV_VAR, rubyRuntime.getRubyHome());
+        env.put(GEM_HOME_ENV_VAR, rubyRuntime.getGemHome());
+        env.put(GEM_PATH_ENV_VAR, rubyRuntime.getGemPath());
 
         List<String> commandsList = Lists.newLinkedList();
 
@@ -82,10 +92,16 @@ public class RakeTask implements TaskType {
         return taskResultBuilder.checkReturnCode(externalProcess, 0).build();
     }
 
+    /**
+     * Simple function to split a string into tokens which are loaded into a list, note order IS important.
+     *
+     * @param targets String to split on one or more whitespace characters.
+     * @return List containing the tokens
+     */
     public static List<String> splitTargets(String targets) {
 
         if (targets.matches(".*\\s.*")) {
-            return Arrays.asList(targets.split("\\s"));
+            return Arrays.asList(targets.split("\\s+"));
         } else {
             return Arrays.asList(targets);
         }

@@ -17,6 +17,14 @@ import java.util.List;
 /**
  * Locates the ruby version manager (RVM) installation then assembles a list of ruby runtimes. THis class currently
  * uses the filesystem to discover ruby installations and their associated gem sets.
+ *
+ * There are a couple of issues with this approach:
+ *  - If there are gems installed in the global and selected gemset there can be issues loading the library.
+ *
+ * The reason I selected this approach is because RVM uses a lot of shell functions to smooth the experiance for the
+ * users, this doesn't jell well with the current method of execution I am using in bamboo.
+ *
+ * Need to do more research on how other environments, namely IntelliJ/Rubymine deal with these issues.
  */
 public class RvmRubyRuntimeService implements RubyRuntimeService {
 
