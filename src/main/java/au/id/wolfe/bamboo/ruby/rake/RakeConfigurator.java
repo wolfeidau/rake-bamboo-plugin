@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby;
+package au.id.wolfe.bamboo.ruby.rake;
 
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
@@ -28,10 +28,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
     private static final String CTX_UI_CONFIG_BEAN = "uiConfigBean";
 
-    private RubyRuntimeService rubyRuntimeService;
-
     private UIConfigSupport uiConfigBean;
-
 
     @NotNull
     @Override
@@ -100,10 +97,6 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
             errorCollection.addError("targets", "You must specify at least one target");
         }
 
-    }
-
-    public void setRubyRuntimeService(final RubyRuntimeService rubyRuntimeService) {
-        this.rubyRuntimeService = rubyRuntimeService;
     }
 
     public void setUiConfigBean(final UIConfigSupport uiConfigBean) {

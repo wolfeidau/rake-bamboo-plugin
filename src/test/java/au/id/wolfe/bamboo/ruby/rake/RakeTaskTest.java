@@ -1,5 +1,6 @@
-package au.id.wolfe.bamboo.ruby;
+package au.id.wolfe.bamboo.ruby.rake;
 
+import au.id.wolfe.bamboo.ruby.rake.RakeTask;
 import org.junit.Before;
 import org.junit.Test;
 

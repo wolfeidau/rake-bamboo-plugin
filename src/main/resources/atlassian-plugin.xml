@@ -5,20 +5,32 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
     </plugin-info>
 
+    <!--A service which detects ruby runtimes managed by rvm-->
     <component key="rvmRubyRuntimeService" name="RVM Ruby Runtime Service"
         class="au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeService" />
 
     <!-- internationalize your plugin -->
     <resource type="i18n" name="au.id.wolfe.bamboo language" location="english"/>
 
-    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.RakeTask" key="task.builder.rake">
-        <configuration class="au.id.wolfe.bamboo.ruby.RakeConfigurator"/>
-        <capabilityDefaultsHelper class="au.id.wolfe.bamboo.ruby.RakeCapabilityDefaultsHelper"/>
+    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.rake.RakeTask" key="task.builder.rake">
+
+        <!--This binds to the ui for create and edit and saves settings -->
+        <configuration class="au.id.wolfe.bamboo.ruby.rake.RakeConfigurator"/>
+
+        <!--This detects the ruby installations on the system -->
+        <capabilityDefaultsHelper class="au.id.wolfe.bamboo.ruby.RubyCapabilityDefaultsHelper"/>
+
         <category name="builder"/>
+
+        <!--Some magic that makes a list of executables appear in a box on the UI -->
         <executable key="ruby" nameKey="builder.ruby.executableName" pathHelpKey="builder.ruby.helpPath"/>
+
         <description>Build a Ruby project using rake.</description>
+
+        <!--The UI fragments used to configure the plugin-->
         <resource type="freemarker" name="edit" location="rake/editRakeTask.ftl"/>
         <resource type="freemarker" name="view" location="rake/viewRakeTask.ftl"/>
+
     </taskType>
 
 </atlassian-plugin>

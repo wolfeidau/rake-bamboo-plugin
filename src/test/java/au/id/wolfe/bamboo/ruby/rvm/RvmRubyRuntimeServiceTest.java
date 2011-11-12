@@ -75,6 +75,7 @@ public class RvmRubyRuntimeServiceTest {
         return new RubyRuntime(
                 "ruby-1.9.3-p0@rails31",
                 "/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby",
+                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0",
                 "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31",
                 "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global",
                 "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global/bin"
@@ -85,6 +86,7 @@ public class RvmRubyRuntimeServiceTest {
         return new RubyRuntime(
                 "ruby-1.9.3-p0@default",
                 "/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby",
+                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0",
                 "/Users/markw/.rvm/gems/ruby-1.9.3-p0",
                 "/Users/markw/.rvm/gems/ruby-1.9.3-p0:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global",
                 "/Users/markw/.rvm/gems/ruby-1.9.3-p0/bin:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global/bin"

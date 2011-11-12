@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby;
 
+import au.id.wolfe.bamboo.ruby.rake.RakeTask;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
@@ -13,13 +14,13 @@ import java.util.List;
 /**
  * Detects ruby runtimes using rvm.
  */
-public class RakeCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
+public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(RakeCapabilityDefaultsHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(RubyCapabilityDefaultsHelper.class);
 
     private final RubyRuntimeService rubyRuntimeService;
 
-    public RakeCapabilityDefaultsHelper(RubyRuntimeService rubyRuntimeService) {
+    public RubyCapabilityDefaultsHelper(RubyRuntimeService rubyRuntimeService) {
         this.rubyRuntimeService = rubyRuntimeService;
     }
 

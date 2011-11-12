@@ -151,6 +151,7 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
         return new RubyRuntime(
                 gemSetName,
                 getRubyExecutablePath(rubyPath),
+                rubyPath.getAbsolutePath(),
                 gemSetPath,
                 gemPath,
                 binPath

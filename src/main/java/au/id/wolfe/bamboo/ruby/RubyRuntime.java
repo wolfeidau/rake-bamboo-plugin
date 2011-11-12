@@ -9,16 +9,18 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class RubyRuntime {
 
-    private String name;
-    private String path;
+    private final String name;
+    private final String path;
+    private final String rubyHome;
 
-    private String gemHome;
-    private String gemPath;
-    private String binPath;
+    private final String gemHome;
+    private final String gemPath;
+    private final String binPath;
 
-    public RubyRuntime(String name, String path, String gemHome, String gemPath, String binPath) {
+    public RubyRuntime(String name, String path, String rubyHome, String gemHome, String gemPath, String binPath) {
         this.name = name;
         this.path = path;
+        this.rubyHome = rubyHome;
         this.gemHome = gemHome;
         this.gemPath = gemPath;
         this.binPath = binPath;
@@ -28,40 +30,24 @@ public class RubyRuntime {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public String getRubyHome() {
+        return rubyHome;
     }
 
     public String getGemHome() {
         return gemHome;
     }
 
-    public void setGemHome(String gemHome) {
-        this.gemHome = gemHome;
-    }
-
     public String getGemPath() {
         return gemPath;
     }
 
-    public void setGemPath(String gemPath) {
-        this.gemPath = gemPath;
-    }
-
     public String getBinPath() {
         return binPath;
-    }
-
-    public void setBinPath(String binPath) {
-        this.binPath = binPath;
     }
 
     @Override
