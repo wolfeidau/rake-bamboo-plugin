@@ -49,12 +49,6 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         context.put("ruby", "");
         context.put("targets", "");
 
-        List<String> execs = uiConfigBean.getExecutableLabels("");
-
-        for (String exec : execs) {
-            log.info("exec - " + exec);
-        }
-
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
     }

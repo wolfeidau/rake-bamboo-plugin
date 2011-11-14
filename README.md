@@ -11,6 +11,7 @@ ruby version manager (RVM) to enable execution against different ruby versions.
 
 # Links
 
+* [RSpec JUnit XML Formatter](https://github.com/sj26/rspec_junit_formatter)
 * [RVM](http://beginrescueend.com/)
 * [bamboo](http://www.atlassian.com/software/bamboo/overview)
 * [rake](http://martinfowler.com/articles/rake.html)
