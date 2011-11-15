@@ -23,21 +23,33 @@ of llvm and clang.
     bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
 2. Install a ruby.
 
+    
     rvm install 1.9.3
+    
 
 3. Switch to using this ruby.
+
+    
     rvm use 1.9.3
+    
 
 4. Create a new gemset for rails.
 
+    
     rvm gemset create rails3
+    
 
 5. Switch to this gemset.
 
+    
     rvm use 1.9.3@rails3
+    
 
 6. Install the rails gem and rspec
+
+    
     gem install rails rspec-rails
+    
 
 7. Build a new rails project
 
@@ -67,7 +79,15 @@ of llvm and clang.
 
     rspec spec
 
-10. Add this project to your favourite online project hosting site.
+14. Add this project to your favourite online project hosting site.
+15. Navigate to the capabiltity admin interface and click the "Auto Detection" link, this should detect the installed
+ruby and it's associated gemsets.
+16. Create a plan which uses the online project site and add a job with a Rake Task which runs the spec target using the 1.9.3@rails3 runtime.
+
+
+# Roadmap
+
+In the future I would like to further improve the integration 
 
 # Links
 
