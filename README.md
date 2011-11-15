@@ -21,36 +21,36 @@ of llvm and clang.
 
 1. Install RVM, once installed it will list some dependencies you will need to install if your on linux.
 
-    bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+        bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
 
 2. Install a ruby.
 
 
-    rvm install 1.9.3
+        rvm install 1.9.3
 
 
 3. Switch to using this ruby.
 
 
-    rvm use 1.9.3
+        rvm use 1.9.3
 
 
 4. Create a new gemset for rails.
 
 
-    rvm gemset create rails3
+        rvm gemset create rails3
 
 
 5. Switch to this gemset.
 
 
-    rvm use 1.9.3@rails3
+        rvm use 1.9.3@rails3
 
 
 6. Install the rails gem and rspec
 
 
-    gem install rails rspec-rails
+        gem install rails rspec-rails
 
 
 7. Build a new rails project
@@ -59,27 +59,27 @@ of llvm and clang.
 
 8. Add RSpec to project by appending this line to the bottom of the Gemfile in the newly created project.
 
-    gem "rspec-rails", :group => [:test, :development]
+        gem "rspec-rails", :group => [:test, :development]
 
 9. Configure rspec in this project.
 
-    rails generate rspec:install
+        rails generate rspec:install
 
 10. Using scaffold build a data entry interface for a model.
 
-    rails generate scaffold Post name:string title:string content:text
+        rails generate scaffold Post name:string title:string content:text
 
 11. Remove the two pending specs, not necessary for this example.
 
-    rm ./spec/helpers/posts_helper_spec.r ./spec/models/post_spec.rb
+        rm ./spec/helpers/posts_helper_spec.r ./spec/models/post_spec.rb
 
 12. Run the database migration script.
 
-    rake db:migrate
+        rake db:migrate
 
 13. Run rspec to ensure all the generated tests, should be all green.
 
-    rspec spec
+        rspec spec
 
 14. Add this project to your favourite online project hosting site.
 15. Navigate to the capabiltity admin interface and click the "Auto Detection" link, this should detect the installed
