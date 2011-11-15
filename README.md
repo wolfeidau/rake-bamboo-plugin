@@ -61,6 +61,10 @@ of llvm and clang.
 
         gem "rspec-rails", :group => [:test, :development]
 
+9. Run bundler to ensure all the dependencies are installed into the gemset you created.
+
+        bundle install
+
 9. Configure rspec in this project.
 
         rails generate rspec:install
@@ -89,7 +93,8 @@ ruby and it's associated gemsets.
 
 # Roadmap
 
-In the future I would like to further improve the integration 
+In the future I would like to automate last few steps, specifically the option to create and populated a gemset for that specific project. This
+will further integration with rvm and some additional tasks to run bundler (ruby dependency manager).
 
 # Links
 
