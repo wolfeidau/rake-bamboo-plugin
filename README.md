@@ -20,36 +20,38 @@ also need [GCC Installer](https://github.com/kennethreitz/osx-gcc-installer/down
 of llvm and clang.
 
 1. Install RVM, once installed it will list some dependencies you will need to install if your on linux.
+
     bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+
 2. Install a ruby.
 
-    
+
     rvm install 1.9.3
-    
+
 
 3. Switch to using this ruby.
 
-    
+
     rvm use 1.9.3
-    
+
 
 4. Create a new gemset for rails.
 
-    
+
     rvm gemset create rails3
-    
+
 
 5. Switch to this gemset.
 
-    
+
     rvm use 1.9.3@rails3
-    
+
 
 6. Install the rails gem and rspec
 
-    
+
     gem install rails rspec-rails
-    
+
 
 7. Build a new rails project
 
