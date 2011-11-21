@@ -5,13 +5,12 @@ import au.id.wolfe.bamboo.ruby.RubyRuntimeService;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.sun.jna.Platform;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +28,8 @@ import java.util.List;
 public class RvmRubyRuntimeService implements RubyRuntimeService {
 
     private static final Logger log = LoggerFactory.getLogger(RvmRubyRuntimeService.class);
+
+    public static final String SYSTEM_RVM_PATH = "/usr/local/rvm";
 
     public List<RubyRuntime> getRubyRuntimes() {
 
@@ -191,17 +192,18 @@ public class RvmRubyRuntimeService implements RubyRuntimeService {
     }
 
     /**
-     * Detects the file location of the RVM installation
+     * Detects the file location of the RVM installation, tries the users home directory then the system installation
+     * path.
      *
      * @return File referencing the RVM installation path.
      */
     File getRvmPath() {
 
-        String userHomeVariable = System.getenv("HOME");
+        List<String> rvmPaths = Arrays.asList(System.getenv("HOME") + File.separatorChar + ".rvm", SYSTEM_RVM_PATH);
 
-        if (StringUtils.isNotEmpty(userHomeVariable)) {
+        for (String path : rvmPaths){
 
-            File rvmPath = new File(userHomeVariable + File.separatorChar + ".rvm");
+            File rvmPath = new File(path);
 
             if (rvmPath.exists()) {
                 return rvmPath;

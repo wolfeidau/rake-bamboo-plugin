@@ -86,10 +86,26 @@ of llvm and clang.
         rspec spec
 
 14. Add this project to your favourite online project hosting site.
-15. Navigate to the capabiltity admin interface and click the "Auto Detection" link, this should detect the installed
+15. Navigate to the capability admin interface and click the "Auto Detection" link, this should detect the installed
 ruby and it's associated gemsets.
 16. Create a plan which uses the online project site and add a job with a Rake Task which runs the spec target using the 1.9.3@rails3 runtime.
 
+# Test Report
+
+To enable test reporting do as follows.
+
+1. Add the this fragment to your Gemfile.
+
+        group :test do
+            gem "rspec_junit_formatter"
+        done
+
+2. Edit your the .rspec file in the base of your project and replace the contents with.
+
+        --format RspecJunitFormatter
+        --out rspec.xml
+
+3. Add a JUnit test task to your Job and configure it to look for respec.xml which contains the test results.
 
 # Roadmap
 
