@@ -16,10 +16,13 @@ import static org.junit.Assert.assertTrue;
 public class RvmRubyRuntimeServiceTest {
 
     RvmRubyRuntimeService rvmRubyRuntimeService;
+    
+    String rvmInstallPath;
 
     @Before
     public void setup() {
         rvmRubyRuntimeService = new RvmRubyRuntimeService();
+        rvmInstallPath = rvmRubyRuntimeService.getRvmPath().getAbsolutePath();
     }
 
     @Test
@@ -67,31 +70,33 @@ public class RvmRubyRuntimeServiceTest {
     @Test
     public void test(){
         String rakeScriptPath = rvmRubyRuntimeService.getPathToScript(getRails31RubyRuntime(), "rake");
-        assertEquals("/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin/rake", rakeScriptPath);
+        assertEquals(rvmInstallPath + "/gems/ruby-1.9.3-p0@rails31/bin/rake", rakeScriptPath);
 
     }
 
     private RubyRuntime getRails31RubyRuntime() {
         return new RubyRuntime(
                 "ruby-1.9.3-p0@rails31",
-                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby",
-                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0",
-                "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31",
-                "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global",
-                "/Users/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global/bin"
+                rvmInstallPath + "/rubies/ruby-1.9.3-p0/bin/ruby",
+                rvmInstallPath + "/rubies/ruby-1.9.3-p0",
+                rvmInstallPath + "/gems/ruby-1.9.3-p0@rails31",
+                rvmInstallPath + "/gems/ruby-1.9.3-p0@rails31:" + rvmInstallPath + "/gems/ruby-1.9.3-p0@global",
+                rvmInstallPath + "/gems/ruby-1.9.3-p0@rails31/bin:" + rvmInstallPath + "/gems/ruby-1.9.3-p0@global/bin"
         );
     }
 
     private RubyRuntime getDefaultRubyRuntime() {
         return new RubyRuntime(
                 "ruby-1.9.3-p0@default",
-                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby",
-                "/Users/markw/.rvm/rubies/ruby-1.9.3-p0",
-                "/Users/markw/.rvm/gems/ruby-1.9.3-p0",
-                "/Users/markw/.rvm/gems/ruby-1.9.3-p0:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global",
-                "/Users/markw/.rvm/gems/ruby-1.9.3-p0/bin:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global/bin"
+                rvmInstallPath + "/rubies/ruby-1.9.3-p0/bin/ruby",
+                rvmInstallPath + "/rubies/ruby-1.9.3-p0",
+                rvmInstallPath + "/gems/ruby-1.9.3-p0",
+                rvmInstallPath + "/gems/ruby-1.9.3-p0:" + rvmInstallPath + "/gems/ruby-1.9.3-p0@global",
+                rvmInstallPath + "/gems/ruby-1.9.3-p0/bin:" + rvmInstallPath + "/gems/ruby-1.9.3-p0@global/bin"
         );
     }
 
+// <RubyRuntime[name=ruby-1.9.3-p0@default,path=/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby,gemHome=/Users/markw/.rvm/gems/ruby-1.9.3-p0,gemPath=/Users/markw/.rvm/gems/ruby-1.9.3-p0:/gems/ruby-1.9.3-p0@global,binPath=/Users/markw/.rvm/gems/ruby-1.9.3-p0/bin:/gems/ruby-1.9.3-p0@global/bin]> but was:
+// <RubyRuntime[name=ruby-1.9.3-p0@default,path=/Users/markw/.rvm/rubies/ruby-1.9.3-p0/bin/ruby,gemHome=/Users/markw/.rvm/gems/ruby-1.9.3-p0,gemPath=/Users/markw/.rvm/gems/ruby-1.9.3-p0:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global,binPath=/Users/markw/.rvm/gems/ruby-1.9.3-p0/bin:/Users/markw/.rvm/gems/ruby-1.9.3-p0@global/bin]>
 
 }
