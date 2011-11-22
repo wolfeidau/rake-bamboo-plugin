@@ -55,7 +55,7 @@ of llvm and clang.
 
 7. Build a new rails project
 
-    rails bamboo-build-test -T
+        rails bamboo-build-test -T
 
 8. Add RSpec to project by appending this line to the bottom of the Gemfile in the newly created project.
 
