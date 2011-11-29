@@ -8,28 +8,33 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class RubyRuntime {
 
-    private String rubyName;
-    private String gemSetName;
+    private final String rubyName;
+    private final String gemSetName;
 
-    public RubyRuntime(String rubyName, String gemSetName) {
+    private final String rubyExecutablePath;
+    private final String gemPath;
+
+    public RubyRuntime(String rubyName, String gemSetName, String rubyExecutablePath, String gemPath) {
         this.rubyName = rubyName;
         this.gemSetName = gemSetName;
+        this.rubyExecutablePath = rubyExecutablePath;
+        this.gemPath = gemPath;
     }
 
     public String getRubyName() {
         return rubyName;
     }
 
-    public void setRubyName(String rubyName) {
-        this.rubyName = rubyName;
-    }
-
     public String getGemSetName() {
         return gemSetName;
     }
 
-    public void setGemSetName(String gemSetName) {
-        this.gemSetName = gemSetName;
+    public String getRubyExecutablePath() {
+        return rubyExecutablePath;
+    }
+
+    public String getGemPath() {
+        return gemPath;
     }
 
     @Override

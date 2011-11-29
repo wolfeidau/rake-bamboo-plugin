@@ -1,13 +1,12 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
+import au.id.wolfe.bamboo.ruby.rvm.util.FileSystemHelper;
+import au.id.wolfe.bamboo.ruby.rvm.util.SystemHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.List;
-import java.util.Map;
 
 import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.*;
 import static org.junit.Assert.*;
@@ -21,12 +20,12 @@ import static org.mockito.Mockito.when;
 public class RvmLocatorServiceTest {
 
     @Mock
-    FileSystemHelper fileSystemHelper;
+    private FileSystemHelper fileSystemHelper;
 
     @Mock
-    SystemHelper systemHelper;
+    private SystemHelper systemHelper;
 
-    RvmLocatorService rvmLocatorService;
+    private RvmLocatorService rvmLocatorService;
 
     @Before
     public void setup() {
@@ -35,8 +34,6 @@ public class RvmLocatorServiceTest {
 
     @Test
     public void testLocateRvmInstallation() {
-
-        //RvmInstallation rvmInstallation;
 
         when(systemHelper.getUserHome()).thenReturn(USER_HOME);
 
@@ -77,56 +74,16 @@ public class RvmLocatorServiceTest {
     }
 
     @Test
-    public void testListRubiesManagedByRvmInstallation() {
-
+    public void testGetRubyLocator(){
         when(systemHelper.getUserHome()).thenReturn(USER_HOME);
 
         RvmInstallation userRvm = getUserRvmInstallation();
 
         primeMockWithRvmInstallation(userRvm);
 
-        List<RubyRuntime> rubyRuntimeList = rvmLocatorService.listRubyRuntimes();
+        RubyLocator rubyLocator = rvmLocatorService.getRvmRubyLocator();
 
-        assertEquals(2, rubyRuntimeList.size());
-
-        assertTrue(rubyRuntimeList.contains(getJRubyRuntimeDefaultGemSet()));
-
-        assertTrue(rvmLocatorService.hasRuby("ruby-1.9.3-p0"));
-        assertTrue(rvmLocatorService.hasRuby("jruby-1.6.5"));
-
-    }
-
-    @Test
-    public void testLocateRubyManagedByRvmInstallation() {
-
-        RubyRuntime rubyRuntime;
-
-        rubyRuntime = rvmLocatorService.getRubyRuntime("ruby-1.9.3-p0");
-
-        assertEquals("ruby-1.9.3-p0", rubyRuntime.getRubyName());
-        assertEquals("default", rubyRuntime.getGemSetName());
-
-        rubyRuntime = rvmLocatorService.getRubyRuntime("ruby-1.9.3-p0@rails31");
-
-        assertEquals("ruby-1.9.3-p0", rubyRuntime.getRubyName());
-        assertEquals("rails31", rubyRuntime.getGemSetName());
-
-
-    }
-
-    @Test
-    public void testBuildEnvForRubyManagedByRvmInstallation() {
-
-        RubyRuntime rubyRuntime = rvmLocatorService.getRubyRuntime("ruby-1.9.3-p0");
-
-        Map<String, String> envVars = rvmLocatorService.buildEnv(rubyRuntime);
-
-        assertTrue(envVars.containsKey(RvmLocatorService.Constants.MY_RUBY_HOME));
-        assertTrue(envVars.containsKey(RvmLocatorService.Constants.GEM_HOME));
-        assertTrue(envVars.containsKey(RvmLocatorService.Constants.GEM_PATH));
-        assertTrue(envVars.containsKey(RvmLocatorService.Constants.BUNDLE_HOME));
-        assertTrue(envVars.containsKey(RvmLocatorService.Constants.RVM_RUBY_STRING));
-        assertTrue(envVars.containsKey(RvmLocatorService.Constants.RVM_GEM_SET));
+        assertNotNull(rubyLocator);
 
     }
 

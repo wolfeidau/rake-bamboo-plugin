@@ -18,11 +18,11 @@ public final class RvmFixtures {
     }
 
     public static RubyRuntime getJRubyRuntimeDefaultGemSet() {
-        return new RubyRuntime("jruby-1.6.5", "default");
+        return new RubyRuntime("jruby-1.6.5", "default", USER_HOME + "/.rvm/rubies/jruby-1.6.5/bin/jruby", USER_HOME + "/.rvm/gems/jruby-1.6.5");
     }
 
     public static RubyRuntime getMRIRubyRuntimeDefaultGemSet() {
-        return new RubyRuntime("ruby-1.9.3-p0", "default");
+        return new RubyRuntime("ruby-1.9.3-p0", "default", USER_HOME + "/.rvm/rubies/ruby-1.9.3-p0/bin/ruby", USER_HOME + "/.rvm/gems/ruby-1.9.3-p0");
     }
 
     public static RvmInstallation getUserRvmInstallation() {

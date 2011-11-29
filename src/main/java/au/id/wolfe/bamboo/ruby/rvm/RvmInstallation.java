@@ -44,14 +44,6 @@ public class RvmInstallation {
         return rubiesPath;
     }
 
-    void setGemsPath(String gemsPath) {
-        this.gemsPath = gemsPath;
-    }
-
-    void setRubiesPath(String rubiesPath) {
-        this.rubiesPath = rubiesPath;
-    }
-
     public enum Type {
         USER, SYSTEM
     }
