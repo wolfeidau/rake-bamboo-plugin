@@ -37,6 +37,10 @@ public class RubyRuntime {
         return gemPath;
     }
 
+    public String getRubyRuntimeName(){
+        return rubyName + RvmUtil.DEFAULT_GEMSET_SEPARATOR + gemSetName;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

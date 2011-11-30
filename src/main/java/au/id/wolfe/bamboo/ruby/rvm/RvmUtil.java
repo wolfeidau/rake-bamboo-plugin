@@ -5,6 +5,7 @@ import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -21,6 +22,7 @@ public class RvmUtil {
     public static String MY_RUBY_HOME = "MY_RUBY_HOME";
     public static String GEM_HOME = "GEM_HOME";
     public static String GEM_PATH = "GEM_PATH";
+    public static String PATH = "PATH";
     public static String BUNDLE_HOME = "BUNDLE_PATH";
     public static String RVM_RUBY_STRING = "rvm_ruby_string";
     public static String RVM_GEM_SET = "gemset";
@@ -155,7 +157,11 @@ public class RvmUtil {
     public static String buildGemBinPath(String gemsPath, String rubyName, String gemSetName) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gemsPath);
+        stringBuilder.append(File.separator);
+        stringBuilder.append(gemSetDirectoryName(rubyName, gemSetName));
         stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
+        stringBuilder.append(File.pathSeparator);
+        stringBuilder.append(gemsPath);
         stringBuilder.append(File.separator);
         stringBuilder.append(rubyName);
         stringBuilder.append(DEFAULT_GEMSET_SEPARATOR);
@@ -165,4 +171,20 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
+
+    /**
+     * Simple function to split a string into tokens which are loaded into a list, note order IS important.
+     *
+     * @param targets String to split on one or more whitespace characters.
+     * @return List containing the tokens
+     */
+    public static List<String> splitRakeTargets(String targets) {
+
+        if (targets.matches(".*\\s.*")) {
+            return Arrays.asList(targets.split("\\s+"));
+        } else {
+            return Arrays.asList(targets);
+        }
+
+    }
 }

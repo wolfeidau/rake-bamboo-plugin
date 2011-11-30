@@ -5,9 +5,8 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
     </plugin-info>
 
-    <!--A service which detects ruby runtimes managed by rvm-->
-    <component key="rvmRubyRuntimeService" name="RVM Ruby Runtime Service"
-        class="au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeService" />
+    <component key="rvmLocatorService" name="RVM Locator Service"
+        class="au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService" />
 
     <!-- internationalize your plugin -->
     <resource type="i18n" name="au.id.wolfe.bamboo language" location="english"/>

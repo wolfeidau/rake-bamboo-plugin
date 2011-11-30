@@ -5,8 +5,10 @@ import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +33,17 @@ public class RubyLocator {
      * @param rubyRuntimeName The name of the ruby runtime.
      * @return Map of environment variables.
      */
-    public Map<String, String> buildEnv(String rubyRuntimeName) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
         final String rubyHomePath = RvmUtil.buildRubyHomePath(rvmInstallation.getRubiesPath(), rubyRuntime.getRubyName());
+        final String rubyName = rubyRuntime.getRubyName();
         final String gemHomePath = rubyRuntime.getGemPath();
         final String gemPath = RvmUtil.buildGemPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
         final String rvmGemSetName = rubyRuntime.getGemSetName();
+        final String rvmPathPrefix = RvmUtil.buildGemBinPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+        final String currentPath = StringUtils.defaultString(currentEnv.get("PATH"), "");
 
         Map<String, String> envVars = Maps.newHashMap();
 
@@ -47,7 +52,8 @@ public class RubyLocator {
         envVars.put(RvmUtil.GEM_PATH, gemPath);
         envVars.put(RvmUtil.BUNDLE_HOME, gemPath);
         envVars.put(RvmUtil.RVM_GEM_SET, rvmGemSetName);
-        envVars.put(RvmUtil.RVM_RUBY_STRING, rubyRuntimeName);
+        envVars.put(RvmUtil.RVM_RUBY_STRING, rubyName);
+        envVars.put(RvmUtil.PATH, rvmPathPrefix + File.pathSeparator + currentPath);
 
         return envVars;
     }
@@ -90,7 +96,7 @@ public class RubyLocator {
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
      * @throws PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
      */
-    public RubyRuntime getRubyRuntime(String rubyName, String gemSetName) {
+    public RubyRuntime getRubyRuntime(final String rubyName, final String gemSetName) {
 
         final String rubyExecutableName = RvmUtil.buildExecutablePath(rvmInstallation.getRubiesPath(), rubyName);
 
@@ -137,9 +143,14 @@ public class RubyLocator {
 
         for (String rubyName : rubiesList) {
             // locate each ruby to gem set combination
-            for (String gemSetName : gemSetList) {
-                if (gemSetName.startsWith(rubyName) && !gemSetName.endsWith(RvmUtil.GLOBAL_GEMSET_NAME)) {
-                    rubyRuntimeList.add(getRubyRuntime(rubyName, RvmUtil.gemSetName(rubyName, gemSetName)));
+            for (String gemSetDirectoryName : gemSetList) {
+                if (gemSetDirectoryName.startsWith(rubyName) && !gemSetDirectoryName.endsWith(RvmUtil.GLOBAL_GEMSET_NAME)) {
+                    if (rubyName.equals(gemSetDirectoryName)){
+                        rubyRuntimeList.add(getRubyRuntime(rubyName, "default"));
+                    } else {
+                        Pair<String, String> rubyRuntimeTokens = RvmUtil.parseRubyRuntimeName(gemSetDirectoryName);
+                        rubyRuntimeList.add(getRubyRuntime(rubyRuntimeTokens.left(), rubyRuntimeTokens.right()));
+                    }
                 }
             }
         }
