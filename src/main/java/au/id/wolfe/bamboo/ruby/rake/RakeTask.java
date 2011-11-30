@@ -81,8 +81,6 @@ public class RakeTask implements TaskType {
                         .command(commandsList)
                         .workingDirectory(taskContext.getWorkingDirectory()));
 
-
-
         externalProcess.execute();
 
         return taskResultBuilder.checkReturnCode(externalProcess, 0).build();

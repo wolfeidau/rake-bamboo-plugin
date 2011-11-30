@@ -27,7 +27,12 @@ public class RvmUtil {
     public static String RVM_RUBY_STRING = "rvm_ruby_string";
     public static String RVM_GEM_SET = "gemset";
 
-
+    /**
+     * Splits the ruby runtime name into a ruby name and gem set name.
+     *
+     * @param rubyRuntimeName The name to be split.
+     * @return A pair containing the two tokens.
+     */
     public static Pair<String, String> parseRubyRuntimeName(final String rubyRuntimeName) {
 
         final StringTokenizer stringTokenizer = new StringTokenizer(rubyRuntimeName, DEFAULT_GEMSET_SEPARATOR);
@@ -155,12 +160,15 @@ public class RvmUtil {
     }
 
     public static String buildGemBinPath(String gemsPath, String rubyName, String gemSetName) {
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gemsPath);
         stringBuilder.append(File.separator);
         stringBuilder.append(gemSetDirectoryName(rubyName, gemSetName));
         stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
+
         stringBuilder.append(File.pathSeparator);
+
         stringBuilder.append(gemsPath);
         stringBuilder.append(File.separator);
         stringBuilder.append(rubyName);
