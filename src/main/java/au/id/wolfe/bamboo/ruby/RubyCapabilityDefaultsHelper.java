@@ -45,8 +45,6 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
             capabilitySet.addCapability(capability);
         }
 
-
-
         return capabilitySet;
     }
 }

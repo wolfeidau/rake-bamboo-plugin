@@ -36,6 +36,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         config.put("ruby", params.getString("ruby"));
         config.put("targets", params.getString("targets"));
+        config.put("bundlerexec", params.getString("bundlerexec"));
 
         return config;
     }
@@ -47,6 +48,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         context.put("ruby", "");
         context.put("targets", "");
+        context.put("bundlerexec", "");
 
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
@@ -60,6 +62,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
+        context.put("bundlerexec", taskDefinition.getConfiguration().get("bundlerexec"));
         context.put(MODE, EDIT_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
     }
@@ -72,6 +75,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
+        context.put("bundlerexec", taskDefinition.getConfiguration().get("bundlerexec"));
     }
 
     @Override
@@ -88,6 +92,12 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         if (StringUtils.isEmpty(targets)) {
             errorCollection.addError("targets", "You must specify at least one target");
+        }
+
+        String bundlerexec = params.getString("bundlerexec");
+
+        if (StringUtils.isEmpty(bundlerexec)) {
+            errorCollection.addError("bundlerexec", "You must specify whether or not to run bundler exec");
         }
 
     }

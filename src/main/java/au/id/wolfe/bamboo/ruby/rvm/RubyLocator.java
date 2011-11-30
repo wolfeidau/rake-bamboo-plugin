@@ -64,6 +64,7 @@ public class RubyLocator {
      * @param rubyRuntimeName The name of the ruby runtime.
      * @param name            Name the script/executable.
      * @return The full path of the executable.
+     * @throws IllegalArgumentException If the command cannot be located in the gem path.
      */
     @Nullable
     public String searchForRubyExecutable(String rubyRuntimeName, String name) {
@@ -81,7 +82,7 @@ public class RubyLocator {
             }
         }
 
-        return null;
+        throw new IllegalArgumentException("Unable to locate executable " + name + " in gem path for ruby runtime " + rubyRuntimeName);
 
     }
 
@@ -98,7 +99,7 @@ public class RubyLocator {
      */
     public RubyRuntime getRubyRuntime(final String rubyName, final String gemSetName) {
 
-        final String rubyExecutableName = RvmUtil.buildExecutablePath(rvmInstallation.getRubiesPath(), rubyName);
+        final String rubyExecutableName = RvmUtil.buildRubyExecutablePath(rvmInstallation.getRubiesPath(), rubyName);
 
         fileSystemHelper.assertPathExists(rubyExecutableName, "Cannot locate ruby executable");
 

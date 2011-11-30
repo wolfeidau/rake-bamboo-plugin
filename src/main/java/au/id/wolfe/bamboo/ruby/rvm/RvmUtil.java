@@ -3,6 +3,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 
 import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- *
+ * All the RVM utility functions in one place.
  */
 public class RvmUtil {
 
@@ -45,7 +46,14 @@ public class RvmUtil {
 
     }
 
-    public static String buildExecutablePath(final String rubiesPath, final String rubyName) {
+    /**
+     * Builds full path to the ruby executable given a rubies path and ruby name.
+     *
+     * @param rubiesPath Absolute path to the rubies within RVM.
+     * @param rubyName   The name of the ruby.
+     * @return Absolute path to the ruby executable.
+     */
+    public static String buildRubyExecutablePath(final String rubiesPath, final String rubyName) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(rubiesPath);
@@ -58,6 +66,14 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
+    /**
+     * Build the absolute path to the ruby gem home.
+     *
+     * @param gemsPath   Absolute path to the gems within RVM.
+     * @param rubyName   The name of the ruby.
+     * @param gemSetName The name of the gem set.
+     * @return Absolute path to the gem home.
+     */
     public static String buildGemHomePath(final String gemsPath, final String rubyName, final String gemSetName) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -69,6 +85,14 @@ public class RvmUtil {
 
     }
 
+    /**
+     * Build a list containing paths to search for executables.
+     *
+     * @param gemsPath   Absolute path to the gems within RVM.
+     * @param rubyName   The name of the ruby.
+     * @param gemSetName The name of the gem set.
+     * @return List of search path elements.
+     */
     public static List<String> buildGemBinSearchPath(final String gemsPath, final String rubyName, final String gemSetName) {
 
         StringBuilder stringBuilder;
@@ -88,7 +112,7 @@ public class RvmUtil {
         return searchPathList;
     }
 
-    public static String buildRubiesPath(String rvmInstallPath) {
+    public static String buildRubiesPath(final String rvmInstallPath) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(rvmInstallPath);
@@ -98,7 +122,7 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
-    public static String buildGemsPath(String rvmInstallPath) {
+    public static String buildGemsPath(final String rvmInstallPath) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(rvmInstallPath);
@@ -108,7 +132,7 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
-    private static String getExecutableName(String rubyName) {
+    private static String getExecutableName(final String rubyName) {
 
         if (rubyName.startsWith("jruby")) {
             return "jruby";
@@ -118,15 +142,15 @@ public class RvmUtil {
 
     }
 
-    public static String gemSetName(String rubyName, String gemSetName) {
+    public static String gemSetName(final String rubyName, final String gemSetName) {
         return gemSetName.equals(rubyName) ? "default" : gemSetName;
     }
 
-    public static String gemSetDirectoryName(String rubyName, String gemSetName) {
+    public static String gemSetDirectoryName(final String rubyName, final String gemSetName) {
         return gemSetName.equals("default") ? rubyName : rubyName + DEFAULT_GEMSET_SEPARATOR + gemSetName;
     }
 
-    public static String buildRubyHomePath(String rubiesPath, String rubyName) {
+    public static String buildRubyHomePath(final String rubiesPath, final String rubyName) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(rubiesPath);
@@ -137,7 +161,7 @@ public class RvmUtil {
 
     }
 
-    public static String buildGemPath(String gemsPath, String rubyName, String gemSetName) {
+    public static String buildGemPath(final String gemsPath, final String rubyName, final String gemSetName) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(buildGemHomePath(gemsPath, rubyName, gemSetName));
@@ -147,7 +171,7 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
-    private static String buildGlobalGemPath(String gemsPath, String rubyName) {
+    private static String buildGlobalGemPath(final String gemsPath, final String rubyName) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gemsPath);
@@ -159,24 +183,8 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
-    public static String buildGemBinPath(String gemsPath, String rubyName, String gemSetName) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(gemsPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(gemSetDirectoryName(rubyName, gemSetName));
-        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
-
-        stringBuilder.append(File.pathSeparator);
-
-        stringBuilder.append(gemsPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(rubyName);
-        stringBuilder.append(DEFAULT_GEMSET_SEPARATOR);
-        stringBuilder.append(GLOBAL_GEMSET_NAME);
-        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
-
-        return stringBuilder.toString();
+    public static String buildGemBinPath(final String gemsPath, final String rubyName, final String gemSetName) {
+        return StringUtils.join(buildGemBinSearchPath(gemsPath, rubyName, gemSetName), File.pathSeparator);
     }
 
 
@@ -186,7 +194,7 @@ public class RvmUtil {
      * @param targets String to split on one or more whitespace characters.
      * @return List containing the tokens
      */
-    public static List<String> splitRakeTargets(String targets) {
+    public static List<String> splitRakeTargets(final String targets) {
 
         if (targets.matches(".*\\s.*")) {
             return Arrays.asList(targets.split("\\s+"));

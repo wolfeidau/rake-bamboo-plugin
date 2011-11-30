@@ -5,3 +5,7 @@
             extraUtility=addExecutableLink required='true' /]
 
 [@ww.textfield labelKey='rake.targets' name='targets' required='true' cssClass="long-field" /]
+
+[@ww.checkbox labelKey='rake.bundlerexec'
+                  name='bundlerexec'
+                  toggle='true' /]
