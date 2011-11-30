@@ -4,7 +4,6 @@ import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
-import com.atlassian.bamboo.build.BuildDetectionResult;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;
@@ -14,7 +13,6 @@ import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.utils.process.ExternalProcess;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +77,7 @@ public class RakeTask implements TaskType {
 
         commandsList.add(rubyRuntime.getRubyExecutablePath());
 
-        if (bundler == null || bundler.equals("false")){
+        if (bundler == null || bundler.equals("false")) {
             commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, RAKE_COMMAND));
         } else {
             commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, BUNDLE_COMMAND));
