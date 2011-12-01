@@ -105,7 +105,7 @@ To enable test reporting do as follows.
         --format RspecJunitFormatter
         --out rspec.xml
 
-3. Add a JUnit test task to your Job and configure it to look for respec.xml which contains the test results.
+3. Add a JUnit test task to your Job and configure it to look for rspec.xml which contains the test results.
 
 # Roadmap
 
