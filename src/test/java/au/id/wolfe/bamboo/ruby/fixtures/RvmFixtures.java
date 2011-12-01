@@ -15,6 +15,8 @@ public final class RvmFixtures {
     public static final String USER_HOME = "/home/markw";
     public static final String TEST_CURRENT_PATH = "/usr/bin:/bin";
 
+    public static final String BUNDLER_PATH = USER_HOME + "/.rvm/gems/ruby-1.9.3-p0/bin/bundle";
+
     private RvmFixtures() {
     }
 

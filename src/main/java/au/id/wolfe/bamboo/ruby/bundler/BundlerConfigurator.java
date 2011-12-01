@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- *
+ * Bundler configurator which acts as a binding to the task UI in bamboo.
  */
 public class BundlerConfigurator extends AbstractTaskConfigurator {
 

@@ -59,6 +59,7 @@ public class RvmUtil {
         stringBuilder.append(rubiesPath);
         stringBuilder.append(File.separator);
         stringBuilder.append(rubyName);
+
         stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
         stringBuilder.append(File.separator);
         stringBuilder.append(getExecutableName(rubyName));
@@ -112,7 +113,7 @@ public class RvmUtil {
         return searchPathList;
     }
 
-    public static String buildRubiesPath(final String rvmInstallPath) {
+    public static String buildRvmRubiesPath(final String rvmInstallPath) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(rvmInstallPath);
@@ -122,7 +123,7 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
-    public static String buildGemsPath(final String rvmInstallPath) {
+    public static String buildRvmGemsPath(final String rvmInstallPath) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(rvmInstallPath);

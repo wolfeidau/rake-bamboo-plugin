@@ -14,8 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Rake task which uses the RVM ruby selected to run rake and build the ruby project. Given a value
- * like 1.9.3-p0@rails31 this task will run rake using that particular ruby/gems combination in RVM.
+ * Rake configurator which acts as a binding to the task UI in bamboo.
  */
 public class RakeConfigurator extends AbstractTaskConfigurator {
 

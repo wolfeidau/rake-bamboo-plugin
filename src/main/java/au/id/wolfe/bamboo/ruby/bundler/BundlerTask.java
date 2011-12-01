@@ -21,7 +21,8 @@ import java.util.Map;
  */
 public class BundlerTask extends BaseRubyTask implements TaskType {
 
-    private static final String BUNDLE_COMMAND = "bundle";
+    public static final String BUNDLE_COMMAND = "bundle";
+    public static final String BUNDLE_INSTALL_ARG = "bundle";
 
     public BundlerTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
         super(processService, rvmLocatorService, environmentVariableAccessor);
@@ -43,7 +44,7 @@ public class BundlerTask extends BaseRubyTask implements TaskType {
         commandsList.add(rubyRuntime.getRubyExecutablePath());
 
         commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, BUNDLE_COMMAND));
-        commandsList.add("install");
+        commandsList.add(BUNDLE_INSTALL_ARG);
 
         return commandsList;
     }

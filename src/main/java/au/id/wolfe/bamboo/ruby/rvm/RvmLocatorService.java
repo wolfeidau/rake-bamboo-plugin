@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * RVM Utility methods, these are entirely  as there is only one filesystem involved.
  */
-public final class RvmLocatorService {
+public class RvmLocatorService {
 
     public static final String[] KNOWN_RVM_HOME_PATHS = new String[]{"/usr/local/rvm", "/opt/local/rvm"};
 
@@ -58,11 +58,11 @@ public final class RvmLocatorService {
 
     private RvmInstallation checkRvmInstallation(String rvmInstallPath, RvmInstallation.Type installType) {
 
-        final String rubiesPath = RvmUtil.buildRubiesPath(rvmInstallPath);
+        final String rubiesPath = RvmUtil.buildRvmRubiesPath(rvmInstallPath);
 
         fileSystemHelper.assertPathExists(rubiesPath, "RVM Installation missing rubies directory");
 
-        final String gemsPath = RvmUtil.buildGemsPath(rvmInstallPath);
+        final String gemsPath = RvmUtil.buildRvmGemsPath(rvmInstallPath);
 
         fileSystemHelper.assertPathExists(gemsPath, "RVM Installation missing gems directory");
 
