@@ -6,6 +6,6 @@
 
 [@ww.textfield labelKey='rake.targets' name='targets' required='true' cssClass="long-field" /]
 
-[@ww.checkbox labelKey='rake.bundlerexec'
-                  name='bundlerexec'
+[@ww.checkbox labelKey='rake.bundleexec'
+                  name='bundleexec'
                   toggle='true' /]

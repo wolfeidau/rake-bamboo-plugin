@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.rake;
+package au.id.wolfe.bamboo.ruby.bundler;
 
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
@@ -14,12 +14,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Rake task which uses the RVM ruby selected to run rake and build the ruby project. Given a value
- * like 1.9.3-p0@rails31 this task will run rake using that particular ruby/gems combination in RVM.
+ *
  */
-public class RakeConfigurator extends AbstractTaskConfigurator {
+public class BundlerConfigurator extends AbstractTaskConfigurator {
 
-    private static final Logger log = LoggerFactory.getLogger(RakeConfigurator.class);
+    private static final Logger log = LoggerFactory.getLogger(BundlerConfigurator.class);
 
     public static final String CREATE_MODE = "create";
     public static final String EDIT_MODE = "edit";
@@ -35,8 +34,6 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 
         config.put("ruby", params.getString("ruby"));
-        config.put("targets", params.getString("targets"));
-        config.put("bundleexec", params.getString("bundleexec"));
 
         return config;
     }
@@ -47,8 +44,6 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         log.info("populateContextForCreate");
 
         context.put("ruby", "");
-        context.put("targets", "");
-        context.put("bundleexec", "");
 
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
@@ -61,8 +56,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         log.info("populateContextForEdit");
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
-        context.put("targets", taskDefinition.getConfiguration().get("targets"));
-        context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
+
         context.put(MODE, EDIT_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
     }
@@ -74,8 +68,7 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         log.info("populateContextForView");
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
-        context.put("targets", taskDefinition.getConfiguration().get("targets"));
-        context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
+
     }
 
     @Override
@@ -86,18 +79,6 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
 
         if (StringUtils.isEmpty(ruby)) {
             errorCollection.addError("ruby", "You must specify a ruby runtime");
-        }
-
-        String targets = params.getString("targets");
-
-        if (StringUtils.isEmpty(targets)) {
-            errorCollection.addError("targets", "You must specify at least one target");
-        }
-
-        String bundlerExec = params.getString("bundleexec");
-
-        if (StringUtils.isEmpty(bundlerExec)) {
-            errorCollection.addError("bundleexec", "You must specify whether or not to run bundle exec");
         }
 
     }

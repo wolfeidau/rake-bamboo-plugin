@@ -50,7 +50,7 @@ public class RubyLocator {
         envVars.put(RvmUtil.MY_RUBY_HOME, rubyHomePath);
         envVars.put(RvmUtil.GEM_HOME, gemHomePath);
         envVars.put(RvmUtil.GEM_PATH, gemPath);
-        envVars.put(RvmUtil.BUNDLE_HOME, gemPath);
+        envVars.put(RvmUtil.BUNDLE_HOME, gemHomePath);
         envVars.put(RvmUtil.RVM_GEM_SET, rvmGemSetName);
         envVars.put(RvmUtil.RVM_RUBY_STRING, rubyName);
         envVars.put(RvmUtil.PATH, rvmPathPrefix + File.pathSeparator + currentPath);
