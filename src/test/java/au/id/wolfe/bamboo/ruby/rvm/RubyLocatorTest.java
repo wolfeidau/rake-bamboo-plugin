@@ -17,6 +17,7 @@ import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getJRubyRuntimeDefaul
 import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getMRIRubyRuntimeDefaultGemSet;
 import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getMRIRubyRuntimeRails31GemSet;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -59,7 +60,6 @@ public class RubyLocatorTest {
         assertTrue(envVars.containsKey(RvmUtil.PATH));
 
         assertEquals(RvmFixtures.getMRIRubyRuntimeDefaultGemSetPath(), envVars.get("PATH"));
-
     }
 
     @Test
@@ -94,7 +94,6 @@ public class RubyLocatorTest {
         rubyRuntime = rubyLocator.getRubyRuntime("jruby-1.6.5@default");
 
         assertEquals(jRuby, rubyRuntime);
-
     }
 
     @Test
@@ -155,6 +154,20 @@ public class RubyLocatorTest {
 
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSearchForRubyExecutableWhenNotFound(){
+
+        final RubyRuntime mriRuby = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+
+        when(fileSystemHelper.pathExists(mriRuby.getRubyExecutablePath())).thenReturn(true);
+        when(fileSystemHelper.pathExists(mriRuby.getGemPath())).thenReturn(true);
+        when(fileSystemHelper.executableFileExists(mriRuby.getGemPath() + "/bin/rake")).thenReturn(false);
+
+        rubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
+    }
+
+
     @Test
     public void testHasRuby() throws Exception {
 
@@ -166,5 +179,6 @@ public class RubyLocatorTest {
 
         assertTrue(rubyLocator.hasRuby("ruby-1.9.3-p0"));
         assertTrue(rubyLocator.hasRuby("jruby-1.6.5"));
+        assertFalse(rubyLocator.hasRuby("ruby-1.9.2-p0"));
     }
 }

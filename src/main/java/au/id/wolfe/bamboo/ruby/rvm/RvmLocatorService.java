@@ -72,8 +72,8 @@ public class RvmLocatorService {
     /**
      * Locates the rvm installation on the host and builds an instance of the ruby locator.
      * @return Instance of a Ruby locator.
+     * @throws PathNotFoundException if unable to locate an RVM installation.
      */
-    @Nullable
     public RubyLocator getRvmRubyLocator() {
         final RvmInstallation rvmInstallation = locateRvmInstallation();
 
@@ -82,7 +82,7 @@ public class RvmLocatorService {
         }
 
         // no rvm installed so not able to supply a ruby locator
-        return null;
+        throw new PathNotFoundException("Unable to locate RVM installation.");
     }
 
     public interface Constants {

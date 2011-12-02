@@ -80,7 +80,7 @@ public class RvmUtil {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gemsPath);
         stringBuilder.append(File.separator);
-        stringBuilder.append(gemSetDirectoryName(rubyName, gemSetName));
+        stringBuilder.append(buildGemSetDirectoryName(rubyName, gemSetName));
 
         return stringBuilder.toString();
 
@@ -143,11 +143,11 @@ public class RvmUtil {
 
     }
 
-    public static String gemSetName(final String rubyName, final String gemSetName) {
+    public static String buildGemSetName(final String rubyName, final String gemSetName) {
         return gemSetName.equals(rubyName) ? "default" : gemSetName;
     }
 
-    public static String gemSetDirectoryName(final String rubyName, final String gemSetName) {
+    public static String buildGemSetDirectoryName(final String rubyName, final String gemSetName) {
         return gemSetName.equals("default") ? rubyName : rubyName + DEFAULT_GEMSET_SEPARATOR + gemSetName;
     }
 

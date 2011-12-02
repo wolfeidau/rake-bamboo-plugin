@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(RubyCapabilityDefaultsHelper.class);
-
     private final RvmLocatorService rvmLocatorService;
 
     public RubyCapabilityDefaultsHelper(RvmLocatorService rvmLocatorService) {
@@ -35,8 +33,6 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
     @NotNull
     @Override
     public CapabilitySet addDefaultCapabilities(@NotNull CapabilitySet capabilitySet) {
-
-        log.debug("Loading ruby runtimes managed by RVM");
 
         List<RubyRuntime> rubyRuntimeList = rvmLocatorService.getRvmRubyLocator().listRubyRuntimes();
 

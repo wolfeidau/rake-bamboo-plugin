@@ -7,16 +7,12 @@ import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
-import com.atlassian.bamboo.process.ExternalProcessBuilder;
 import com.atlassian.bamboo.process.ProcessService;
-import com.atlassian.bamboo.task.*;
-import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
-import com.atlassian.utils.process.ExternalProcess;
+import com.atlassian.bamboo.task.TaskContext;
+import com.atlassian.bamboo.task.TaskType;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +22,9 @@ import java.util.Map;
  */
 public class RakeTask extends BaseRubyTask implements TaskType {
 
-    private static final String BUNDLE_COMMAND = "bundle";
-    private static final String RAKE_COMMAND = "rake";
+    public static final String BUNDLE_COMMAND = "bundle";
+    public static final String RAKE_COMMAND = "rake";
+    public static final String BUNDLE_EXEC_ARG = "exec";
 
     public RakeTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
         super(processService, rvmLocatorService, environmentVariableAccessor);
@@ -59,7 +56,7 @@ public class RakeTask extends BaseRubyTask implements TaskType {
             commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, RAKE_COMMAND));
         } else {
             commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, BUNDLE_COMMAND));
-            commandsList.add("exec");
+            commandsList.add(BUNDLE_EXEC_ARG);
             commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, RAKE_COMMAND));
         }
         commandsList.addAll(targetList);

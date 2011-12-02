@@ -87,6 +87,19 @@ public class RvmLocatorServiceTest {
 
     }
 
+    @Test(expected = PathNotFoundException.class)
+    public void testGetRubyLocatorWhenNotFound(){
+        when(systemHelper.getUserHome()).thenReturn(null);
+        when(fileSystemHelper.pathExists("/usr/local/rvm")).thenReturn(false);
+        when(fileSystemHelper.pathExists("/opt/local/rvm")).thenReturn(false);
+
+        RvmInstallation userRvm = getUserRvmInstallation();
+
+        primeMockWithRvmInstallation(userRvm);
+
+        rvmLocatorService.getRvmRubyLocator();
+    }
+
     private void primeMockWithRvmInstallation(RvmInstallation rvmInstallation){
         when(fileSystemHelper.pathExists(rvmInstallation.getInstallPath())).thenReturn(true);
         when(fileSystemHelper.pathExists(rvmInstallation.getRubiesPath())).thenReturn(true);

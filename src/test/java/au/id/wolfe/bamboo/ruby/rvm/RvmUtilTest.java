@@ -24,21 +24,21 @@ public class RvmUtilTest {
     }
 
     @Test
-    public void testGemSetName() throws Exception {
+    public void testBuildGemSetName() throws Exception {
 
-        String gemSetName = RvmUtil.gemSetName("ruby-1.9.3-p0", "ruby-1.9.3-p0");
+        String gemSetName = RvmUtil.buildGemSetName("ruby-1.9.3-p0", "ruby-1.9.3-p0");
 
         assertEquals("default", gemSetName);
     }
 
     @Test
-    public void testGemSetDirectoryName(){
+    public void testBuildGemSetDirectoryName(){
 
         String gemSetDirectoryName;
-        gemSetDirectoryName = RvmUtil.gemSetDirectoryName("ruby-1.9.3-p0", "default");
+        gemSetDirectoryName = RvmUtil.buildGemSetDirectoryName("ruby-1.9.3-p0", "default");
         assertEquals("ruby-1.9.3-p0", gemSetDirectoryName);
 
-        gemSetDirectoryName = RvmUtil.gemSetDirectoryName("ruby-1.9.3-p0", "rails31");
+        gemSetDirectoryName = RvmUtil.buildGemSetDirectoryName("ruby-1.9.3-p0", "rails31");
         assertEquals("ruby-1.9.3-p0@rails31", gemSetDirectoryName);
 
     }
