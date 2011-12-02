@@ -55,15 +55,23 @@ public class RvmUtilTest {
     }
 
     @Test
-    public void testBuildGemBinPath() {
+    public void testBuildBinPath() {
 
-        String gemBinPath;
+        String binPath;
 
-        gemBinPath = RvmUtil.buildGemBinPath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
-        assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0/bin:/home/markw/.rvm/gems/ruby-1.9.3-p0@global/bin", gemBinPath);
+        binPath = RvmUtil.buildBinPath("/home/markw/.rvm/rubies", "/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
+        assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0/bin:/home/markw/.rvm/gems/ruby-1.9.3-p0@global/bin:/home/markw/.rvm/rubies/ruby-1.9.3-p0/bin", binPath);
 
-        gemBinPath = RvmUtil.buildGemBinPath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "rails31");
-        assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin:/home/markw/.rvm/gems/ruby-1.9.3-p0@global/bin", gemBinPath);
+        binPath = RvmUtil.buildBinPath("/home/markw/.rvm/rubies", "/home/markw/.rvm/gems", "ruby-1.9.3-p0", "rails31");
+        assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin:/home/markw/.rvm/gems/ruby-1.9.3-p0@global/bin:/home/markw/.rvm/rubies/ruby-1.9.3-p0/bin", binPath);
+    }
+
+    @Test
+    public void testBuildRubyBinPath() {
+        String rubyBinPath;
+
+        rubyBinPath = RvmUtil.buildRubyBinPath("/home/markw/.rvm/rubies", "ruby-1.9.3-p0");
+        assertEquals("/home/markw/.rvm/rubies/ruby-1.9.3-p0/bin", rubyBinPath);
     }
 
     @Test

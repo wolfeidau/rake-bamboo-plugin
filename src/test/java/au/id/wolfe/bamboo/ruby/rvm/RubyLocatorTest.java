@@ -55,7 +55,7 @@ public class RubyLocatorTest {
         assertTrue(envVars.containsKey(RvmUtil.RVM_GEM_SET));
         assertTrue(envVars.containsKey(RvmUtil.PATH));
 
-        assertEquals(RvmFixtures.getMRIRubyRuntimeDefaultGemSetPath(), envVars.get("PATH"));
+        assertEquals(RvmFixtures.getMRIRubyRuntimeDefaultBinPath(), envVars.get("PATH"));
     }
 
     @Test

@@ -42,7 +42,7 @@ public class RubyLocator {
         final String gemHomePath = rubyRuntime.getGemPath();
         final String gemPath = RvmUtil.buildGemPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
         final String rvmGemSetName = rubyRuntime.getGemSetName();
-        final String rvmPathPrefix = RvmUtil.buildGemBinPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+        final String rvmPathPrefix = RvmUtil.buildBinPath(rvmInstallation.getRubiesPath(), rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
         final String currentPath = StringUtils.defaultString(currentEnv.get("PATH"), "");
 
         Map<String, String> envVars = Maps.newHashMap();

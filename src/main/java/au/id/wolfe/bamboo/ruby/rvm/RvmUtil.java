@@ -184,10 +184,25 @@ public class RvmUtil {
         return stringBuilder.toString();
     }
 
-    public static String buildGemBinPath(final String gemsPath, final String rubyName, final String gemSetName) {
-        return StringUtils.join(buildGemBinSearchPath(gemsPath, rubyName, gemSetName), File.pathSeparator);
+    public static String buildBinPath(final String rubiesPath, final String gemsPath, final String rubyName, final String gemSetName) {
+
+        List<String> binPathList = buildGemBinSearchPath(gemsPath, rubyName, gemSetName);
+
+        binPathList.add(buildRubyBinPath(rubiesPath, rubyName));
+
+        return StringUtils.join(binPathList, File.pathSeparator);
     }
 
+    public static String buildRubyBinPath(String rubiesPath, String rubyName) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(rubiesPath);
+        stringBuilder.append(File.separator);
+        stringBuilder.append(rubyName);
+        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
+
+        return stringBuilder.toString();
+    }
 
     /**
      * Simple function to split a string into tokens which are loaded into a list, note order IS important.

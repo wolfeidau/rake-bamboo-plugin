@@ -33,8 +33,8 @@ public final class RvmFixtures {
         return new RubyRuntime("ruby-1.9.3-p0", "rails31", USER_HOME + "/.rvm/rubies/ruby-1.9.3-p0/bin/ruby", USER_HOME + "/.rvm/gems/ruby-1.9.3-p0@rails31");
     }
 
-    public static String getMRIRubyRuntimeDefaultGemSetPath() {
-        return USER_HOME + "/.rvm/gems/ruby-1.9.3-p0/bin" + ":" + USER_HOME + "/.rvm/gems/ruby-1.9.3-p0@global/bin" + ":" + TEST_CURRENT_PATH;
+    public static String getMRIRubyRuntimeDefaultBinPath() {
+        return USER_HOME + "/.rvm/gems/ruby-1.9.3-p0/bin" + ":" + USER_HOME + "/.rvm/gems/ruby-1.9.3-p0@global/bin" + ":" + USER_HOME+ "/.rvm/rubies/ruby-1.9.3-p0/bin" + ":" + TEST_CURRENT_PATH;
     }
 
     public static RvmInstallation getUserRvmInstallation() {
