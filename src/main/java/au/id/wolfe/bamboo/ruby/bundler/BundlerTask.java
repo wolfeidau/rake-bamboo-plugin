@@ -22,7 +22,7 @@ import java.util.Map;
 public class BundlerTask extends BaseRubyTask implements TaskType {
 
     public static final String BUNDLE_COMMAND = "bundle";
-    public static final String BUNDLE_INSTALL_ARG = "bundle";
+    public static final String BUNDLE_INSTALL_ARG = "install";
 
     public BundlerTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
         super(processService, rvmLocatorService, environmentVariableAccessor);
@@ -30,6 +30,10 @@ public class BundlerTask extends BaseRubyTask implements TaskType {
 
     @Override
     protected List<String> buildCommandList(@NotNull TaskContext taskContext) {
+
+        if(rvmLocatorService.locateRvmInstallation() != null && rvmLocatorService.locateRvmInstallation().isSystemInstall()){
+            throw new IllegalArgumentException("Can't use bundle install task with a system installation of RVM.");
+        }
 
         final ConfigurationMap config = taskContext.getConfigurationMap();
         final RubyLocator rubyLocator = getRubyLocator();

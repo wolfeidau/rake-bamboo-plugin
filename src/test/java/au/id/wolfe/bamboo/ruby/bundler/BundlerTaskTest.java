@@ -3,6 +3,7 @@ package au.id.wolfe.bamboo.ruby.bundler;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.rvm.RvmInstallation;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
@@ -43,6 +44,9 @@ public class BundlerTaskTest {
     @Mock
     RubyLocator rubyLocator;
 
+    @Mock
+    RvmInstallation rvmInstallation;
+
     BundlerTaskTester bundlerTaskTester;
 
     @Before
@@ -53,12 +57,12 @@ public class BundlerTaskTest {
     }
 
     @Test
-    public void testBuildCommandList(){
+    public void testBuildCommandList() {
 
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
         // taskContext.getConfigurationMap()
-        ConfigurationMap configurationMap =  new ConfigurationMapImpl();
+        ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
@@ -80,12 +84,21 @@ public class BundlerTaskTest {
         assertTrue(commandList.contains(BundlerTask.BUNDLE_INSTALL_ARG));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuildCommandListWhenRvmInstallationIsTypeSystem() {
+
+        when(rvmLocatorService.locateRvmInstallation()).thenReturn(rvmInstallation);
+        when(rvmInstallation.isSystemInstall()).thenReturn(true);
+
+        bundlerTaskTester.buildCommandList(taskContext);
+    }
+
     @Test
-    public void testBuildEnvironment(){
+    public void testBuildEnvironment() {
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
         // taskContext.getConfigurationMap()
-        ConfigurationMap configurationMap =  new ConfigurationMapImpl();
+        ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
@@ -106,7 +119,7 @@ public class BundlerTaskTest {
     class BundlerTaskTester extends BundlerTask {
 
         public BundlerTaskTester(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
-            super(processService, rvmLocatorService, environmentVariableAccessor);    //To change body of overridden methods use File | Settings | File Templates.
+            super(processService, rvmLocatorService, environmentVariableAccessor);
         }
 
     }

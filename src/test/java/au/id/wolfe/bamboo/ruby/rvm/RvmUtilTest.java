@@ -32,7 +32,7 @@ public class RvmUtilTest {
     }
 
     @Test
-    public void testBuildGemSetDirectoryName(){
+    public void testBuildGemSetDirectoryName() {
 
         String gemSetDirectoryName;
         gemSetDirectoryName = RvmUtil.buildGemSetDirectoryName("ruby-1.9.3-p0", "default");
@@ -44,7 +44,7 @@ public class RvmUtilTest {
     }
 
     @Test
-    public void testBuildGemHomePath(){
+    public void testBuildGemHomePath() {
 
         String gemSetDirectoryName;
         gemSetDirectoryName = RvmUtil.buildGemHomePath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
@@ -55,7 +55,7 @@ public class RvmUtilTest {
     }
 
     @Test
-    public void testBuildGemBinPath(){
+    public void testBuildGemBinPath() {
 
         String gemBinPath;
 
@@ -67,11 +67,11 @@ public class RvmUtilTest {
     }
 
     @Test
-    public void testSplitRakeTargets(){
+    public void testSplitRakeTargets() {
 
         String targets = "db:migrate spec";
 
-        List<String> targetList =  RvmUtil.splitRakeTargets(targets);
+        List<String> targetList = RvmUtil.splitRakeTargets(targets);
 
         assertEquals(2, targetList.size());
 

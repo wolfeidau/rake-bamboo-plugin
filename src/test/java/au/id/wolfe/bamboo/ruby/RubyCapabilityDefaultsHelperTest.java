@@ -43,8 +43,8 @@ public class RubyCapabilityDefaultsHelperTest {
     @Test
     public void testAddDefaultCapabilities() throws Exception {
 
-        final RubyRuntime rubyRuntimeMRI =  RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-        final RubyRuntime rubyRuntimeJRuby =  RvmFixtures.getJRubyRuntimeDefaultGemSet();
+        final RubyRuntime rubyRuntimeMRI = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        final RubyRuntime rubyRuntimeJRuby = RvmFixtures.getJRubyRuntimeDefaultGemSet();
 
         when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
         when(rubyLocator.listRubyRuntimes()).thenReturn(Lists.<RubyRuntime>newArrayList(rubyRuntimeMRI, rubyRuntimeJRuby));

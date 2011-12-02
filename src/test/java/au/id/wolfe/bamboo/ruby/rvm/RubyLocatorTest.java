@@ -13,12 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Map;
 
-import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getJRubyRuntimeDefaultGemSet;
-import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getMRIRubyRuntimeDefaultGemSet;
-import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getMRIRubyRuntimeRails31GemSet;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -140,7 +136,7 @@ public class RubyLocatorTest {
     }
 
     @Test
-    public void testSearchForRubyExecutable(){
+    public void testSearchForRubyExecutable() {
 
         final RubyRuntime mriRuby = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
@@ -156,7 +152,7 @@ public class RubyLocatorTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void testSearchForRubyExecutableWhenNotFound(){
+    public void testSearchForRubyExecutableWhenNotFound() {
 
         final RubyRuntime mriRuby = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 

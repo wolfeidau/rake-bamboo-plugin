@@ -10,7 +10,6 @@ import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
 import com.atlassian.bamboo.task.TaskContext;
 import com.google.common.collect.Maps;
-import it.IntegrationTestRakePlugin;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,12 +54,12 @@ public class RakeTaskTest {
     }
 
     @Test
-    public void testBuildCommandList(){
+    public void testBuildCommandList() {
 
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
         // taskContext.getConfigurationMap()
-        ConfigurationMap configurationMap =  new ConfigurationMapImpl();
+        ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("targets", DB_MIGRATE_TARGET);
@@ -88,7 +87,6 @@ public class RakeTaskTest {
         assertEquals(RvmFixtures.RAKE_PATH, commandsIterator.next());
         assertEquals(DB_MIGRATE_TARGET, commandsIterator.next());
     }
-
 
 
     @Test
