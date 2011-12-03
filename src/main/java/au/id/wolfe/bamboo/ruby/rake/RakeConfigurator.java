@@ -93,12 +93,6 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
             errorCollection.addError("targets", "You must specify at least one target");
         }
 
-        String bundlerExec = params.getString("bundleexec");
-
-        if (StringUtils.isEmpty(bundlerExec)) {
-            errorCollection.addError("bundleexec", "You must specify whether or not to run bundle exec");
-        }
-
     }
 
     public void setUiConfigBean(final UIConfigSupport uiConfigBean) {
