@@ -7,12 +7,12 @@ ruby version manager (RVM) to enable execution against different ruby versions.
 
 * Discover ruby installations managed by RVM and list them in bamboo.
 * Perform a rake build based on selection of a ruby runtime and entry of some build targets.
-* Parse the output of rspec2 run and display a table of results.
+* Parse the output of RSpec2 run and display a table of results.
 
 # Usage
 
 To use this plugin you will need to install RVM from the link below, install all the gems used by your project, preferably
-into it's own gemset.
+into it's own gem set.
 
 As an example follow the following steps to setup a project and run some tests using this plugin. This assumes your using
 either OSX or Linux. If your on OSX you will need to install XCode, and if your installing version 4.1 then you will
@@ -107,10 +107,13 @@ To enable test reporting do as follows.
 
 3. Add a JUnit test task to your Job and configure it to look for rspec.xml which contains the test results.
 
-# Roadmap
+# Bundler Features
 
-In the future I would like to automate last few steps, specifically the option to create and populated a gemset for that specific project. This
-will further integration with rvm and some additional tasks to run bundler (ruby dependency manager).
+In version 1.3 I added some bundler related features, these are:
+
+1. Added an option to the Rake task to enable bundle exec when running the rake command.
+
+2. Bundler task has been added which runs bundle install to dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
 
 # Links
 
