@@ -37,7 +37,7 @@
     </scm>
 
     <properties>
-        <bamboo.version>3.3</bamboo.version>
+        <bamboo.version>3.4</bamboo.version>
         <bamboo.data.version>3.2.2</bamboo.data.version>
         <amps.version>3.7</amps.version>
     </properties>

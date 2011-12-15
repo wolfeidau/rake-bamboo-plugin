@@ -8,8 +8,6 @@ import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
