@@ -34,6 +34,9 @@ public class RakeTask extends BaseRubyTask implements TaskType {
         final String rubyRuntimeName = config.get("ruby");
         Preconditions.checkArgument(rubyRuntimeName != null);
 
+        final String rakefile = config.get("rakefile");
+        final String rakelibdir = config.get("rakelibdir");
+
         final String targets = config.get("targets");
         Preconditions.checkArgument(targets != null);
 
@@ -49,6 +52,8 @@ public class RakeTask extends BaseRubyTask implements TaskType {
                 .addRubyExecutable()
                 .addIfBundleExec(bundleExecFlag)
                 .addRakeExecutable()
+                .addIfRakeFile(rakefile)
+                .addIfRakeLibDir(rakelibdir)
                 .addIfVerbose(verboseFlag)
                 .addIfTrace(traceFlag)
                 .addTargets(targetList)

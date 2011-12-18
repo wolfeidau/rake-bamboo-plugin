@@ -48,6 +48,40 @@ public class RakeCommandBuilderTest {
 
 
     @Test
+    public void testAddIfRakefile() throws Exception {
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+
+        rakeCommandBuilder.addIfRakeFile(null);
+        assertEquals(0, rakeCommandBuilder.build().size());
+
+        rakeCommandBuilder.addIfRakeFile("Rakefile");
+
+        assertEquals(2, rakeCommandBuilder.build().size());
+
+        Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
+
+        assertEquals(RakeCommandBuilder.RAKEFILE_ARG, commandsIterator.next());
+        assertEquals("Rakefile", commandsIterator.next());
+    }
+
+    @Test
+    public void testAddIfRakeLibDir() throws Exception {
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+
+        rakeCommandBuilder.addIfRakeLibDir(null);
+        assertEquals(0, rakeCommandBuilder.build().size());
+
+        rakeCommandBuilder.addIfRakeLibDir("./rakelib");
+
+        assertEquals(2, rakeCommandBuilder.build().size());
+
+        Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
+
+        assertEquals(RakeCommandBuilder.RAKELIBDIR_ARG, commandsIterator.next());
+        assertEquals("./rakelib", commandsIterator.next());
+    }
+
+    @Test
     public void testAddIfVerbose() throws Exception {
         RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
 

@@ -1,4 +1,6 @@
 [@ww.label labelKey="Ruby" name="ruby"/]
+[@ww.label labelKey="rake.rakefile" name="rakefile"/]
+[@ww.label labelKey="rake.rakelibdir" name="rakelibdir"/]
 [@ww.label labelKey="Targets" name="targets"/]
 [@ww.label labelKey="Bundle Exec" name="bundleexec"/]
 [@ww.label labelKey="Trace" name="trace"/]

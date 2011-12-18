@@ -34,6 +34,8 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 
         config.put("ruby", params.getString("ruby"));
+        config.put("rakefile", params.getString("rakefile"));
+        config.put("rakelibdir", params.getString("rakelibdir"));
         config.put("targets", params.getString("targets"));
         config.put("bundleexec", params.getString("bundleexec"));
 
@@ -49,6 +51,8 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         log.info("populateContextForCreate");
 
         context.put("ruby", "");
+        context.put("rakefile", "");
+        context.put("rakelibdir", "");
         context.put("targets", "");
         context.put("bundleexec", "");
 
@@ -66,6 +70,8 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         log.info("populateContextForEdit");
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
+        context.put("rakefile", taskDefinition.getConfiguration().get("rakefile"));
+        context.put("rakelibdir", taskDefinition.getConfiguration().get("rakelibdir"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
         context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
 
@@ -82,6 +88,8 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         log.info("populateContextForView");
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
+        context.put("rakefile", taskDefinition.getConfiguration().get("rakefile"));
+        context.put("rakelibdir", taskDefinition.getConfiguration().get("rakelibdir"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
         context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
 
