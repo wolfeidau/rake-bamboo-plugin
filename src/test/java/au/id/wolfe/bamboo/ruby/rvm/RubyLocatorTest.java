@@ -48,11 +48,21 @@ public class RubyLocatorTest {
         Map<String, String> envVars = rubyLocator.buildEnv("ruby-1.9.3-p0@default", currentEnvVars);
 
         assertTrue(envVars.containsKey(RvmUtil.MY_RUBY_HOME));
+
         assertTrue(envVars.containsKey(RvmUtil.GEM_HOME));
+        assertEquals(RvmFixtures.GEM_HOME, envVars.get(RvmUtil.GEM_HOME));
+
         assertTrue(envVars.containsKey(RvmUtil.GEM_PATH));
+
         assertTrue(envVars.containsKey(RvmUtil.BUNDLE_HOME));
+        assertEquals(RvmFixtures.BUNDLE_HOME, envVars.get(RvmUtil.BUNDLE_HOME));
+
         assertTrue(envVars.containsKey(RvmUtil.RVM_RUBY_STRING));
+        assertEquals(mriRuby.getRubyName(), envVars.get(RvmUtil.RVM_RUBY_STRING));
+
         assertTrue(envVars.containsKey(RvmUtil.RVM_GEM_SET));
+        assertEquals(mriRuby.getGemSetName(), envVars.get(RvmUtil.RVM_GEM_SET));
+
         assertTrue(envVars.containsKey(RvmUtil.PATH));
 
         assertEquals(RvmFixtures.getMRIRubyRuntimeDefaultBinPath(), envVars.get("PATH"));

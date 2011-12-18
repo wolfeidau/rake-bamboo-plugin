@@ -4,3 +4,4 @@
 *.ipr
 *.iws
 target
+activemq-data

@@ -23,6 +23,7 @@ import java.util.Map;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+import static au.id.wolfe.bamboo.ruby.rake.RakeCommandBuilder.*;
 
 /**
  * Do some basic checking of the rake task.
@@ -58,12 +59,13 @@ public class RakeTaskTest {
 
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
-        // taskContext.getConfigurationMap()
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("targets", DB_MIGRATE_TARGET);
         configurationMap.put("bundleexec", "true");
+        configurationMap.put("verbose", "false");
+        configurationMap.put("trace", "false");
 
         when(taskContext.getConfigurationMap()).thenReturn(configurationMap);
 
@@ -72,8 +74,8 @@ public class RakeTaskTest {
 
         // rubyLocator.getRubyRuntime(rubyRuntimeName);
         when(rubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeTask.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeTask.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
 
         List<String> commandList = rakeTaskTester.buildCommandList(taskContext);
 
@@ -83,7 +85,7 @@ public class RakeTaskTest {
 
         assertEquals(rubyRuntime.getRubyExecutablePath(), commandsIterator.next());
         assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
-        assertEquals(RakeTask.BUNDLE_EXEC_ARG, commandsIterator.next());
+        assertEquals(BUNDLE_EXEC_ARG, commandsIterator.next());
         assertEquals(RvmFixtures.RAKE_PATH, commandsIterator.next());
         assertEquals(DB_MIGRATE_TARGET, commandsIterator.next());
     }

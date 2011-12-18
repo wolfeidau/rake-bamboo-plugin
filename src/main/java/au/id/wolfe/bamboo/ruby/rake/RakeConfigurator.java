@@ -37,6 +37,9 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         config.put("targets", params.getString("targets"));
         config.put("bundleexec", params.getString("bundleexec"));
 
+        config.put("verbose", params.getString("verbose"));
+        config.put("trace", params.getString("trace"));
+
         return config;
     }
 
@@ -48,6 +51,9 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         context.put("ruby", "");
         context.put("targets", "");
         context.put("bundleexec", "");
+
+        context.put("verbose", "");
+        context.put("trace", "");
 
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
@@ -62,6 +68,9 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
         context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
+
+        context.put("verbose", taskDefinition.getConfiguration().get("verbose"));
+        context.put("trace", taskDefinition.getConfiguration().get("trace"));
         context.put(MODE, EDIT_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
     }
@@ -75,6 +84,10 @@ public class RakeConfigurator extends AbstractTaskConfigurator {
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
         context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
+
+        context.put("verbose", taskDefinition.getConfiguration().get("verbose"));
+        context.put("trace", taskDefinition.getConfiguration().get("trace"));
+
     }
 
     @Override

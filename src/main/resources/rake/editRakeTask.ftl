@@ -9,3 +9,12 @@
 [@ww.checkbox labelKey='rake.bundleexec'
                   name='bundleexec'
                   toggle='true' /]
+
+[@ww.checkbox labelKey='rake.trace'
+                  name='trace'
+                  toggle='true' /]
+
+[@ww.checkbox labelKey='rake.verbose'
+                  name='verbose'
+                  toggle='true' /]
+

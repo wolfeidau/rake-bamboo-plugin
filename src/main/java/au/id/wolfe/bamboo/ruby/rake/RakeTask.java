@@ -11,7 +11,6 @@ import com.atlassian.bamboo.process.ProcessService;
 import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.TaskType;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -21,10 +20,6 @@ import java.util.Map;
  * Bamboo task which interfaces with RVM and runs ruby make (rake).
  */
 public class RakeTask extends BaseRubyTask implements TaskType {
-
-    public static final String BUNDLE_COMMAND = "bundle";
-    public static final String RAKE_COMMAND = "rake";
-    public static final String BUNDLE_EXEC_ARG = "exec";
 
     public RakeTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
         super(processService, rvmLocatorService, environmentVariableAccessor);
@@ -42,26 +37,23 @@ public class RakeTask extends BaseRubyTask implements TaskType {
         final String targets = config.get("targets");
         Preconditions.checkArgument(targets != null);
 
-        final String bundleExec = config.get("bundleexec");
+        final String bundleExecFlag = config.get("bundleexec");
+        final String verboseFlag = config.get("verbose");
+        final String traceFlag = config.get("trace");
 
-        List<String> targetList = RvmUtil.splitRakeTargets(targets);
+        final List<String> targetList = RvmUtil.splitRakeTargets(targets);
 
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeName);
 
-        List<String> commandsList = Lists.newLinkedList();
+        return new RakeCommandBuilder(rubyLocator, rubyRuntime)
+                .addRubyExecutable()
+                .addIfBundleExec(bundleExecFlag)
+                .addRakeExecutable()
+                .addIfVerbose(verboseFlag)
+                .addIfTrace(traceFlag)
+                .addTargets(targetList)
+                .build();
 
-        commandsList.add(rubyRuntime.getRubyExecutablePath());
-
-        if (bundleExec == null || bundleExec.equals("false")) {
-            commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, RAKE_COMMAND));
-        } else {
-            commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, BUNDLE_COMMAND));
-            commandsList.add(BUNDLE_EXEC_ARG);
-            commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeName, RAKE_COMMAND));
-        }
-        commandsList.addAll(targetList);
-
-        return commandsList;
     }
 
     @Override
