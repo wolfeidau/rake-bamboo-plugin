@@ -47,12 +47,14 @@ public class BundlerTaskTest {
     @Mock
     RvmInstallation rvmInstallation;
 
-    BundlerTaskTester bundlerTaskTester;
+    BundlerTask bundlerTaskTester = new BundlerTask();
 
     @Before
     public void setUp() throws Exception {
 
-        bundlerTaskTester = new BundlerTaskTester(processService, rvmLocatorService, environmentVariableAccessor);
+        bundlerTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
+        bundlerTaskTester.setProcessService(processService);
+        bundlerTaskTester.setRvmLocatorService(rvmLocatorService);
 
     }
 
@@ -115,14 +117,5 @@ public class BundlerTaskTest {
         assertTrue(envVars.size() == 0);
 
     }
-
-    class BundlerTaskTester extends BundlerTask {
-
-        public BundlerTaskTester(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
-            super(processService, rvmLocatorService, environmentVariableAccessor);
-        }
-
-    }
-
 
 }

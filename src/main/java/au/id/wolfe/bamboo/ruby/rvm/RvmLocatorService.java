@@ -42,10 +42,12 @@ public class RvmLocatorService {
 
         final String userRvmInstallPath = systemHelper.getUserHome() + File.separator + Constants.LOCAL_RVM_HOME_FOLDER_NAME;
 
+        // Is rvm is installed in the users home directory
         if (fileSystemHelper.pathExists(userRvmInstallPath)) {
             return checkRvmInstallation(userRvmInstallPath, RvmInstallation.Type.USER);
         }
 
+        // Is rvm is installed in one of the system paths
         for (String rvmSystemPath : KNOWN_RVM_HOME_PATHS) {
             if (fileSystemHelper.pathExists(rvmSystemPath)) {
                 return checkRvmInstallation(rvmSystemPath, RvmInstallation.Type.SYSTEM);

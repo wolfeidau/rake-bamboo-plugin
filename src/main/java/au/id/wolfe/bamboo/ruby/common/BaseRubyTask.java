@@ -27,15 +27,11 @@ public abstract class BaseRubyTask {
 
     protected final Logger log = LoggerFactory.getLogger(BaseRubyTask.class);
 
-    protected final ProcessService processService;
-    protected final RvmLocatorService rvmLocatorService;
-    protected final EnvironmentVariableAccessor environmentVariableAccessor;
+    protected ProcessService processService;
+    protected RvmLocatorService rvmLocatorService;
+    protected EnvironmentVariableAccessor environmentVariableAccessor;
 
-    public BaseRubyTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
-
-        this.processService = processService;
-        this.rvmLocatorService = rvmLocatorService;
-        this.environmentVariableAccessor = environmentVariableAccessor;
+    public BaseRubyTask() {
 
     }
 
@@ -67,5 +63,16 @@ public abstract class BaseRubyTask {
         return rvmLocatorService.getRvmRubyLocator();
     }
 
+    public void setProcessService(ProcessService processService) {
+        this.processService = processService;
+    }
+
+    public void setRvmLocatorService(RvmLocatorService rvmLocatorService) {
+        this.rvmLocatorService = rvmLocatorService;
+    }
+
+    public void setEnvironmentVariableAccessor(EnvironmentVariableAccessor environmentVariableAccessor) {
+        this.environmentVariableAccessor = environmentVariableAccessor;
+    }
 }
 

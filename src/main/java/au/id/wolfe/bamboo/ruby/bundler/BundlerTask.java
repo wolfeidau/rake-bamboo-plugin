@@ -24,10 +24,6 @@ public class BundlerTask extends BaseRubyTask implements TaskType {
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String BUNDLE_INSTALL_ARG = "install";
 
-    public BundlerTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
-        super(processService, rvmLocatorService, environmentVariableAccessor);
-    }
-
     @Override
     protected List<String> buildCommandList(@NotNull TaskContext taskContext) {
 

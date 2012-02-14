@@ -21,10 +21,6 @@ import java.util.Map;
  */
 public class RakeTask extends BaseRubyTask implements TaskType {
 
-    public RakeTask(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
-        super(processService, rvmLocatorService, environmentVariableAccessor);
-    }
-
     @Override
     protected List<String> buildCommandList(@NotNull TaskContext taskContext) {
 

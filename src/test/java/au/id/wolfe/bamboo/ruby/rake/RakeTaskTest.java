@@ -47,11 +47,15 @@ public class RakeTaskTest {
     @Mock
     RubyLocator rubyLocator;
 
-    RakeTaskTester rakeTaskTester;
+    RakeTask rakeTaskTester = new RakeTask();
 
     @Before
     public void setUp() throws Exception {
-        rakeTaskTester = new RakeTaskTester(processService, rvmLocatorService, environmentVariableAccessor);
+
+        rakeTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
+        rakeTaskTester.setProcessService(processService);
+        rakeTaskTester.setRvmLocatorService(rvmLocatorService);
+
     }
 
     @Test
@@ -111,14 +115,6 @@ public class RakeTaskTest {
         Map<String, String> envVars = rakeTaskTester.buildEnvironment(taskContext);
 
         assertTrue(envVars.size() == 0);
-
-    }
-
-    class RakeTaskTester extends RakeTask {
-
-        public RakeTaskTester(ProcessService processService, RvmLocatorService rvmLocatorService, EnvironmentVariableAccessor environmentVariableAccessor) {
-            super(processService, rvmLocatorService, environmentVariableAccessor);
-        }
 
     }
 
