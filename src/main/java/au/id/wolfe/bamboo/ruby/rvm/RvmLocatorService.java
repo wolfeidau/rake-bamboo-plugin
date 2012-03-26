@@ -1,7 +1,7 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.rvm.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.rvm.util.SystemHelper;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
+import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import org.apache.commons.lang.SystemUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,6 +11,8 @@ import java.io.File;
  * RVM Utility methods, these are entirely  as there is only one filesystem involved.
  */
 public class RvmLocatorService {
+    
+    public static final String MANAGER_LABEL = "RVM";
 
     public static final String[] KNOWN_RVM_HOME_PATHS = new String[]{"/usr/local/rvm", "/opt/local/rvm"};
 
@@ -85,6 +87,15 @@ public class RvmLocatorService {
 
         // no rvm installed so not able to supply a ruby locator
         throw new PathNotFoundException("Unable to locate RVM installation.");
+    }
+
+
+    /**
+     * Check if rvm is installed.
+     * @return boolean, true indicates rvm is installed.
+     */
+    public boolean isRvmInstalled() {
+        return locateRvmInstallation() != null;
     }
 
     public interface Constants {

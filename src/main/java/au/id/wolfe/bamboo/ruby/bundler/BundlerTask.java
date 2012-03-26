@@ -25,17 +25,13 @@ public class BundlerTask extends BaseRubyTask implements TaskType {
     public static final String BUNDLE_INSTALL_ARG = "install";
 
     @Override
-    protected List<String> buildCommandList(@NotNull TaskContext taskContext) {
+    protected List<String> buildCommandList(String rubyRuntimeName, ConfigurationMap config) {
 
         if(rvmLocatorService.locateRvmInstallation() != null && rvmLocatorService.locateRvmInstallation().isSystemInstall()){
             throw new IllegalArgumentException("Can't use bundle install task with a system installation of RVM.");
         }
 
-        final ConfigurationMap config = taskContext.getConfigurationMap();
         final RubyLocator rubyLocator = getRubyLocator();
-
-        final String rubyRuntimeName = config.get("ruby");
-        Preconditions.checkArgument(rubyRuntimeName != null);
 
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeName);
 
@@ -50,11 +46,10 @@ public class BundlerTask extends BaseRubyTask implements TaskType {
     }
 
     @Override
-    protected Map<String, String> buildEnvironment(@NotNull TaskContext taskContext) {
+    protected Map<String, String> buildEnvironment(String rubyRuntimeName, ConfigurationMap config) {
 
-        final ConfigurationMap config = taskContext.getConfigurationMap();
+        log.info("Using runtime {}", rubyRuntimeName);
 
-        String rubyRuntimeName = config.get("ruby");
         Preconditions.checkArgument(rubyRuntimeName != null);
 
         Map<String, String> currentEnvVars = environmentVariableAccessor.getEnvironment();

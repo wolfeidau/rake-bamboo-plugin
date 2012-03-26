@@ -42,9 +42,6 @@ public class RakeTaskTest {
     EnvironmentVariableAccessor environmentVariableAccessor;
 
     @Mock
-    TaskContext taskContext;
-
-    @Mock
     RubyLocator rubyLocator;
 
     RakeTask rakeTaskTester = new RakeTask();
@@ -71,17 +68,13 @@ public class RakeTaskTest {
         configurationMap.put("verbose", "false");
         configurationMap.put("trace", "false");
 
-        when(taskContext.getConfigurationMap()).thenReturn(configurationMap);
-
-        // rvmLocatorService.getRvmRubyLocator();
         when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
 
-        // rubyLocator.getRubyRuntime(rubyRuntimeName);
         when(rubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
         when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
         when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
 
-        List<String> commandList = rakeTaskTester.buildCommandList(taskContext);
+        List<String> commandList = rakeTaskTester.buildCommandList(rubyRuntime.getRubyRuntimeName(), configurationMap);
 
         assertEquals(5, commandList.size());
 
@@ -99,20 +92,15 @@ public class RakeTaskTest {
     public void testBuildEnvironment() {
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
-        // taskContext.getConfigurationMap()
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
-        when(taskContext.getConfigurationMap()).thenReturn(configurationMap);
-
-        // rvmLocatorService.getRvmRubyLocator();
         when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
 
-        // getRubyLocator().buildEnv(rubyRuntimeName, currentEnvVars);
         when(rubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        Map<String, String> envVars = rakeTaskTester.buildEnvironment(taskContext);
+        Map<String, String> envVars = rakeTaskTester.buildEnvironment(rubyRuntime.getRubyRuntimeName(), configurationMap);
 
         assertTrue(envVars.size() == 0);
 

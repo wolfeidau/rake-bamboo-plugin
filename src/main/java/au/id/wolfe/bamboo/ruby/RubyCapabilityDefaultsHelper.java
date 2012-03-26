@@ -7,6 +7,7 @@ import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
+import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,14 +37,22 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
     @Override
     public CapabilitySet addDefaultCapabilities(@NotNull CapabilitySet capabilitySet) {
 
-        List<RubyRuntime> rubyRuntimeList = rvmLocatorService.getRvmRubyLocator().listRubyRuntimes();
+        if (rvmLocatorService.isRvmInstalled()) {
 
-        for (RubyRuntime rubyRuntime : rubyRuntimeList) {
-            Capability capability = new CapabilityImpl(RakeTask.RUBY_CAPABILITY_PREFIX + "." + rubyRuntime.getRubyRuntimeName(), rubyRuntime.getRubyExecutablePath());
-            log.info("Adding " + capability);
-            capabilitySet.addCapability(capability);
+            List<RubyRuntime> rvmRubyRuntimeList = rvmLocatorService.getRvmRubyLocator().listRubyRuntimes();
+
+            for (RubyRuntime rubyRuntime : rvmRubyRuntimeList) {
+                final String capabilityLabel = buildCapabilityLabel(RakeTask.RUBY_CAPABILITY_PREFIX, RvmLocatorService.MANAGER_LABEL, rubyRuntime.getRubyRuntimeName());
+                Capability capability = new CapabilityImpl(capabilityLabel, rubyRuntime.getRubyExecutablePath());
+                log.info("Adding " + capability);
+                capabilitySet.addCapability(capability);
+            }
+
         }
-
         return capabilitySet;
+    }
+    
+    private String buildCapabilityLabel(String prefix, String runtimeManager, String rubyRuntimeName){
+        return String.format("%s.%s %s", prefix, runtimeManager, rubyRuntimeName);
     }
 }

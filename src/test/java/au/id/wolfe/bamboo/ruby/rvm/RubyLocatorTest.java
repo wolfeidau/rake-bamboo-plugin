@@ -1,7 +1,7 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.util.FileSystemHelper;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Before;

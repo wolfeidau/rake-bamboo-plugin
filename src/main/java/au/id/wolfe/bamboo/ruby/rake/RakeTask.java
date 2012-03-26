@@ -22,13 +22,9 @@ import java.util.Map;
 public class RakeTask extends BaseRubyTask implements TaskType {
 
     @Override
-    protected List<String> buildCommandList(@NotNull TaskContext taskContext) {
+    protected List<String> buildCommandList(String rubyRuntimeName, ConfigurationMap config) {
 
-        final ConfigurationMap config = taskContext.getConfigurationMap();
         final RubyLocator rubyLocator = getRubyLocator();
-
-        final String rubyRuntimeName = config.get("ruby");
-        Preconditions.checkArgument(rubyRuntimeName != null);
 
         final String rakefile = config.get("rakefile");
         final String rakelibdir = config.get("rakelibdir");
@@ -58,16 +54,16 @@ public class RakeTask extends BaseRubyTask implements TaskType {
     }
 
     @Override
-    protected Map<String, String> buildEnvironment(@NotNull TaskContext taskContext) {
+    protected Map<String, String> buildEnvironment(String rubyRuntimeName, ConfigurationMap config) {
 
-        final ConfigurationMap config = taskContext.getConfigurationMap();
+        log.info("Using runtime {}", rubyRuntimeName);
 
-        String rubyRuntimeName = config.get("ruby");
         Preconditions.checkArgument(rubyRuntimeName != null);
 
         Map<String, String> currentEnvVars = environmentVariableAccessor.getEnvironment();
 
         return getRubyLocator().buildEnv(rubyRuntimeName, currentEnvVars);
     }
+
 
 }

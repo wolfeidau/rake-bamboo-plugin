@@ -1,7 +1,7 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.rvm.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.rvm.util.SystemHelper;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
+import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.rvm.util;
+package au.id.wolfe.bamboo.ruby.util;
 
 /**
  * Delegate which performs all system related look ups and checks.

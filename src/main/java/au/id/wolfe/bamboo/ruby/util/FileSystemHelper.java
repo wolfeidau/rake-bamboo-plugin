@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.rvm.util;
+package au.id.wolfe.bamboo.ruby.util;
 
 import au.id.wolfe.bamboo.ruby.rvm.PathNotFoundException;
 import com.google.common.base.Preconditions;
