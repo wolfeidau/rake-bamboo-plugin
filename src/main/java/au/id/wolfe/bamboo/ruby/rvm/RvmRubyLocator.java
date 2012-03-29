@@ -1,12 +1,12 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
+import au.id.wolfe.bamboo.ruby.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.List;
@@ -15,13 +15,12 @@ import java.util.Map;
 /**
  * This class locates ruby installations within an Rvm Installation.
  */
-public class RubyLocator {
+public class RvmRubyLocator implements RubyLocator {
 
-    public static final String RUBY_GEMSET_REGEX = "[\\w\\d\\.\\-_]+@[\\w\\d\\.\\-_]+";
     final FileSystemHelper fileSystemHelper;
     final RvmInstallation rvmInstallation;
 
-    public RubyLocator(FileSystemHelper fileSystemHelper, RvmInstallation rvmInstallation) {
+    public RvmRubyLocator(FileSystemHelper fileSystemHelper, RvmInstallation rvmInstallation) {
         this.fileSystemHelper = fileSystemHelper;
         this.rvmInstallation = rvmInstallation;
     }
@@ -33,6 +32,7 @@ public class RubyLocator {
      * @param rubyRuntimeName The name of the ruby runtime.
      * @return Map of environment variables.
      */
+    @Override
     public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
@@ -66,7 +66,7 @@ public class RubyLocator {
      * @return The full path of the executable.
      * @throws IllegalArgumentException If the command cannot be located in the gem path.
      */
-    @Nullable
+    @Override
     public String searchForRubyExecutable(String rubyRuntimeName, String name) {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
@@ -97,6 +97,7 @@ public class RubyLocator {
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
      * @throws PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
      */
+    @Override
     public RubyRuntime getRubyRuntime(final String rubyName, final String gemSetName) {
 
         final String rubyExecutableName = RvmUtil.buildRubyExecutablePath(rvmInstallation.getRubiesPath(), rubyName);
@@ -120,6 +121,7 @@ public class RubyLocator {
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
      * @throws PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
      */
+    @Override
     public RubyRuntime getRubyRuntime(String rubyRuntimeName) {
 
         Pair<String, String> rubyRuntimeTokens = RvmUtil.parseRubyRuntimeName(rubyRuntimeName);
@@ -135,6 +137,7 @@ public class RubyLocator {
      *
      * @return List of ruby run times and gem sets.
      */
+    @Override
     public List<RubyRuntime> listRubyRuntimes() {
 
         List<RubyRuntime> rubyRuntimeList = Lists.newArrayList();
@@ -146,7 +149,7 @@ public class RubyLocator {
             // locate each ruby to gem set combination
             for (String gemSetDirectoryName : gemSetList) {
                 if (gemSetDirectoryName.startsWith(rubyName) && !gemSetDirectoryName.endsWith(RvmUtil.GLOBAL_GEMSET_NAME)) {
-                    if (rubyName.equals(gemSetDirectoryName)){
+                    if (rubyName.equals(gemSetDirectoryName)) {
                         rubyRuntimeList.add(getRubyRuntime(rubyName, "default"));
                     } else {
                         Pair<String, String> rubyRuntimeTokens = RvmUtil.parseRubyRuntimeName(gemSetDirectoryName);
@@ -165,6 +168,7 @@ public class RubyLocator {
      * @param rubyNamePattern will be checked against the rubies installed using String#startsWith
      * @return true if it is installed, otherwise false.
      */
+    @Override
     public boolean hasRuby(String rubyNamePattern) {
 
         List<String> rubiesList = fileSystemHelper.listPathDirNames(rvmInstallation.getRubiesPath());
@@ -178,4 +182,8 @@ public class RubyLocator {
         return false;
     }
 
+    @Override
+    public boolean readOnly() {
+        return rvmInstallation.isSystemInstall();
+    }
 }

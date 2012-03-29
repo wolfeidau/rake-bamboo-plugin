@@ -26,11 +26,11 @@ public class RubyLocatorTest {
     @Mock
     FileSystemHelper fileSystemHelper;
 
-    RubyLocator rubyLocator;
+    RvmRubyLocator rvmRubyLocator;
 
     @Before
     public void setUp() throws Exception {
-        rubyLocator = new RubyLocator(fileSystemHelper, RvmFixtures.getUserRvmInstallation());
+        rvmRubyLocator = new RvmRubyLocator(fileSystemHelper, RvmFixtures.getUserRvmInstallation());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class RubyLocatorTest {
 
         currentEnvVars.put("PATH", RvmFixtures.TEST_CURRENT_PATH);
 
-        Map<String, String> envVars = rubyLocator.buildEnv("ruby-1.9.3-p0@default", currentEnvVars);
+        Map<String, String> envVars = rvmRubyLocator.buildEnv("ruby-1.9.3-p0@default", currentEnvVars);
 
         assertTrue(envVars.containsKey(RvmUtil.MY_RUBY_HOME));
 
@@ -88,7 +88,7 @@ public class RubyLocatorTest {
 
         RubyRuntime rubyRuntime;
 
-        rubyRuntime = rubyLocator.getRubyRuntime("ruby-1.9.3-p0@default");
+        rubyRuntime = rvmRubyLocator.getRubyRuntime("ruby-1.9.3-p0@default");
 
         assertEquals(mriRuby, rubyRuntime);
 
@@ -97,7 +97,7 @@ public class RubyLocatorTest {
         when(fileSystemHelper.pathExists(jRuby.getRubyExecutablePath())).thenReturn(true);
         when(fileSystemHelper.pathExists(jRuby.getGemPath())).thenReturn(true);
 
-        rubyRuntime = rubyLocator.getRubyRuntime("jruby-1.6.5@default");
+        rubyRuntime = rvmRubyLocator.getRubyRuntime("jruby-1.6.5@default");
 
         assertEquals(jRuby, rubyRuntime);
     }
@@ -130,7 +130,7 @@ public class RubyLocatorTest {
         when(fileSystemHelper.pathExists(jRuby.getRubyExecutablePath())).thenReturn(true);
         when(fileSystemHelper.pathExists(jRuby.getGemPath())).thenReturn(true);
 
-        List<RubyRuntime> rubyRuntimeList = rubyLocator.listRubyRuntimes();
+        List<RubyRuntime> rubyRuntimeList = rvmRubyLocator.listRubyRuntimes();
 
         final RubyRuntime mriRubyRails31 = RvmFixtures.getMRIRubyRuntimeRails31GemSet();
 
@@ -154,7 +154,7 @@ public class RubyLocatorTest {
         when(fileSystemHelper.pathExists(mriRuby.getGemPath())).thenReturn(true);
         when(fileSystemHelper.executableFileExists(mriRuby.getGemPath() + "/bin/rake")).thenReturn(true);
 
-        String executablePath = rubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
+        String executablePath = rvmRubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
 
         assertEquals(mriRuby.getGemPath() + "/bin/rake", executablePath);
 
@@ -170,7 +170,7 @@ public class RubyLocatorTest {
         when(fileSystemHelper.pathExists(mriRuby.getGemPath())).thenReturn(true);
         when(fileSystemHelper.executableFileExists(mriRuby.getGemPath() + "/bin/rake")).thenReturn(false);
 
-        rubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
+        rvmRubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
     }
 
 
@@ -183,8 +183,8 @@ public class RubyLocatorTest {
                         "ruby-1.9.3-p0")
         );
 
-        assertTrue(rubyLocator.hasRuby("ruby-1.9.3-p0"));
-        assertTrue(rubyLocator.hasRuby("jruby-1.6.5"));
-        assertFalse(rubyLocator.hasRuby("ruby-1.9.2-p0"));
+        assertTrue(rvmRubyLocator.hasRuby("ruby-1.9.3-p0"));
+        assertTrue(rvmRubyLocator.hasRuby("jruby-1.6.5"));
+        assertFalse(rvmRubyLocator.hasRuby("ruby-1.9.2-p0"));
     }
 }

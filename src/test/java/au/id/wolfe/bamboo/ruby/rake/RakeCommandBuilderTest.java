@@ -1,7 +1,7 @@
 package au.id.wolfe.bamboo.ruby.rake;
 
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,21 +21,21 @@ import static org.mockito.Mockito.when;
 public class RakeCommandBuilderTest {
 
     @Mock
-    RubyLocator rubyLocator;
+    RvmRubyLocator rvmRubyLocator;
 
     final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
     @Before
     public void setUp() throws Exception {
 
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
     }
 
     @Test
     public void testAddRubyExecutable() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addRubyExecutable();
 
@@ -49,7 +49,7 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfRakefile() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfRakeFile(null);
         assertEquals(0, rakeCommandBuilder.build().size());
@@ -66,7 +66,7 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfRakeLibDir() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfRakeLibDir(null);
         assertEquals(0, rakeCommandBuilder.build().size());
@@ -83,7 +83,7 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfVerbose() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfVerbose(null);
         assertEquals(0, rakeCommandBuilder.build().size());
@@ -102,7 +102,7 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfTrace() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rubyLocator, rubyRuntime);
+        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfTrace(null);
         assertEquals(0, rakeCommandBuilder.build().size());

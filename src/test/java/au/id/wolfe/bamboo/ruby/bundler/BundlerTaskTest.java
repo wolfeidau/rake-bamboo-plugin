@@ -1,7 +1,9 @@
 package au.id.wolfe.bamboo.ruby.bundler;
 
+import au.id.wolfe.bamboo.ruby.common.RubyLabel;
+import au.id.wolfe.bamboo.ruby.common.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.rvm.RvmInstallation;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
@@ -9,7 +11,6 @@ import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
-import com.atlassian.bamboo.task.TaskContext;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
@@ -33,16 +35,13 @@ public class BundlerTaskTest {
     ProcessService processService;
 
     @Mock
-    RvmLocatorService rvmLocatorService;
+    RubyLocatorServiceFactory rubyLocatorServiceFactory;
 
     @Mock
     EnvironmentVariableAccessor environmentVariableAccessor;
 
     @Mock
-    RubyLocator rubyLocator;
-
-    @Mock
-    RvmInstallation rvmInstallation;
+    RvmRubyLocator rvmRubyLocator;
 
     BundlerTask bundlerTaskTester = new BundlerTask();
 
@@ -51,25 +50,28 @@ public class BundlerTaskTest {
 
         bundlerTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
         bundlerTaskTester.setProcessService(processService);
-        bundlerTaskTester.setRvmLocatorService(rvmLocatorService);
 
+        //rubyLocatorServiceFactory.setRvmLocatorService(rvmLocatorService);
+        bundlerTaskTester.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        
     }
 
     @Test
     public void testBuildCommandList() {
 
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
-        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
+        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
-        when(rubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerTask.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerTask.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
-        List<String> commandList = bundlerTaskTester.buildCommandList(rubyRuntime.getRubyRuntimeName(), configurationMap);
+        List<String> commandList = bundlerTaskTester.buildCommandList(rubyLabel, configurationMap);
 
         assertTrue(commandList.size() == 3);
 
@@ -82,30 +84,32 @@ public class BundlerTaskTest {
     public void testBuildCommandListWhenRvmInstallationIsTypeSystem() {
 
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
-        when(rvmLocatorService.locateRvmInstallation()).thenReturn(rvmInstallation);
-        when(rvmInstallation.isSystemInstall()).thenReturn(true);
+        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
+        when(rvmRubyLocator.readOnly()).thenReturn(true);
 
-        bundlerTaskTester.buildCommandList(rubyRuntime.getRubyRuntimeName(), configurationMap);
+        bundlerTaskTester.buildCommandList(rubyLabel, configurationMap);
     }
 
     @Test
     public void testBuildEnvironment() {
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
-        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
+        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
-        when(rubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
+        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        Map<String, String> envVars = bundlerTaskTester.buildEnvironment(rubyRuntime.getRubyRuntimeName(), configurationMap);
+        Map<String, String> envVars = bundlerTaskTester.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
 

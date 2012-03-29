@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
+import au.id.wolfe.bamboo.ruby.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import org.junit.Before;
@@ -81,9 +82,9 @@ public class RvmLocatorServiceTest {
 
         primeMockWithRvmInstallation(userRvm);
 
-        RubyLocator rubyLocator = rvmLocatorService.getRvmRubyLocator();
+        RubyLocator rvmRubyLocator = rvmLocatorService.getRvmRubyLocator();
 
-        assertNotNull(rubyLocator);
+        assertNotNull(rvmRubyLocator);
 
     }
 

@@ -1,6 +1,7 @@
 package au.id.wolfe.bamboo.ruby.rake;
 
-import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
+import au.id.wolfe.bamboo.ruby.RubyLocator;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
@@ -25,13 +26,13 @@ public class RakeCommandBuilder {
     public static final String VERBOSE_ARG = "--verbose";
     public static final String TRACE_ARG = "--trace";
 
-    private RubyLocator rubyLocator;
+    private RubyLocator rvmRubyLocator;
     private RubyRuntime rubyRuntime;
 
     private List<String> commandList = Lists.newLinkedList();
 
-    public RakeCommandBuilder(RubyLocator rubyLocator, RubyRuntime rubyRuntime) {
-        this.rubyLocator = rubyLocator;
+    public RakeCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime) {
+        this.rvmRubyLocator = rvmRubyLocator;
         this.rubyRuntime = rubyRuntime;
     }
 
@@ -53,7 +54,7 @@ public class RakeCommandBuilder {
      */
     public RakeCommandBuilder addIfBundleExec(@Nullable String bundleFlag) {
         if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
+            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
         }
         return this;
@@ -65,7 +66,7 @@ public class RakeCommandBuilder {
      * @return Rake command builder.
      */
     public RakeCommandBuilder addRakeExecutable() {
-        commandList.add(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
+        commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
         return this;
     }
 

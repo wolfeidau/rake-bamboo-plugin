@@ -1,12 +1,11 @@
 package au.id.wolfe.bamboo.ruby;
 
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
-import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +30,7 @@ public class RubyCapabilityDefaultsHelperTest {
     RvmLocatorService rvmLocatorService;
 
     @Mock
-    RubyLocator rubyLocator;
+    RvmRubyLocator rvmRubyLocator;
 
     @Mock
     CapabilitySet capabilitySet;
@@ -57,9 +56,9 @@ public class RubyCapabilityDefaultsHelperTest {
         final RubyRuntime rubyRuntimeMRI = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
         final RubyRuntime rubyRuntimeJRuby = RvmFixtures.getJRubyRuntimeDefaultGemSet();
 
-        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
+        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rvmRubyLocator);
         when(rvmLocatorService.isRvmInstalled()).thenReturn(true);
-        when(rubyLocator.listRubyRuntimes()).thenReturn(asList(rubyRuntimeMRI, rubyRuntimeJRuby));
+        when(rvmRubyLocator.listRubyRuntimes()).thenReturn(asList(rubyRuntimeMRI, rubyRuntimeJRuby));
 
         rubyCapabilityDefaultsHelper.addDefaultCapabilities(capabilitySet);
 

@@ -1,14 +1,15 @@
 package au.id.wolfe.bamboo.ruby.rake;
 
+import au.id.wolfe.bamboo.ruby.common.RubyLabel;
+import au.id.wolfe.bamboo.ruby.common.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RubyLocator;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
-import com.atlassian.bamboo.task.TaskContext;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static au.id.wolfe.bamboo.ruby.rake.RakeCommandBuilder.*;
 
@@ -36,13 +38,16 @@ public class RakeTaskTest {
     ProcessService processService;
 
     @Mock
+    RubyLocatorServiceFactory rubyLocatorServiceFactory;
+
+    @Mock
     RvmLocatorService rvmLocatorService;
 
     @Mock
     EnvironmentVariableAccessor environmentVariableAccessor;
 
     @Mock
-    RubyLocator rubyLocator;
+    RvmRubyLocator rvmRubyLocator;
 
     RakeTask rakeTaskTester = new RakeTask();
 
@@ -51,7 +56,9 @@ public class RakeTaskTest {
 
         rakeTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
         rakeTaskTester.setProcessService(processService);
-        rakeTaskTester.setRvmLocatorService(rvmLocatorService);
+
+        rubyLocatorServiceFactory.setRvmLocatorService(rvmLocatorService);
+        rakeTaskTester.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
 
     }
 
@@ -59,6 +66,8 @@ public class RakeTaskTest {
     public void testBuildCommandList() {
 
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+
+        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
@@ -68,13 +77,13 @@ public class RakeTaskTest {
         configurationMap.put("verbose", "false");
         configurationMap.put("trace", "false");
 
-        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
+        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
-        when(rubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
 
-        List<String> commandList = rakeTaskTester.buildCommandList(rubyRuntime.getRubyRuntimeName(), configurationMap);
+        List<String> commandList = rakeTaskTester.buildCommandList(rubyLabel, configurationMap);
 
         assertEquals(5, commandList.size());
 
@@ -90,17 +99,19 @@ public class RakeTaskTest {
 
     @Test
     public void testBuildEnvironment() {
+
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
         ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
-        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rubyLocator);
+        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
-        when(rubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
+        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        Map<String, String> envVars = rakeTaskTester.buildEnvironment(rubyRuntime.getRubyRuntimeName(), configurationMap);
+        Map<String, String> envVars = rakeTaskTester.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
 

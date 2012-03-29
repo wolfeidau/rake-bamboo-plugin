@@ -8,6 +8,9 @@
     <component key="rvmLocatorService" name="RVM Locator Service"
         class="au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService" />
 
+    <component key="rubyLocatorServiceFactory" name="Ruby Locator Service Factory"
+               class="au.id.wolfe.bamboo.ruby.common.RubyLocatorServiceFactory" />
+
     <!-- internationalize your plugin -->
     <resource type="i18n" name="au.id.wolfe.bamboo language" location="english"/>
 
