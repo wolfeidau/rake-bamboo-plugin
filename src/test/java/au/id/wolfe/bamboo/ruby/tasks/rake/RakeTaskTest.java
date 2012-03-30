@@ -1,10 +1,10 @@
-package au.id.wolfe.bamboo.ruby.rake;
+package au.id.wolfe.bamboo.ruby.tasks.rake;
 
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
-import au.id.wolfe.bamboo.ruby.common.RubyLocatorServiceFactory;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
@@ -25,7 +25,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
-import static au.id.wolfe.bamboo.ruby.rake.RakeCommandBuilder.*;
+import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.*;
 
 /**
  * Do some basic checking of the rake task.

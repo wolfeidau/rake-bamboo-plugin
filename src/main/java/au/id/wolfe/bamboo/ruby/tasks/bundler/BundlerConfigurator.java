@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.bundler;
+package au.id.wolfe.bamboo.ruby.tasks.bundler;
 
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;

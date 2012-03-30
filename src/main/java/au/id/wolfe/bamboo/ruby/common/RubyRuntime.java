@@ -1,5 +1,6 @@
-package au.id.wolfe.bamboo.ruby.rvm;
+package au.id.wolfe.bamboo.ruby.common;
 
+import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 

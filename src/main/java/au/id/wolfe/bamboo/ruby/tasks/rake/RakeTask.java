@@ -1,10 +1,9 @@
-package au.id.wolfe.bamboo.ruby.rake;
+package au.id.wolfe.bamboo.ruby.tasks.rake;
 
-import au.id.wolfe.bamboo.ruby.RubyLocator;
-import au.id.wolfe.bamboo.ruby.common.BaseRubyTask;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.tasks.BaseRubyTask;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskType;

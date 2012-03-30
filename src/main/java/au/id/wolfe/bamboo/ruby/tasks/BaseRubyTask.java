@@ -1,8 +1,8 @@
-package au.id.wolfe.bamboo.ruby.common;
+package au.id.wolfe.bamboo.ruby.tasks;
 
-import au.id.wolfe.bamboo.ruby.RubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
+import au.id.wolfe.bamboo.ruby.common.RubyLabel;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;

@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.Lists;

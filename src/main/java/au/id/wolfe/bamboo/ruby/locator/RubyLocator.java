@@ -1,6 +1,6 @@
-package au.id.wolfe.bamboo.ruby;
+package au.id.wolfe.bamboo.ruby.locator;
 
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

@@ -9,15 +9,15 @@
         class="au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService" />
 
     <component key="rubyLocatorServiceFactory" name="Ruby Locator Service Factory"
-               class="au.id.wolfe.bamboo.ruby.common.RubyLocatorServiceFactory" />
+               class="au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory" />
 
     <!-- internationalize your plugin -->
     <resource type="i18n" name="au.id.wolfe.bamboo language" location="english"/>
 
-    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.rake.RakeTask" key="task.builder.rake">
+    <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.tasks.rake.RakeTask" key="task.builder.rake">
 
         <!--This binds to the ui for create and edit and saves settings -->
-        <configuration class="au.id.wolfe.bamboo.ruby.rake.RakeConfigurator"/>
+        <configuration class="au.id.wolfe.bamboo.ruby.tasks.rake.RakeConfigurator"/>
 
         <!--This detects the ruby installations on the system -->
         <capabilityDefaultsHelper class="au.id.wolfe.bamboo.ruby.RubyCapabilityDefaultsHelper"/>
@@ -35,10 +35,10 @@
 
     </taskType>
 
-    <taskType name="Bundler" class="au.id.wolfe.bamboo.ruby.bundler.BundlerTask" key="task.builder.bundler">
+    <taskType name="Bundler" class="au.id.wolfe.bamboo.ruby.tasks.bundler.BundlerTask" key="task.builder.bundler">
 
         <!--This binds to the ui for create and edit and saves settings -->
-        <configuration class="au.id.wolfe.bamboo.ruby.bundler.BundlerConfigurator"/>
+        <configuration class="au.id.wolfe.bamboo.ruby.tasks.bundler.BundlerConfigurator"/>
 
         <category name="builder"/>
 

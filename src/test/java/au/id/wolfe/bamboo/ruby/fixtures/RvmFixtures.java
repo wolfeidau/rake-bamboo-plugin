@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.fixtures;
 
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.rvm.RvmInstallation;
 
 import java.io.File;

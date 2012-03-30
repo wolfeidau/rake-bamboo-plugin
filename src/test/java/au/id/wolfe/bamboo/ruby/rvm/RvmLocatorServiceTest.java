@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.RubyLocator;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import org.junit.Before;

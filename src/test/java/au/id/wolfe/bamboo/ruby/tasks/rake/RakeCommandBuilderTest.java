@@ -1,8 +1,8 @@
-package au.id.wolfe.bamboo.ruby.rake;
+package au.id.wolfe.bamboo.ruby.tasks.rake;
 
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

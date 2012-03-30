@@ -1,8 +1,7 @@
-package au.id.wolfe.bamboo.ruby.rake;
+package au.id.wolfe.bamboo.ruby.tasks.rake;
 
-import au.id.wolfe.bamboo.ruby.RubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;

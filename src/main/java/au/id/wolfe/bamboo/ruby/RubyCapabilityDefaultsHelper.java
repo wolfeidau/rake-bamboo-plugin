@@ -1,14 +1,13 @@
 package au.id.wolfe.bamboo.ruby;
 
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
-import au.id.wolfe.bamboo.ruby.rake.RakeTask;
-import au.id.wolfe.bamboo.ruby.rvm.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.tasks.rake.RakeTask;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
-import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
