@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.util;
 
-import au.id.wolfe.bamboo.ruby.rvm.PathNotFoundException;
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import com.google.common.base.Preconditions;
 
 import java.io.File;
@@ -39,7 +39,7 @@ public class FileSystemHelper {
      *
      * @param path    The filesystem path to check.
      * @param message The basis for the message returned if there is an error.
-     * @throws au.id.wolfe.bamboo.ruby.rvm.PathNotFoundException
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException
      *          is thrown when the path supplied doesn't exist.
      */
     public void assertPathExists(String path, String message) {

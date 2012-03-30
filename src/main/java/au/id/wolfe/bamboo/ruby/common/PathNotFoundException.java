@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.rvm;
+package au.id.wolfe.bamboo.ruby.common;
 
 /**
  * This exception is thrown if there is an issue locating a path.

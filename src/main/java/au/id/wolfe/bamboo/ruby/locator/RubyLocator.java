@@ -32,7 +32,7 @@ public interface RubyLocator {
      * @param gemSetName The name of the gem set
      * @return A ruby runtime.
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
-     * @throws au.id.wolfe.bamboo.ruby.rvm.PathNotFoundException
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException
      *                                  thrown if the ruby runtime supplied doesn't exist in rvm.
      */
     RubyRuntime getRubyRuntime(String rubyName, String gemSetName);
@@ -45,7 +45,7 @@ public interface RubyLocator {
      * @param rubyRuntimeName The name of the ruby runtime
      * @return A ruby runtime.
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
-     * @throws au.id.wolfe.bamboo.ruby.rvm.PathNotFoundException
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException
      *                                  thrown if the ruby runtime supplied doesn't exist in rvm.
      */
     RubyRuntime getRubyRuntime(String rubyRuntimeName);

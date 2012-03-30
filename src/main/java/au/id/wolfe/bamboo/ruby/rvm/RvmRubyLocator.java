@@ -96,7 +96,7 @@ public class RvmRubyLocator implements RubyLocator {
      * @param gemSetName The name of the gem set
      * @return A ruby runtime.
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
-     * @throws PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
      */
     @Override
     public RubyRuntime getRubyRuntime(final String rubyName, final String gemSetName) {
@@ -120,7 +120,7 @@ public class RvmRubyLocator implements RubyLocator {
      * @param rubyRuntimeName The name of the ruby runtime
      * @return A ruby runtime.
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
-     * @throws PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
      */
     @Override
     public RubyRuntime getRubyRuntime(String rubyRuntimeName) {

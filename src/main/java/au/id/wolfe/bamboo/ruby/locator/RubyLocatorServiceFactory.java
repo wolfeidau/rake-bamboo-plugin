@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.locator;
 
-import au.id.wolfe.bamboo.ruby.rvm.PathNotFoundException;
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 
 /**
