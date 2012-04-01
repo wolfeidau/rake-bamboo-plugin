@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby.system;
 
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
@@ -45,29 +46,49 @@ public class SystemRubyLocator implements RubyLocator {
 
         // As everything is static with the system ruby install we just need to clean this stuff
         // out of the environment and let ruby do it's thing.
-        currentEnv.remove(EnvUtils.MY_RUBY_HOME);
-        currentEnv.remove(EnvUtils.GEM_HOME);
-        currentEnv.remove(EnvUtils.GEM_PATH);
-        currentEnv.remove(EnvUtils.BUNDLE_HOME);
-        currentEnv.remove(RvmUtil.RVM_GEM_SET);
-        currentEnv.remove(RvmUtil.RVM_RUBY_STRING);
+        //currentEnv.remove(EnvUtils.MY_RUBY_HOME);
+        //currentEnv.remove(EnvUtils.GEM_HOME);
+        //currentEnv.remove(EnvUtils.GEM_PATH);
+        //currentEnv.remove(EnvUtils.BUNDLE_HOME);
+        //currentEnv.remove(RvmUtil.RVM_GEM_SET);
+        //currentEnv.remove(RvmUtil.RVM_RUBY_STRING);
 
         return currentEnv;
     }
 
     @Override
     public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        // currently commands are found in the /usr/bin directory or not at all.
+        for (String path : searchPaths){
+            if (fileSystemHelper.executableFileExists(path, name)){
+                return path + File.separator + name;
+            }
+        }
+
+        throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
     }
 
     @Override
     public RubyRuntime getRubyRuntime(String rubyName, String gemSetName) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        final String rubyRuntimeName = String.format("%s@%s", rubyName, gemSetName);
+
+        return getRubyRuntime(rubyRuntimeName);
     }
 
     @Override
     public RubyRuntime getRubyRuntime(String rubyRuntimeName) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        final List<RubyRuntime> rubyRuntimeList = listRubyRuntimes();
+
+        for (RubyRuntime rubyRuntime : rubyRuntimeList) {
+            if (rubyRuntime.getRubyRuntimeName().equals(rubyRuntimeName)) {
+                return rubyRuntime;
+            }
+        }
+
+        throw new PathNotFoundException("Ruby runtime not found for - " + rubyRuntimeName);
     }
 
     //
@@ -90,7 +111,7 @@ public class SystemRubyLocator implements RubyLocator {
 
                         final String gemPathString = getGemPathString(buildPath(path, "gem"));
 
-                        rubyRuntimeList.add(new RubyRuntime(version, null, rubyExecutablePath, gemPathString));
+                        rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutablePath, gemPathString));
                     } catch (IOException e) {
                         // todo log error.
                     } catch (InterruptedException e) {
@@ -104,7 +125,26 @@ public class SystemRubyLocator implements RubyLocator {
         return rubyRuntimeList;
     }
 
-    private String getGemPathString(String gemExecutablePath)  throws IOException, InterruptedException {
+    @Override
+    public boolean hasRuby(String rubyNamePattern) {
+
+        List<RubyRuntime> rubyRuntimeList = listRubyRuntimes();
+
+        for (RubyRuntime rubyRuntime : rubyRuntimeList) {
+            if (rubyRuntime.getRubyName().equals(rubyNamePattern)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isReadOnly() {
+        return true;
+    }
+
+    private String getGemPathString(String gemExecutablePath) throws IOException, InterruptedException {
 
         final String line = gemExecutablePath + " environment gempath";
 
@@ -139,26 +179,6 @@ public class SystemRubyLocator implements RubyLocator {
         } else {
             throw new IllegalArgumentException("Ruby executable failed to run.");
         }
-    }
-
-
-    @Override
-    public boolean hasRuby(String rubyNamePattern) {
-
-        List<RubyRuntime> rubyRuntimeList = listRubyRuntimes();
-
-        for (RubyRuntime rubyRuntime : rubyRuntimeList){
-            if (rubyRuntime.getRubyName().equals(rubyNamePattern)){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean isReadOnly() {
-        return true;
     }
 
 }

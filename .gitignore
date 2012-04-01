@@ -5,3 +5,4 @@
 *.iws
 target
 activemq-data
+build.log

@@ -5,8 +5,14 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
     </plugin-info>
 
+    <component key="fileSystemHelper" name="File System Helper"
+               class="au.id.wolfe.bamboo.ruby.util.FileSystemHelper"/>
+
     <component key="rvmLocatorService" name="RVM Locator Service"
         class="au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService" />
+
+    <component key="systemLocatorService" name="System Ruby Locator Service"
+               class="au.id.wolfe.bamboo.ruby.system.SystemRubyRuntimeLocatorService" />
 
     <component key="rubyLocatorServiceFactory" name="Ruby Locator Service Factory"
                class="au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory" />

@@ -32,7 +32,7 @@ public interface RubyLocator {
 
     /**
      * Given a ruby name 1.9.3-p0 and gem set name rails31 return a ruby runtime object for it.
-     * <p/>
+     *
      * This also checks the ruby and gem set exist.
      *
      * @param rubyName   The name of the ruby
@@ -46,7 +46,7 @@ public interface RubyLocator {
 
     /**
      * Given a ruby runtime name for example 1.9.3-p0@rails31 return a ruby runtime object for it.
-     * <p/>
+     *
      * This also checks the ruby and gem set exist.
      *
      * @param rubyRuntimeName The name of the ruby runtime

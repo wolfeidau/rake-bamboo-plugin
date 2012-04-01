@@ -1,9 +1,6 @@
 package au.id.wolfe.bamboo.ruby.system;
 
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.File;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

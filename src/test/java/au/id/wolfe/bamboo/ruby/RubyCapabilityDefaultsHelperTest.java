@@ -54,15 +54,10 @@ public class RubyCapabilityDefaultsHelperTest {
     @Test
     public void testAddDefaultCapabilities() throws Exception {
 
-        //final String rubyPath = ExecutablePathUtils.findExecutablePath("ruby");
-        //final String gemPath = ExecutablePathUtils.findExecutablePath("gem");
-
-        //log.info("ruby = " + rubyPath);
-        //log.info("gem = " + gemPath);
-
         final RubyRuntime rubyRuntimeMRI = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
         final RubyRuntime rubyRuntimeJRuby = RvmFixtures.getJRubyRuntimeDefaultGemSet();
 
+        when(rubyRuntimeLocatorService.getRuntimeManagerName()).thenReturn("RVM");
         when(rubyRuntimeLocatorService.getRubyLocator()).thenReturn(rvmRubyLocator);
         when(rubyRuntimeLocatorService.isInstalled()).thenReturn(true);
         when(rvmRubyLocator.listRubyRuntimes()).thenReturn(asList(rubyRuntimeMRI, rubyRuntimeJRuby));

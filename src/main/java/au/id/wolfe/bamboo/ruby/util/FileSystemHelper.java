@@ -25,6 +25,18 @@ public class FileSystemHelper {
     }
 
     /**
+     * Given the path to an executable check if it exists, and verify it is executable.
+     *
+     * @param fileSystemPath The path.
+     * @param command        The executable command to search for.
+     * @return True if it exists, otherwise false.
+     */
+    public boolean executableFileExists(String fileSystemPath, String command) {
+        File executable = new File(fileSystemPath, command);
+        return executable.exists() && executable.canExecute();
+    }
+
+    /**
      * Given a path check if it exists.
      *
      * @param fileSystemPath The path.
@@ -38,7 +50,7 @@ public class FileSystemHelper {
      * Given a path check if it exists.
      *
      * @param fileSystemPath The path.
-     * @param fileName The located in this path.
+     * @param fileName       The located in this path.
      * @return True if it exists, otherwise false.
      */
     public boolean pathExists(String fileSystemPath, String fileName) {

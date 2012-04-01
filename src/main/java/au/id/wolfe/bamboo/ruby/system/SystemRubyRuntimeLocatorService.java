@@ -7,13 +7,13 @@ import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 /**
  * Minimal ruby runtime manager designed to locate system installations.
  */
-public class SystemRubyRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
+public class SystemRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
 
     public static final String MANAGER_LABEL = "SYSTEM";
 
     public SystemRubyLocator systemRubyLocator;
 
-    public SystemRubyRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
+    public SystemRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
         systemRubyLocator = new SystemRubyLocator(fileSystemHelper);
     }
 

@@ -26,6 +26,7 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
     private final RubyLocatorServiceFactory rubyLocatorServiceFactory;
 
     public RubyCapabilityDefaultsHelper(RubyLocatorServiceFactory rubyLocatorServiceFactory) {
+        log.info("loading rubyLocatorServiceFactory = " + rubyLocatorServiceFactory);
         this.rubyLocatorServiceFactory = rubyLocatorServiceFactory;
     }
 
@@ -39,6 +40,8 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
     @Override
     public CapabilitySet addDefaultCapabilities(@NotNull CapabilitySet capabilitySet) {
 
+        log.info("Retrieving a list of runtime managers.");
+
         for (RubyRuntimeLocatorService rubyRuntimeLocatorService : rubyLocatorServiceFactory.getLocatorServices()) {
 
             log.info("Loading ruby locator service - {}", rubyRuntimeLocatorService.getRuntimeManagerName());
@@ -49,7 +52,8 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
 
                 for (RubyRuntime rubyRuntime : rvmRubyRuntimeList) {
 
-                    final RubyLabel rubyLabel = new RubyLabel(RvmRubyRuntimeLocatorService.MANAGER_LABEL, rubyRuntime.getRubyRuntimeName());
+                    final RubyLabel rubyLabel = new RubyLabel(rubyRuntimeLocatorService.getRuntimeManagerName(),
+                            rubyRuntime.getRubyRuntimeName());
                     final String capabilityLabel = buildCapabilityLabel(RakeTask.RUBY_CAPABILITY_PREFIX, rubyLabel);
                     final Capability capability = new CapabilityImpl(capabilityLabel, rubyRuntime.getRubyExecutablePath());
 
