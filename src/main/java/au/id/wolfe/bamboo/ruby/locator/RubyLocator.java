@@ -20,7 +20,14 @@ public interface RubyLocator {
      */
     Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv);
 
-    @Nullable
+    /**
+     * Given the name of a ruby script locate the executable in the gem path.
+     *
+     * @param rubyRuntimeName The name of the ruby runtime.
+     * @param name            Name the script/executable.
+     * @return The full path of the executable.
+     * @throws IllegalArgumentException If the command cannot be located in the gem path.
+     */
     String searchForRubyExecutable(String rubyRuntimeName, String name);
 
     /**
@@ -69,5 +76,5 @@ public interface RubyLocator {
      * Indicates whether the ruby installations are read only, for instance RVM system installations.
      * @return true if ready only installation(s) of ruby.
      */
-    boolean readOnly();
+    boolean isReadOnly();
 }

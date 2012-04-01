@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
@@ -12,7 +13,7 @@ import java.io.File;
 /**
  * RVM Utility methods, these are entirely  as there is only one filesystem involved.
  */
-public class RvmLocatorService {
+public class RvmRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
 
     public static final String MANAGER_LABEL = "RVM";
 
@@ -21,12 +22,12 @@ public class RvmLocatorService {
     private final FileSystemHelper fileSystemHelper;
     private final SystemHelper systemHelper;
 
-    public RvmLocatorService() {
+    public RvmRubyRuntimeLocatorService() {
         fileSystemHelper = new FileSystemHelper();
         systemHelper = new SystemHelper();
     }
 
-    public RvmLocatorService(FileSystemHelper fileSystemHelper, SystemHelper systemHelper) {
+    public RvmRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper, SystemHelper systemHelper) {
         this.fileSystemHelper = fileSystemHelper;
         this.systemHelper = systemHelper;
     }
@@ -106,5 +107,27 @@ public class RvmLocatorService {
         String LOCAL_RVM_HOME_FOLDER_NAME = ".rvm";
         String RVM_GEMS_FOLDER_NAME = "gems";
         String RVM_RUBIES_FOLDER_NAME = "rubies";
+    }
+
+    @Override
+    public RubyLocator getRubyLocator() {
+        final RvmInstallation rvmInstallation = locateRvmInstallation();
+
+        if (rvmInstallation != null) {
+            return new RvmRubyLocator(fileSystemHelper, rvmInstallation);
+        }
+
+        // no rvm installed so not able to supply a ruby locator
+        throw new PathNotFoundException("Unable to locate RVM installation.");
+    }
+
+    @Override
+    public boolean isInstalled() {
+        return locateRvmInstallation() != null;
+    }
+
+    @Override
+    public String getRuntimeManagerName() {
+        return MANAGER_LABEL;
     }
 }

@@ -5,7 +5,7 @@ import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
@@ -41,7 +41,7 @@ public class RakeTaskTest {
     RubyLocatorServiceFactory rubyLocatorServiceFactory;
 
     @Mock
-    RvmLocatorService rvmLocatorService;
+    RvmRubyRuntimeLocatorService rvmLocatorService;
 
     @Mock
     EnvironmentVariableAccessor environmentVariableAccessor;
@@ -57,7 +57,7 @@ public class RakeTaskTest {
         rakeTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
         rakeTaskTester.setProcessService(processService);
 
-        rubyLocatorServiceFactory.setRvmLocatorService(rvmLocatorService);
+        rubyLocatorServiceFactory.setRvmRubyRuntimeLocatorService(rvmLocatorService);
         rakeTaskTester.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
 
     }

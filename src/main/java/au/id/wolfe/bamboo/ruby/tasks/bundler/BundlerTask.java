@@ -24,7 +24,7 @@ public class BundlerTask extends BaseRubyTask implements TaskType {
 
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
-        if(rubyLocator.readOnly()){
+        if(rubyLocator.isReadOnly()){
             throw new IllegalArgumentException("Can't use the bundle install task with a read only installation of Ruby.");
         }
 

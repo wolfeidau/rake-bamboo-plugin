@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
+import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -48,15 +49,15 @@ public class RubyLocatorTest {
 
         Map<String, String> envVars = rvmRubyLocator.buildEnv("ruby-1.9.3-p0@default", currentEnvVars);
 
-        assertTrue(envVars.containsKey(RvmUtil.MY_RUBY_HOME));
+        assertTrue(envVars.containsKey(EnvUtils.MY_RUBY_HOME));
 
-        assertTrue(envVars.containsKey(RvmUtil.GEM_HOME));
-        assertEquals(RvmFixtures.GEM_HOME, envVars.get(RvmUtil.GEM_HOME));
+        assertTrue(envVars.containsKey(EnvUtils.GEM_HOME));
+        assertEquals(RvmFixtures.GEM_HOME, envVars.get(EnvUtils.GEM_HOME));
 
-        assertTrue(envVars.containsKey(RvmUtil.GEM_PATH));
+        assertTrue(envVars.containsKey(EnvUtils.GEM_PATH));
 
-        assertTrue(envVars.containsKey(RvmUtil.BUNDLE_HOME));
-        assertEquals(RvmFixtures.BUNDLE_HOME, envVars.get(RvmUtil.BUNDLE_HOME));
+        assertTrue(envVars.containsKey(EnvUtils.BUNDLE_HOME));
+        assertEquals(RvmFixtures.BUNDLE_HOME, envVars.get(EnvUtils.BUNDLE_HOME));
 
         assertTrue(envVars.containsKey(RvmUtil.RVM_RUBY_STRING));
         assertEquals(mriRuby.getRubyName(), envVars.get(RvmUtil.RVM_RUBY_STRING));
@@ -64,7 +65,7 @@ public class RubyLocatorTest {
         assertTrue(envVars.containsKey(RvmUtil.RVM_GEM_SET));
         assertEquals(mriRuby.getGemSetName(), envVars.get(RvmUtil.RVM_GEM_SET));
 
-        assertTrue(envVars.containsKey(RvmUtil.PATH));
+        assertTrue(envVars.containsKey(EnvUtils.PATH));
 
         assertEquals(RvmFixtures.getMRIRubyRuntimeDefaultBinPath(), envVars.get("PATH"));
     }

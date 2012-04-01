@@ -27,11 +27,11 @@ public class RvmLocatorServiceTest {
     @Mock
     private SystemHelper systemHelper;
 
-    private RvmLocatorService rvmLocatorService;
+    private RvmRubyRuntimeLocatorService rvmLocatorService;
 
     @Before
     public void setup() {
-        rvmLocatorService = new RvmLocatorService(fileSystemHelper, systemHelper);
+        rvmLocatorService = new RvmRubyRuntimeLocatorService(fileSystemHelper, systemHelper);
     }
 
     @Test

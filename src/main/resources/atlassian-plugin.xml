@@ -6,7 +6,7 @@
     </plugin-info>
 
     <component key="rvmLocatorService" name="RVM Locator Service"
-        class="au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService" />
+        class="au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService" />
 
     <component key="rubyLocatorServiceFactory" name="Ruby Locator Service Factory"
                class="au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory" />

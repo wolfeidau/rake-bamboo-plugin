@@ -35,6 +35,17 @@ public class FileSystemHelper {
     }
 
     /**
+     * Given a path check if it exists.
+     *
+     * @param fileSystemPath The path.
+     * @param fileName The located in this path.
+     * @return True if it exists, otherwise false.
+     */
+    public boolean pathExists(String fileSystemPath, String fileName) {
+        return new File(fileSystemPath, fileName).exists();
+    }
+
+    /**
      * Check if the path exists.
      *
      * @param path    The filesystem path to check.

@@ -7,6 +7,9 @@ import java.util.StringTokenizer;
  */
 public class RubyLabel {
 
+    // This is to support existing deployments where the registered runtimes lack a runtime manager prefix.
+    static final String DEFAULT_RUNTIME_MANAGER = "RVM";
+
     private String rubyRuntimeManager;
     private String rubyRuntime;
 
@@ -19,16 +22,8 @@ public class RubyLabel {
         return rubyRuntimeManager;
     }
 
-    public void setRubyRuntimeManager(String rubyRuntimeManager) {
-        this.rubyRuntimeManager = rubyRuntimeManager;
-    }
-
     public String getRubyRuntime() {
         return rubyRuntime;
-    }
-
-    public void setRubyRuntime(String rubyRuntime) {
-        this.rubyRuntime = rubyRuntime;
     }
 
     @Override
@@ -48,6 +43,9 @@ public class RubyLabel {
         if (stringTokenizer.countTokens() == 2) {
             return new RubyLabel(stringTokenizer.nextToken(), stringTokenizer.nextToken());
         } else {
+            if (rubyRuntimeLabel.matches(".*@.*")){ // mad or bad regex, not sure time will tell.
+                return new RubyLabel(DEFAULT_RUNTIME_MANAGER, rubyRuntimeLabel);
+            }
             throw new IllegalArgumentException("Could not parse rubyRuntime string, expected something like 'RVM ruby-1.9.2@rails31', not " + rubyRuntimeLabel);
         }
 

@@ -15,18 +15,13 @@ import java.util.StringTokenizer;
  */
 public class RvmUtil {
 
-    public static String BIN_FOLDER_RELATIVE_PATH = "/bin";
-    public static String DEFAULT_GEMSET_SEPARATOR = "@";
-    public static String RVM_RUBIES_FOLDER_NAME = "rubies";
-    public static String RVM_GEMS_FOLDER_NAME = "gems";
-    public static String GLOBAL_GEMSET_NAME = "global";
-    public static String MY_RUBY_HOME = "MY_RUBY_HOME";
-    public static String GEM_HOME = "GEM_HOME";
-    public static String GEM_PATH = "GEM_PATH";
-    public static String PATH = "PATH";
-    public static String BUNDLE_HOME = "BUNDLE_PATH";
-    public static String RVM_RUBY_STRING = "rvm_ruby_string";
-    public static String RVM_GEM_SET = "gemset";
+    public static final String BIN_FOLDER_RELATIVE_PATH = "/bin";
+    public static final String DEFAULT_GEMSET_SEPARATOR = "@";
+    public static final String RVM_RUBIES_FOLDER_NAME = "rubies";
+    public static final String RVM_GEMS_FOLDER_NAME = "gems";
+    public static final String GLOBAL_GEMSET_NAME = "global";
+    public static final String RVM_RUBY_STRING = "rvm_ruby_string";
+    public static final String RVM_GEM_SET = "gemset";
 
     /**
      * Splits the ruby runtime name into a ruby name and gem set name.
@@ -55,16 +50,16 @@ public class RvmUtil {
      */
     public static String buildRubyExecutablePath(final String rubiesPath, final String rubyName) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(rubiesPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(rubyName);
+        final StringBuilder rubyExecutablePath = new StringBuilder();
+        rubyExecutablePath.append(rubiesPath);
+        rubyExecutablePath.append(File.separator);
+        rubyExecutablePath.append(rubyName);
 
-        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(getExecutableName(rubyName));
+        rubyExecutablePath.append(BIN_FOLDER_RELATIVE_PATH);
+        rubyExecutablePath.append(File.separator);
+        rubyExecutablePath.append(getExecutableName(rubyName));
 
-        return stringBuilder.toString();
+        return rubyExecutablePath.toString();
     }
 
     /**
@@ -77,12 +72,12 @@ public class RvmUtil {
      */
     public static String buildGemHomePath(final String gemsPath, final String rubyName, final String gemSetName) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(gemsPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(buildGemSetDirectoryName(rubyName, gemSetName));
+        final StringBuilder gemHomePath = new StringBuilder();
+        gemHomePath.append(gemsPath);
+        gemHomePath.append(File.separator);
+        gemHomePath.append(buildGemSetDirectoryName(rubyName, gemSetName));
 
-        return stringBuilder.toString();
+        return gemHomePath.toString();
 
     }
 
@@ -96,41 +91,39 @@ public class RvmUtil {
      */
     public static List<String> buildGemBinSearchPath(final String gemsPath, final String rubyName, final String gemSetName) {
 
-        StringBuilder stringBuilder;
-
         List<String> searchPathList = Lists.newLinkedList();
 
-        stringBuilder = new StringBuilder();
-        stringBuilder.append(buildGemHomePath(gemsPath, rubyName, gemSetName));
-        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
-        searchPathList.add(stringBuilder.toString());
+        final StringBuilder gemPath = new StringBuilder();
+        gemPath.append(buildGemHomePath(gemsPath, rubyName, gemSetName));
+        gemPath.append(BIN_FOLDER_RELATIVE_PATH);
+        searchPathList.add(gemPath.toString());
 
-        stringBuilder = new StringBuilder();
-        stringBuilder.append(buildGlobalGemPath(gemsPath, rubyName));
-        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
-        searchPathList.add(stringBuilder.toString());
+        final StringBuilder globalGemPath = new StringBuilder();
+        globalGemPath.append(buildGlobalGemPath(gemsPath, rubyName));
+        globalGemPath.append(BIN_FOLDER_RELATIVE_PATH);
+        searchPathList.add(globalGemPath.toString());
 
         return searchPathList;
     }
 
     public static String buildRvmRubiesPath(final String rvmInstallPath) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(rvmInstallPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(RVM_RUBIES_FOLDER_NAME);
+        final StringBuilder rvmRubiesPath = new StringBuilder();
+        rvmRubiesPath.append(rvmInstallPath);
+        rvmRubiesPath.append(File.separator);
+        rvmRubiesPath.append(RVM_RUBIES_FOLDER_NAME);
 
-        return stringBuilder.toString();
+        return rvmRubiesPath.toString();
     }
 
     public static String buildRvmGemsPath(final String rvmInstallPath) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(rvmInstallPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(RVM_GEMS_FOLDER_NAME);
+        final StringBuilder rvmGemsPath = new StringBuilder();
+        rvmGemsPath.append(rvmInstallPath);
+        rvmGemsPath.append(File.separator);
+        rvmGemsPath.append(RVM_GEMS_FOLDER_NAME);
 
-        return stringBuilder.toString();
+        return rvmGemsPath.toString();
     }
 
     private static String getExecutableName(final String rubyName) {
@@ -153,35 +146,35 @@ public class RvmUtil {
 
     public static String buildRubyHomePath(final String rubiesPath, final String rubyName) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(rubiesPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(rubyName);
+        final StringBuilder rubyHomePath = new StringBuilder();
+        rubyHomePath.append(rubiesPath);
+        rubyHomePath.append(File.separator);
+        rubyHomePath.append(rubyName);
 
-        return stringBuilder.toString();
+        return rubyHomePath.toString();
 
     }
 
     public static String buildGemPath(final String gemsPath, final String rubyName, final String gemSetName) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(buildGemHomePath(gemsPath, rubyName, gemSetName));
-        stringBuilder.append(File.pathSeparator);
-        stringBuilder.append(buildGlobalGemPath(gemsPath, rubyName));
+        final StringBuilder gemPath = new StringBuilder();
+        gemPath.append(buildGemHomePath(gemsPath, rubyName, gemSetName));
+        gemPath.append(File.pathSeparator);
+        gemPath.append(buildGlobalGemPath(gemsPath, rubyName));
 
-        return stringBuilder.toString();
+        return gemPath.toString();
     }
 
     private static String buildGlobalGemPath(final String gemsPath, final String rubyName) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(gemsPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(rubyName);
-        stringBuilder.append(DEFAULT_GEMSET_SEPARATOR);
-        stringBuilder.append(GLOBAL_GEMSET_NAME);
+        final StringBuilder globalGemPath = new StringBuilder();
+        globalGemPath.append(gemsPath);
+        globalGemPath.append(File.separator);
+        globalGemPath.append(rubyName);
+        globalGemPath.append(DEFAULT_GEMSET_SEPARATOR);
+        globalGemPath.append(GLOBAL_GEMSET_NAME);
 
-        return stringBuilder.toString();
+        return globalGemPath.toString();
     }
 
     public static String buildBinPath(final String rubiesPath, final String gemsPath, final String rubyName, final String gemSetName) {
@@ -195,13 +188,13 @@ public class RvmUtil {
 
     public static String buildRubyBinPath(String rubiesPath, String rubyName) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(rubiesPath);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(rubyName);
-        stringBuilder.append(BIN_FOLDER_RELATIVE_PATH);
+        final StringBuilder rubyBinPath = new StringBuilder();
+        rubyBinPath.append(rubiesPath);
+        rubyBinPath.append(File.separator);
+        rubyBinPath.append(rubyName);
+        rubyBinPath.append(BIN_FOLDER_RELATIVE_PATH);
 
-        return stringBuilder.toString();
+        return rubyBinPath.toString();
     }
 
     /**

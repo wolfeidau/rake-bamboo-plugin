@@ -1,9 +1,11 @@
 package au.id.wolfe.bamboo.ruby;
 
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.tasks.rake.RakeTask;
-import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
@@ -21,10 +23,10 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
 
     private static final Logger log = LoggerFactory.getLogger(RubyCapabilityDefaultsHelper.class);
 
-    private final RvmLocatorService rvmLocatorService;
+    private final RubyLocatorServiceFactory rubyLocatorServiceFactory;
 
-    public RubyCapabilityDefaultsHelper(RvmLocatorService rvmLocatorService) {
-        this.rvmLocatorService = rvmLocatorService;
+    public RubyCapabilityDefaultsHelper(RubyLocatorServiceFactory rubyLocatorServiceFactory) {
+        this.rubyLocatorServiceFactory = rubyLocatorServiceFactory;
     }
 
     /**
@@ -37,24 +39,32 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
     @Override
     public CapabilitySet addDefaultCapabilities(@NotNull CapabilitySet capabilitySet) {
 
-        if (rvmLocatorService.isRvmInstalled()) {
+        for (RubyRuntimeLocatorService rubyRuntimeLocatorService : rubyLocatorServiceFactory.getLocatorServices()) {
 
-            List<RubyRuntime> rvmRubyRuntimeList = rvmLocatorService.getRvmRubyLocator().listRubyRuntimes();
+            log.info("Loading ruby locator service - {}", rubyRuntimeLocatorService.getRuntimeManagerName());
 
-            for (RubyRuntime rubyRuntime : rvmRubyRuntimeList) {
-                
-                final RubyLabel rubyLabel = new RubyLabel(RvmLocatorService.MANAGER_LABEL, rubyRuntime.getRubyRuntimeName());
-                final String capabilityLabel = buildCapabilityLabel(RakeTask.RUBY_CAPABILITY_PREFIX, rubyLabel);
-                Capability capability = new CapabilityImpl(capabilityLabel, rubyRuntime.getRubyExecutablePath());
-                log.info("Adding " + capability);
-                capabilitySet.addCapability(capability);
+            if (rubyRuntimeLocatorService.isInstalled()) {
+
+                List<RubyRuntime> rvmRubyRuntimeList = rubyRuntimeLocatorService.getRubyLocator().listRubyRuntimes();
+
+                for (RubyRuntime rubyRuntime : rvmRubyRuntimeList) {
+
+                    final RubyLabel rubyLabel = new RubyLabel(RvmRubyRuntimeLocatorService.MANAGER_LABEL, rubyRuntime.getRubyRuntimeName());
+                    final String capabilityLabel = buildCapabilityLabel(RakeTask.RUBY_CAPABILITY_PREFIX, rubyLabel);
+                    final Capability capability = new CapabilityImpl(capabilityLabel, rubyRuntime.getRubyExecutablePath());
+
+                    log.info("Adding " + capability);
+
+                    capabilitySet.addCapability(capability);
+                }
+
             }
-
         }
+
         return capabilitySet;
     }
-    
-    private String buildCapabilityLabel(String prefix, RubyLabel rubyLabel){
+
+    private String buildCapabilityLabel(String prefix, RubyLabel rubyLabel) {
         return String.format("%s.%s", prefix, rubyLabel);
     }
 }

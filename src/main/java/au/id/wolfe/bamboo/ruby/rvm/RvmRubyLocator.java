@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
@@ -48,13 +49,13 @@ public class RvmRubyLocator implements RubyLocator {
 
         Map<String, String> envVars = Maps.newHashMap();
 
-        envVars.put(RvmUtil.MY_RUBY_HOME, rubyHomePath);
-        envVars.put(RvmUtil.GEM_HOME, gemHomePath);
-        envVars.put(RvmUtil.GEM_PATH, gemPath);
-        envVars.put(RvmUtil.BUNDLE_HOME, gemHomePath);
+        envVars.put(EnvUtils.MY_RUBY_HOME, rubyHomePath);
+        envVars.put(EnvUtils.GEM_HOME, gemHomePath);
+        envVars.put(EnvUtils.GEM_PATH, gemPath);
+        envVars.put(EnvUtils.BUNDLE_HOME, gemHomePath);
         envVars.put(RvmUtil.RVM_GEM_SET, rvmGemSetName);
         envVars.put(RvmUtil.RVM_RUBY_STRING, rubyName);
-        envVars.put(RvmUtil.PATH, rvmPathPrefix + File.pathSeparator + currentPath);
+        envVars.put(EnvUtils.PATH, rvmPathPrefix + File.pathSeparator + currentPath);
 
         return envVars;
     }
@@ -184,7 +185,7 @@ public class RvmRubyLocator implements RubyLocator {
     }
 
     @Override
-    public boolean readOnly() {
+    public boolean isReadOnly() {
         return rvmInstallation.isSystemInstall();
     }
 }

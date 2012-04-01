@@ -89,7 +89,7 @@ public class BundlerTaskTest {
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
-        when(rvmRubyLocator.readOnly()).thenReturn(true);
+        when(rvmRubyLocator.isReadOnly()).thenReturn(true);
 
         bundlerTaskTester.buildCommandList(rubyLabel, configurationMap);
     }

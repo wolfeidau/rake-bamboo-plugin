@@ -1,11 +1,13 @@
 package au.id.wolfe.bamboo.ruby;
 
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,10 @@ public class RubyCapabilityDefaultsHelperTest {
     private static final Logger log = LoggerFactory.getLogger(RubyCapabilityDefaultsHelperTest.class);
 
     @Mock
-    RvmLocatorService rvmLocatorService;
+    RubyLocatorServiceFactory rubyLocatorServiceFactory;
+
+    @Mock
+    RubyRuntimeLocatorService rubyRuntimeLocatorService;
 
     @Mock
     RvmRubyLocator rvmRubyLocator;
@@ -40,7 +45,9 @@ public class RubyCapabilityDefaultsHelperTest {
     @Before
     public void setUp() throws Exception {
 
-        rubyCapabilityDefaultsHelper = new RubyCapabilityDefaultsHelper(rvmLocatorService);
+        rubyCapabilityDefaultsHelper = new RubyCapabilityDefaultsHelper(rubyLocatorServiceFactory);
+
+        when(rubyLocatorServiceFactory.getLocatorServices()).thenReturn(Lists.newArrayList(rubyRuntimeLocatorService));
 
     }
 
@@ -56,8 +63,8 @@ public class RubyCapabilityDefaultsHelperTest {
         final RubyRuntime rubyRuntimeMRI = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
         final RubyRuntime rubyRuntimeJRuby = RvmFixtures.getJRubyRuntimeDefaultGemSet();
 
-        when(rvmLocatorService.getRvmRubyLocator()).thenReturn(rvmRubyLocator);
-        when(rvmLocatorService.isRvmInstalled()).thenReturn(true);
+        when(rubyRuntimeLocatorService.getRubyLocator()).thenReturn(rvmRubyLocator);
+        when(rubyRuntimeLocatorService.isInstalled()).thenReturn(true);
         when(rvmRubyLocator.listRubyRuntimes()).thenReturn(asList(rubyRuntimeMRI, rubyRuntimeJRuby));
 
         rubyCapabilityDefaultsHelper.addDefaultCapabilities(capabilitySet);

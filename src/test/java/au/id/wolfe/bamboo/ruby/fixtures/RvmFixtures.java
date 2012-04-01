@@ -5,7 +5,7 @@ import au.id.wolfe.bamboo.ruby.rvm.RvmInstallation;
 
 import java.io.File;
 
-import static au.id.wolfe.bamboo.ruby.rvm.RvmLocatorService.Constants;
+import static au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService.Constants;
 
 /**
  * Testing fixture data.
