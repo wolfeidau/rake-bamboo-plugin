@@ -6,7 +6,7 @@
     <artifactId>rake-bamboo-plugin</artifactId>
     <version>1.5-SNAPSHOT</version>
     <name>Ruby Rake Plugin</name>
-    <description>This is the ruby rake plugin for Atlassian Bamboo.</description>
+    <description>Ruby rake plugin for Atlassian Bamboo.</description>
     <packaging>atlassian-plugin</packaging>
 
     <organization>
