@@ -1,17 +1,23 @@
 # Overview
 
-This is a bamboo plugin project which when installed enables configuration of rake build tasks. It interfaces with
-ruby version manager (RVM) to enable execution against different ruby versions.
+This is a bamboo plugin project which when installed enables configuration of rake build tasks.
 
 # Goals
 
 * Discover ruby installations managed by RVM and list them in bamboo.
+* Discover ruby installations managed by the systems package manager.
 * Perform a rake build based on selection of a ruby runtime and entry of some build targets.
 * Parse the output of RSpec2 run and display a table of results.
 
 # Usage
 
-To use this plugin you will need to install RVM from the link below, install all the gems used by your project, preferably
+To use this plugin you will need a ruby runtime, this can either be the one installed by default on OSX or one installed
+via package manager in for example ubuntu. If your build server is not running as root, which is preferable, you will need
+to install all the gems used by your project prior to running a build.
+
+# RVM Support
+
+Alternatively you could install RVM from the link below, install all the gems used by your project, preferably
 into it's own gem set.
 
 As an example follow the following steps to setup a project and run some tests using this plugin. This assumes your using
@@ -114,6 +120,17 @@ In version 1.3 I added some bundler related features, these are:
 1. Added an option to the Rake task to enable bundle exec when running the rake command.
 
 2. Bundler task has been added which runs bundle install to dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
+
+# Ruby Runtime Manager Support
+
+In version 1.5 I added support for more than one ruby version manager. The ones which were initially supported are:
+
+* System Ruby Runtime Manager which is a very primitive discovery routine which search /usr/bin and /usr/local/bin for ruby and gem commands. Note it is done this way to avoid PATH overrides in the default shell, commonly done by developers or RVM.
+* RVM Runtime Manager which as before supports RVM installed rubies.
+
+To enable this feature a concept of runtime labels was introduced, these are in the form of ruby runtime manager then ruby version and gemset (for those without gemsets everything it is set to default) for example 'RVM 1.9.3-p0@rails32'.
+
+When the plugin encounters a runtime label which has no ruby runtime manager as with existing installations it will just use RVM.
 
 # Links
 
