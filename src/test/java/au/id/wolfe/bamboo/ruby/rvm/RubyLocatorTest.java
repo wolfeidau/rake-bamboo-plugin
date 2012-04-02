@@ -59,11 +59,11 @@ public class RubyLocatorTest {
         assertTrue(envVars.containsKey(EnvUtils.BUNDLE_HOME));
         assertEquals(RvmFixtures.BUNDLE_HOME, envVars.get(EnvUtils.BUNDLE_HOME));
 
-        assertTrue(envVars.containsKey(RvmUtil.RVM_RUBY_STRING));
-        assertEquals(mriRuby.getRubyName(), envVars.get(RvmUtil.RVM_RUBY_STRING));
+        assertTrue(envVars.containsKey(RvmUtils.RVM_RUBY_STRING));
+        assertEquals(mriRuby.getRubyName(), envVars.get(RvmUtils.RVM_RUBY_STRING));
 
-        assertTrue(envVars.containsKey(RvmUtil.RVM_GEM_SET));
-        assertEquals(mriRuby.getGemSetName(), envVars.get(RvmUtil.RVM_GEM_SET));
+        assertTrue(envVars.containsKey(RvmUtils.RVM_GEM_SET));
+        assertEquals(mriRuby.getGemSetName(), envVars.get(RvmUtils.RVM_GEM_SET));
 
         assertTrue(envVars.containsKey(EnvUtils.PATH));
 

@@ -3,7 +3,6 @@ package au.id.wolfe.bamboo.ruby.system;
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.buildPath;
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.parseRubyVersionString;
-import static au.id.wolfe.bamboo.ruby.util.ExecUtil.cmdExec;
+import static au.id.wolfe.bamboo.ruby.util.ExecUtils.cmdExec;
 
 /**
  * Locates system ruby installations.
@@ -101,21 +100,20 @@ public class SystemRubyLocator implements RubyLocator {
         if (SystemUtils.IS_OS_UNIX) {
             for (String path : searchPaths) {
 
-
                 if (fileSystemHelper.pathExists(path, "ruby") && fileSystemHelper.pathExists(path, "gem")) {
                     try {
 
                         final String rubyExecutablePath = buildPath(path, "ruby");
                         final String rubyVersionString = getRubyVersionString(rubyExecutablePath);
                         final String version = parseRubyVersionString(rubyVersionString);
-
                         final String gemPathString = getGemPathString(buildPath(path, "gem"));
 
                         rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutablePath, gemPathString));
+
                     } catch (IOException e) {
-                        // todo log error.
+                        log.error("IO Exception occurred trying to build Ruby Runtime - " + e.getMessage());
                     } catch (InterruptedException e) {
-                        // todo log error.
+                        log.error("Interrupted Exception occurred trying to build Ruby Runtime - " + e.getMessage());
                     }
                 }
 

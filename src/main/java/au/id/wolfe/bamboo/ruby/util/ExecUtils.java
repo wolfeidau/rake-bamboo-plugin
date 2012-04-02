@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 /**
  * Very simplistic command execution utility functions.
  */
-public final class ExecUtil {
+public final class ExecUtils {
 
 
     public static int cmdExec(String cmdLine, StringBuffer output) throws IOException, InterruptedException {

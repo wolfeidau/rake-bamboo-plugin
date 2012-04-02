@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.common;
 
-import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
+import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -39,7 +39,7 @@ public class RubyRuntime {
     }
 
     public String getRubyRuntimeName(){
-        return rubyName + RvmUtil.DEFAULT_GEMSET_SEPARATOR + gemSetName;
+        return rubyName + RvmUtils.DEFAULT_GEMSET_SEPARATOR + gemSetName;
     }
 
     @Override

@@ -65,11 +65,11 @@ public class RvmRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
 
     private RvmInstallation checkRvmInstallation(String rvmInstallPath, RvmInstallation.Type installType) {
 
-        final String rubiesPath = RvmUtil.buildRvmRubiesPath(rvmInstallPath);
+        final String rubiesPath = RvmUtils.buildRvmRubiesPath(rvmInstallPath);
 
         fileSystemHelper.assertPathExists(rubiesPath, "RVM Installation missing rubies directory");
 
-        final String gemsPath = RvmUtil.buildRvmGemsPath(rvmInstallPath);
+        final String gemsPath = RvmUtils.buildRvmGemsPath(rvmInstallPath);
 
         fileSystemHelper.assertPathExists(gemsPath, "RVM Installation missing gems directory");
 

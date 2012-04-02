@@ -11,12 +11,12 @@ import static junit.framework.Assert.assertTrue;
 /**
  * Test the RVM utility functions class.
  */
-public class RvmUtilTest {
+public class RvmUtilsTest {
 
     @Test
     public void testParseRubyRuntimeName() throws Exception {
 
-        Pair<String, String> rubyRuntimeTokens = RvmUtil.parseRubyRuntimeName("ruby-1.9.3-p0@rails31");
+        Pair<String, String> rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName("ruby-1.9.3-p0@rails31");
 
         assertEquals("ruby-1.9.3-p0", rubyRuntimeTokens.left());
         assertEquals("rails31", rubyRuntimeTokens.right());
@@ -26,7 +26,7 @@ public class RvmUtilTest {
     @Test
     public void testBuildGemSetName() throws Exception {
 
-        String gemSetName = RvmUtil.buildGemSetName("ruby-1.9.3-p0", "ruby-1.9.3-p0");
+        String gemSetName = RvmUtils.buildGemSetName("ruby-1.9.3-p0", "ruby-1.9.3-p0");
 
         assertEquals("default", gemSetName);
     }
@@ -35,10 +35,10 @@ public class RvmUtilTest {
     public void testBuildGemSetDirectoryName() {
 
         String gemSetDirectoryName;
-        gemSetDirectoryName = RvmUtil.buildGemSetDirectoryName("ruby-1.9.3-p0", "default");
+        gemSetDirectoryName = RvmUtils.buildGemSetDirectoryName("ruby-1.9.3-p0", "default");
         assertEquals("ruby-1.9.3-p0", gemSetDirectoryName);
 
-        gemSetDirectoryName = RvmUtil.buildGemSetDirectoryName("ruby-1.9.3-p0", "rails31");
+        gemSetDirectoryName = RvmUtils.buildGemSetDirectoryName("ruby-1.9.3-p0", "rails31");
         assertEquals("ruby-1.9.3-p0@rails31", gemSetDirectoryName);
 
     }
@@ -47,10 +47,10 @@ public class RvmUtilTest {
     public void testBuildGemHomePath() {
 
         String gemSetDirectoryName;
-        gemSetDirectoryName = RvmUtil.buildGemHomePath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
+        gemSetDirectoryName = RvmUtils.buildGemHomePath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
         assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0", gemSetDirectoryName);
 
-        gemSetDirectoryName = RvmUtil.buildGemHomePath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "rails31");
+        gemSetDirectoryName = RvmUtils.buildGemHomePath("/home/markw/.rvm/gems", "ruby-1.9.3-p0", "rails31");
         assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0@rails31", gemSetDirectoryName);
     }
 
@@ -59,10 +59,10 @@ public class RvmUtilTest {
 
         String binPath;
 
-        binPath = RvmUtil.buildBinPath("/home/markw/.rvm/rubies", "/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
+        binPath = RvmUtils.buildBinPath("/home/markw/.rvm/rubies", "/home/markw/.rvm/gems", "ruby-1.9.3-p0", "default");
         assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0/bin:/home/markw/.rvm/gems/ruby-1.9.3-p0@global/bin:/home/markw/.rvm/rubies/ruby-1.9.3-p0/bin", binPath);
 
-        binPath = RvmUtil.buildBinPath("/home/markw/.rvm/rubies", "/home/markw/.rvm/gems", "ruby-1.9.3-p0", "rails31");
+        binPath = RvmUtils.buildBinPath("/home/markw/.rvm/rubies", "/home/markw/.rvm/gems", "ruby-1.9.3-p0", "rails31");
         assertEquals("/home/markw/.rvm/gems/ruby-1.9.3-p0@rails31/bin:/home/markw/.rvm/gems/ruby-1.9.3-p0@global/bin:/home/markw/.rvm/rubies/ruby-1.9.3-p0/bin", binPath);
     }
 
@@ -70,7 +70,7 @@ public class RvmUtilTest {
     public void testBuildRubyBinPath() {
         String rubyBinPath;
 
-        rubyBinPath = RvmUtil.buildRubyBinPath("/home/markw/.rvm/rubies", "ruby-1.9.3-p0");
+        rubyBinPath = RvmUtils.buildRubyBinPath("/home/markw/.rvm/rubies", "ruby-1.9.3-p0");
         assertEquals("/home/markw/.rvm/rubies/ruby-1.9.3-p0/bin", rubyBinPath);
     }
 
@@ -79,7 +79,7 @@ public class RvmUtilTest {
 
         String targets = "db:migrate spec";
 
-        List<String> targetList = RvmUtil.splitRakeTargets(targets);
+        List<String> targetList = RvmUtils.splitRakeTargets(targets);
 
         assertEquals(2, targetList.size());
 

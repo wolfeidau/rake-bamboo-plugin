@@ -17,7 +17,6 @@ public class RubyLocatorServiceFactory {
 
     private static final Logger log = LoggerFactory.getLogger(RubyLocatorServiceFactory.class);
 
-
     private final List<RubyRuntimeLocatorService> rubyRuntimeLocatorServices;
 
     public RubyLocatorServiceFactory(SystemRubyRuntimeLocatorService systemRubyRuntimeLocatorService,
@@ -27,12 +26,16 @@ public class RubyLocatorServiceFactory {
 
     }
 
-
     public List<RubyRuntimeLocatorService> getLocatorServices() {
         return rubyRuntimeLocatorServices;
     }
 
     public RubyLocator acquireRubyLocator(String rubyRuntimeManager) {
+
+        // default to RVM in the case of a missing runtime manager tag.
+        if (rubyRuntimeManager == null || rubyRuntimeManager.equals("")) {
+            rubyRuntimeManager = RvmRubyRuntimeLocatorService.MANAGER_LABEL;
+        }
 
         for (RubyRuntimeLocatorService rubyRuntimeLocatorService : rubyRuntimeLocatorServices) {
             if (rubyRuntimeLocatorService.getRuntimeManagerName().equals(rubyRuntimeManager)) {

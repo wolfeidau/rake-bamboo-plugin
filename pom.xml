@@ -5,7 +5,7 @@
     <groupId>au.id.wolfe.bamboo</groupId>
     <artifactId>rake-bamboo-plugin</artifactId>
     <version>1.5-SNAPSHOT</version>
-    <name>rake-bamboo-plugin</name>
+    <name>Ruby Rake Plugin</name>
     <description>This is the ruby rake plugin for Atlassian Bamboo.</description>
     <packaging>atlassian-plugin</packaging>
 

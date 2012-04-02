@@ -3,8 +3,8 @@ package au.id.wolfe.bamboo.ruby.tasks.rake;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.tasks.BaseRubyTask;
-import au.id.wolfe.bamboo.ruby.rvm.RvmUtil;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskType;
 import com.google.common.base.Preconditions;
@@ -32,7 +32,7 @@ public class RakeTask extends BaseRubyTask implements TaskType {
         final String verboseFlag = config.get("verbose");
         final String traceFlag = config.get("trace");
 
-        final List<String> targetList = RvmUtil.splitRakeTargets(targets);
+        final List<String> targetList = RvmUtils.splitRakeTargets(targets);
 
         final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 

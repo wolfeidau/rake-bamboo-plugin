@@ -39,12 +39,12 @@ public class RvmRubyLocator implements RubyLocator {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
-        final String rubyHomePath = RvmUtil.buildRubyHomePath(rvmInstallation.getRubiesPath(), rubyRuntime.getRubyName());
+        final String rubyHomePath = RvmUtils.buildRubyHomePath(rvmInstallation.getRubiesPath(), rubyRuntime.getRubyName());
         final String rubyName = rubyRuntime.getRubyName();
         final String gemHomePath = rubyRuntime.getGemPath();
-        final String gemPath = RvmUtil.buildGemPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+        final String gemPath = RvmUtils.buildGemPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
         final String rvmGemSetName = rubyRuntime.getGemSetName();
-        final String rvmPathPrefix = RvmUtil.buildBinPath(rvmInstallation.getRubiesPath(), rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+        final String rvmPathPrefix = RvmUtils.buildBinPath(rvmInstallation.getRubiesPath(), rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
         final String currentPath = StringUtils.defaultString(currentEnv.get("PATH"), "");
 
         Map<String, String> envVars = Maps.newHashMap();
@@ -53,8 +53,8 @@ public class RvmRubyLocator implements RubyLocator {
         envVars.put(EnvUtils.GEM_HOME, gemHomePath);
         envVars.put(EnvUtils.GEM_PATH, gemPath);
         envVars.put(EnvUtils.BUNDLE_HOME, gemHomePath);
-        envVars.put(RvmUtil.RVM_GEM_SET, rvmGemSetName);
-        envVars.put(RvmUtil.RVM_RUBY_STRING, rubyName);
+        envVars.put(RvmUtils.RVM_GEM_SET, rvmGemSetName);
+        envVars.put(RvmUtils.RVM_RUBY_STRING, rubyName);
         envVars.put(EnvUtils.PATH, rvmPathPrefix + File.pathSeparator + currentPath);
 
         return envVars;
@@ -73,7 +73,7 @@ public class RvmRubyLocator implements RubyLocator {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
-        List<String> gemBinSearchList = RvmUtil.buildGemBinSearchPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+        List<String> gemBinSearchList = RvmUtils.buildGemBinSearchPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
 
         for (String pathBinSearch : gemBinSearchList) {
 
@@ -102,11 +102,11 @@ public class RvmRubyLocator implements RubyLocator {
     @Override
     public RubyRuntime getRubyRuntime(final String rubyName, final String gemSetName) {
 
-        final String rubyExecutableName = RvmUtil.buildRubyExecutablePath(rvmInstallation.getRubiesPath(), rubyName);
+        final String rubyExecutableName = RvmUtils.buildRubyExecutablePath(rvmInstallation.getRubiesPath(), rubyName);
 
         fileSystemHelper.assertPathExists(rubyExecutableName, "Cannot locate ruby executable");
 
-        final String gemHomePath = RvmUtil.buildGemHomePath(rvmInstallation.getGemsPath(), rubyName, gemSetName);
+        final String gemHomePath = RvmUtils.buildGemHomePath(rvmInstallation.getGemsPath(), rubyName, gemSetName);
 
         fileSystemHelper.assertPathExists(gemHomePath, "Cannot locate ruby executable");
 
@@ -126,7 +126,7 @@ public class RvmRubyLocator implements RubyLocator {
     @Override
     public RubyRuntime getRubyRuntime(String rubyRuntimeName) {
 
-        Pair<String, String> rubyRuntimeTokens = RvmUtil.parseRubyRuntimeName(rubyRuntimeName);
+        Pair<String, String> rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName(rubyRuntimeName);
 
         final String rubyName = rubyRuntimeTokens.left();
         final String gemSetName = rubyRuntimeTokens.right();
@@ -150,11 +150,11 @@ public class RvmRubyLocator implements RubyLocator {
         for (String rubyName : rubiesList) {
             // locate each ruby to gem set combination
             for (String gemSetDirectoryName : gemSetList) {
-                if (gemSetDirectoryName.startsWith(rubyName) && !gemSetDirectoryName.endsWith(RvmUtil.GLOBAL_GEMSET_NAME)) {
+                if (gemSetDirectoryName.startsWith(rubyName) && !gemSetDirectoryName.endsWith(RvmUtils.GLOBAL_GEMSET_NAME)) {
                     if (rubyName.equals(gemSetDirectoryName)) {
                         rubyRuntimeList.add(getRubyRuntime(rubyName, "default"));
                     } else {
-                        Pair<String, String> rubyRuntimeTokens = RvmUtil.parseRubyRuntimeName(gemSetDirectoryName);
+                        Pair<String, String> rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName(gemSetDirectoryName);
                         rubyRuntimeList.add(getRubyRuntime(rubyRuntimeTokens.left(), rubyRuntimeTokens.right()));
                     }
                 }
