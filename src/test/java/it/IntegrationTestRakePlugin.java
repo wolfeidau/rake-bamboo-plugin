@@ -29,11 +29,11 @@ public class IntegrationTestRakePlugin extends TestCase {
 
         getWebDriver().findElement(By.id("serverCapabilities")).click();
 
-        getWebDriver().waitUntilElementIsLocated(By.linkText("Automatically detect server capabilities"));
+        getWebDriver().waitUntilElementIsLocated(By.id("updateDefaultsCapabilities"));
 
-        getWebDriver().findElement(By.linkText("Automatically detect server capabilities")).click();
+        getWebDriver().findElement(By.id("updateDefaultsCapabilities")).click();
 
-        getWebDriver().waitUntilElementIsLocated(By.linkText("Automatically detect server capabilities"));
+        getWebDriver().waitUntilElementIsLocated(By.id("updateDefaultsCapabilities"));
 
         assertTextPresent("ruby-1.9.3-p0@default");
     }
