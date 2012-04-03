@@ -10,7 +10,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
@@ -31,6 +34,11 @@ public class SystemRubyLocatorTest {
     public void testListRubyRuntimes() throws Exception {
 
         List<RubyRuntime> rubyRuntimeList =  systemRubyLocator.listRubyRuntimes();
+
+        assertThat(rubyRuntimeList.size(), equalTo(1));
+
+        assertThat(rubyRuntimeList.get(0).getRubyName(), equalTo("1.8.7-p249"));
+
 
     }
 }
