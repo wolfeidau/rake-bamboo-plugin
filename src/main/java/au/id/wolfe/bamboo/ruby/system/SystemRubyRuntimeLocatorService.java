@@ -3,6 +3,7 @@ package au.id.wolfe.bamboo.ruby.system;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
+import org.apache.commons.lang.SystemUtils;
 
 /**
  * Minimal ruby runtime manager designed to locate system installations.
@@ -11,7 +12,7 @@ public class SystemRubyRuntimeLocatorService implements RubyRuntimeLocatorServic
 
     public static final String MANAGER_LABEL = "SYSTEM";
 
-    public SystemRubyLocator systemRubyLocator;
+    private final SystemRubyLocator systemRubyLocator;
 
     public SystemRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
         systemRubyLocator = new SystemRubyLocator(fileSystemHelper);
@@ -24,7 +25,7 @@ public class SystemRubyRuntimeLocatorService implements RubyRuntimeLocatorServic
 
     @Override
     public boolean isInstalled() {
-        return true;
+        return SystemUtils.IS_OS_UNIX;
     }
 
     @Override

@@ -1,11 +1,11 @@
-package au.id.wolfe.bamboo.ruby.system;
+package au.id.wolfe.bamboo.ruby.windows;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
+import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,32 +18,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.buildPath;
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.parseRubyVersionString;
-import static au.id.wolfe.bamboo.ruby.util.ExecUtils.cmdExec;
 import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getGemPathString;
 import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
 
 /**
- * Locates system ruby installations.
- * <p/>
- * This assumes that
- * - the shell environment MAY be tainted by RVM so it is avoided.
- * - the 'gem' executable is in the same path as the 'ruby' executable.
- * - at the moment I will locate only one installation to keep it simple.
+ * Locates Ruby run times installed in windows.
  */
-public class SystemRubyLocator implements RubyLocator {
+public class WindowsRubyLocator implements RubyLocator {
 
-    private static final Logger log = LoggerFactory.getLogger(SystemRubyLocator.class);
-
+    private static final Logger log = LoggerFactory.getLogger(WindowsRubyLocator.class);
     private static final List<String> filterList =
             ImmutableList.of(EnvUtils.MY_RUBY_HOME, EnvUtils.GEM_HOME, EnvUtils.GEM_PATH, EnvUtils.BUNDLE_HOME);
 
-    private static final List<String> searchPaths = ImmutableList.of("/usr/bin", "/usr/local/bin");
-
     private final FileSystemHelper fileSystemHelper;
 
-    public SystemRubyLocator(FileSystemHelper fileSystemHelper) {
+    public WindowsRubyLocator(FileSystemHelper fileSystemHelper) {
         this.fileSystemHelper = fileSystemHelper;
     }
 
@@ -66,11 +56,15 @@ public class SystemRubyLocator implements RubyLocator {
     @Override
     public String searchForRubyExecutable(String rubyRuntimeName, String name) {
 
-        // currently commands are found in the /usr/bin directory or not at all.
-        for (String path : searchPaths) {
-            if (fileSystemHelper.executableFileExists(path, name)) {
-                return path + File.separator + name;
-            }
+        // I don't really like this however it will work as long as the user
+        // doesn't have more than one ruby installed. Need to do more research
+        // on how best to deal with that.
+        File rubyExecutable = ExecutablePathUtils.detectExecutableOnPath(name);
+
+        log.info("ruby executable {}", rubyExecutable);
+
+        if (rubyExecutable != null) {
+            return rubyExecutable.getPath();
         }
 
         throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
@@ -98,36 +92,40 @@ public class SystemRubyLocator implements RubyLocator {
         throw new PathNotFoundException("Ruby runtime not found for - " + rubyRuntimeName);
     }
 
-    //
     @Override
     public List<RubyRuntime> listRubyRuntimes() {
 
         List<RubyRuntime> rubyRuntimeList = Lists.newLinkedList();
 
-        // only currently supports *nix
-        if (SystemUtils.IS_OS_UNIX) {
-            for (String path : searchPaths) {
+        // only currently supports windows
+        if (SystemUtils.IS_OS_WINDOWS) {
 
-                if (fileSystemHelper.pathExists(path, "ruby") && fileSystemHelper.pathExists(path, "gem")) {
-                    try {
+            File rubyExecutable = ExecutablePathUtils.detectExecutableOnPath("ruby");
+            log.info("ruby executable {}", rubyExecutable);
 
-                        final String rubyExecutablePath = buildPath(path, "ruby");
-                        final String rubyVersionString = getRubyVersionString(rubyExecutablePath);
-                        final String version = parseRubyVersionString(rubyVersionString);
-                        final String gemPathString = getGemPathString(buildPath(path, "gem"));
+            File gemExecutable = ExecutablePathUtils.detectExecutableOnPath("gem");
+            log.info("gem executable {}", gemExecutable);
 
-                        rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutablePath, gemPathString));
+            if (rubyExecutable != null && gemExecutable != null) {
 
-                    } catch (IOException e) {
-                        log.error("IO Exception occurred trying to build Ruby Runtime - " + e.getMessage());
-                    } catch (InterruptedException e) {
-                        log.error("Interrupted Exception occurred trying to build Ruby Runtime - " + e.getMessage());
-                    }
+                try {
+
+                    final String rubyVersionString = getRubyVersionString(rubyExecutable.getPath());
+                    final String version = parseRubyVersionString(rubyVersionString);
+                    final String gemPathString = getGemPathString(gemExecutable.getPath());
+
+                    rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutable.getPath(), gemPathString));
+
+                } catch (IOException e) {
+                    log.error("IO Exception occurred trying to build Ruby Runtime - " + e.getMessage());
+                } catch (InterruptedException e) {
+                    log.error("Interrupted Exception occurred trying to build Ruby Runtime - " + e.getMessage());
                 }
-
             }
-        }  else {
-            log.warn("This plugin currently only supports UNIX based operating systems.");
+
+
+        } else {
+            log.warn("This plugin currently only supports Windows based operating systems.");
         }
 
         return rubyRuntimeList;
@@ -149,7 +147,6 @@ public class SystemRubyLocator implements RubyLocator {
 
     @Override
     public boolean isReadOnly() {
-        return true;
+        return false;
     }
-
 }
