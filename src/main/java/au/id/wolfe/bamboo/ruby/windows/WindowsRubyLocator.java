@@ -5,7 +5,6 @@ import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -13,7 +12,6 @@ import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

@@ -4,6 +4,7 @@ import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.system.SystemRubyRuntimeLocatorService;
+import au.id.wolfe.bamboo.ruby.windows.WindowsRubyRuntimeLocatorService;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,14 @@ public class RubyLocatorServiceFactory {
     private final List<RubyRuntimeLocatorService> rubyRuntimeLocatorServices;
 
     public RubyLocatorServiceFactory(SystemRubyRuntimeLocatorService systemRubyRuntimeLocatorService,
-                                     RvmRubyRuntimeLocatorService rvmRubyRuntimeLocatorService) {
-        log.info("Loading ruby runtime managers {} {}", systemRubyRuntimeLocatorService, rvmRubyRuntimeLocatorService);
-        rubyRuntimeLocatorServices = Lists.newArrayList(systemRubyRuntimeLocatorService, rvmRubyRuntimeLocatorService);
+                                     RvmRubyRuntimeLocatorService rvmRubyRuntimeLocatorService,
+                                     WindowsRubyRuntimeLocatorService windowsRubyRuntimeLocatorService) {
+
+        rubyRuntimeLocatorServices = Lists.newArrayList(systemRubyRuntimeLocatorService,
+                rvmRubyRuntimeLocatorService,
+                windowsRubyRuntimeLocatorService);
+
+        log.info("Loading ruby runtime managers {} ", rubyRuntimeLocatorServices);
 
     }
 
