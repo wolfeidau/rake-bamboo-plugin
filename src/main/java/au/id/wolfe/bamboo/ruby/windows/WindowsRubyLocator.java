@@ -59,12 +59,12 @@ public class WindowsRubyLocator implements RubyLocator {
         // I don't really like this however it will work as long as the user
         // doesn't have more than one ruby installed. Need to do more research
         // on how best to deal with that.
-        File rubyExecutable = ExecutablePathUtils.detectExecutableOnPath(name);
+        String rubyExecutable = fileSystemHelper.detectExecutableOnPath(name);
 
         log.info("ruby executable {}", rubyExecutable);
 
         if (rubyExecutable != null) {
-            return rubyExecutable.getPath();
+            return rubyExecutable;
         }
 
         throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
@@ -100,21 +100,21 @@ public class WindowsRubyLocator implements RubyLocator {
         // only currently supports windows
         if (SystemUtils.IS_OS_WINDOWS) {
 
-            File rubyExecutable = ExecutablePathUtils.detectExecutableOnPath("ruby");
+            final String rubyExecutable = fileSystemHelper.detectExecutableOnPath("ruby");
             log.info("ruby executable {}", rubyExecutable);
 
-            File gemExecutable = ExecutablePathUtils.detectExecutableOnPath("gem");
+            final String gemExecutable = fileSystemHelper.detectExecutableOnPath("gem");
             log.info("gem executable {}", gemExecutable);
 
             if (rubyExecutable != null && gemExecutable != null) {
 
                 try {
 
-                    final String rubyVersionString = getRubyVersionString(rubyExecutable.getPath());
+                    final String rubyVersionString = getRubyVersionString(rubyExecutable);
                     final String version = parseRubyVersionString(rubyVersionString);
-                    final String gemPathString = getGemPathString(gemExecutable.getPath());
+                    final String gemPathString = getGemPathString(gemExecutable);
 
-                    rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutable.getPath(), gemPathString));
+                    rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutable, gemPathString));
 
                 } catch (IOException e) {
                     log.error("IO Exception occurred trying to build Ruby Runtime - " + e.getMessage());

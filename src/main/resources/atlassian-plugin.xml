@@ -11,6 +11,9 @@
     <component key="rvmLocatorService" name="RVM Locator Service"
         class="au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService" />
 
+    <component key="windowsLocatorService" name="Windows Ruby Locator Service"
+               class="au.id.wolfe.bamboo.ruby.windows.WindowsRubyRuntimeLocatorService" />
+
     <component key="systemLocatorService" name="System Ruby Locator Service"
                class="au.id.wolfe.bamboo.ruby.system.SystemRubyRuntimeLocatorService" />
 

@@ -1,6 +1,7 @@
 package au.id.wolfe.bamboo.ruby.util;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
+import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import com.google.common.base.Preconditions;
 
 import java.io.File;
@@ -124,6 +125,17 @@ public class FileSystemHelper {
         Preconditions.checkArgument(file.isDirectory(), "The path supplied is not a directory.");
 
         return Arrays.asList(file.list(fileNameFilter));
+
+    }
+
+    public String detectExecutableOnPath(String executableName){
+
+        File executable = ExecutablePathUtils.detectExecutableOnPath(executableName);
+        if (executable == null){
+            return null;
+        } else {
+            return executable.getAbsolutePath();
+        }
 
     }
 }
