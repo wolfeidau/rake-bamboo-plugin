@@ -128,14 +128,4 @@ public class FileSystemHelper {
 
     }
 
-    public String detectExecutableOnPath(String executableName){
-
-        File executable = ExecutablePathUtils.detectExecutableOnPath(executableName);
-        if (executable == null){
-            return null;
-        } else {
-            return executable.getAbsolutePath();
-        }
-
-    }
 }

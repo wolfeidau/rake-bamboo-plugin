@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.windows;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.util.ExecHelper;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import org.apache.commons.lang.SystemUtils;
 
@@ -14,8 +15,8 @@ public class WindowsRubyRuntimeLocatorService implements RubyRuntimeLocatorServi
 
     private final WindowsRubyLocator windowsRubyLocator;
 
-    public WindowsRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
-        this.windowsRubyLocator = new WindowsRubyLocator(fileSystemHelper);
+    public WindowsRubyRuntimeLocatorService(ExecHelper execHelper) {
+        this.windowsRubyLocator = new WindowsRubyLocator(execHelper);
     }
 
     @Override

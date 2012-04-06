@@ -15,6 +15,10 @@ public final class ExecUtils {
     private static final Logger log = LoggerFactory.getLogger(ExecUtils.class);
 
     public static int cmdExec(String cmdLine, StringBuffer output) throws IOException, InterruptedException {
+        return cmdExec(cmdLine, output, false);
+    }
+
+    public static int cmdExec(String cmdLine, StringBuffer output, boolean multiline) throws IOException, InterruptedException {
 
         String line;
 
@@ -24,7 +28,12 @@ public final class ExecUtils {
                 (new InputStreamReader(p.getInputStream()));
 
         while ((line = input.readLine()) != null) {
-            output.append(line);
+            if (multiline){
+                output.append(line);
+                output.append(System.getProperty("line.separator"));
+            } else {
+                output.append(line);
+            }
         }
         input.close();
 

@@ -5,6 +5,9 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
     </plugin-info>
 
+    <component key="execHelper" name="Exec Helper"
+               class="au.id.wolfe.bamboo.ruby.util.ExecHelper"/>
+
     <component key="fileSystemHelper" name="File System Helper"
                class="au.id.wolfe.bamboo.ruby.util.FileSystemHelper"/>
 
