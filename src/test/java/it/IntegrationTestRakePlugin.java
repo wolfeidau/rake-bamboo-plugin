@@ -12,7 +12,6 @@ import org.openqa.selenium.By;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Basic tests for the rake plugin and supporting classes.
@@ -35,7 +34,7 @@ public class IntegrationTestRakePlugin extends TestCase {
 
         getWebDriver().waitUntilElementIsLocated(By.id("updateDefaultsCapabilities"));
 
-        assertTextPresent("ruby-1.9.3-p0@default");
+        assertTextPresent("1.8.7-p249@default");
     }
 
     public void testAddingRakeTaskToDefaultJob() throws Exception {
