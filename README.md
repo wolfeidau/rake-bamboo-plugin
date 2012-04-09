@@ -104,7 +104,7 @@ To enable test reporting do as follows.
 
         group :test do
             gem "rspec_junit_formatter"
-        done
+        end
 
 2. Edit your the .rspec file in the base of your project and replace the contents with.
 
@@ -131,6 +131,26 @@ In version 1.5 I added support for more than one ruby version manager. The ones 
 To enable this feature a concept of runtime labels was introduced, these are in the form of ruby runtime manager then ruby version and gemset (for those without gemsets everything it is set to default) for example 'RVM 1.9.3-p0@rails32'.
 
 When the plugin encounters a runtime label which has no ruby runtime manager as with existing installations it will just use RVM.
+
+# Windows Support
+
+As of version 1.6 I added a ruby runtime manager which supports detection of ruby on windows systems, there are some caveats on how this is done.
+
+1. I have tested this using the [rails installer](http://railsinstaller.org/) project as the ONLY ruby installed on the system. On my test system I verified there was only on installation of ruby.exe using the which command.
+
+        Microsoft Windows [Version 6.1.7601]
+        Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+        C:\Users\markw>where ruby.exe
+        C:\RailsInstaller\Ruby1.9.3\bin\ruby.exe
+
+        C:\Users\markw>
+
+2. The current release only supports detection of a single ruby runtime, being the first one in the %PATH%.
+
+3. As the rails installer updates the %PATH% variable you will need to restart your bamboo server after installing the rails installer.
+
+I have tested this with a simple gem project built with bundler and a rails 3.2 project. The only issue I had was related ot the Javascript runtime used by the asset pipeline, however this won't be an issue if you create your project using `rails new` on windows.
 
 # Links
 

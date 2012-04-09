@@ -24,6 +24,10 @@ import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
 
 /**
  * Locates Ruby run times installed in windows.
+ *
+ * This ruby locator uses a pretty simplistic method of runtime detection being the which command in windows. This
+ * command searches the path for all instances of the file passed in. This routine will take the first instance of
+ * said command and return it.
  */
 public class WindowsRubyLocator implements RubyLocator {
 
@@ -40,7 +44,7 @@ public class WindowsRubyLocator implements RubyLocator {
     @Override
     public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
 
-        Map<String, String> filteredRubyEnv = Maps.newHashMap();
+        final Map<String, String> filteredRubyEnv = Maps.newHashMap();
 
         // As everything is static with the system ruby install we just need to clean this stuff
         // out of the environment and let ruby do it's thing.
@@ -160,7 +164,7 @@ public class WindowsRubyLocator implements RubyLocator {
                 throw new PathNotFoundException("Unable to locate executable - " + executableName);
             }
 
-            LineReader lineReader = new LineReader(new StringReader(executablePathOutput));
+            final LineReader lineReader = new LineReader(new StringReader(executablePathOutput));
 
             String line;
 
@@ -168,9 +172,9 @@ public class WindowsRubyLocator implements RubyLocator {
                 return line;
             }
         } catch (IOException e) {
-            log.error("IOException occured locating executable - " + e.getMessage());
+            log.error("IOException occurred locating executable - " + e.getMessage());
         } catch (InterruptedException e) {
-            log.error("Interrupted occured locating executable - " + e.getMessage());
+            log.error("Interrupted occurred locating executable - " + e.getMessage());
         }
 
         throw new PathNotFoundException("Unable to locate executable - " + executableName);
