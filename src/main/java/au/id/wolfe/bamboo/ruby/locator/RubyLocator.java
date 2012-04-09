@@ -1,7 +1,6 @@
 package au.id.wolfe.bamboo.ruby.locator;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ public interface RubyLocator {
 
     /**
      * Given a ruby name 1.9.3-p0 and gem set name rails31 return a ruby runtime object for it.
-     *
+     * <p/>
      * This also checks the ruby and gem set exist.
      *
      * @param rubyName   The name of the ruby
@@ -46,7 +45,7 @@ public interface RubyLocator {
 
     /**
      * Given a ruby runtime name for example 1.9.3-p0@rails31 return a ruby runtime object for it.
-     *
+     * <p/>
      * This also checks the ruby and gem set exist.
      *
      * @param rubyRuntimeName The name of the ruby runtime
@@ -74,6 +73,7 @@ public interface RubyLocator {
 
     /**
      * Indicates whether the ruby installations are read only, for instance RVM system installations.
+     *
      * @return true if ready only installation(s) of ruby.
      */
     boolean isReadOnly();

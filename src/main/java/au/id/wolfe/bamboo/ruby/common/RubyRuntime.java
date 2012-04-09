@@ -51,4 +51,13 @@ public class RubyRuntime {
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }
+
+    @Override
+    public int hashCode() {
+        int result = rubyName != null ? rubyName.hashCode() : 0;
+        result = 31 * result + (gemSetName != null ? gemSetName.hashCode() : 0);
+        result = 31 * result + (rubyExecutablePath != null ? rubyExecutablePath.hashCode() : 0);
+        result = 31 * result + (gemPath != null ? gemPath.hashCode() : 0);
+        return result;
+    }
 }

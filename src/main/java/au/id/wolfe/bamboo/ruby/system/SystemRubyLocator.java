@@ -3,7 +3,6 @@ package au.id.wolfe.bamboo.ruby.system;
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
@@ -20,7 +19,6 @@ import java.util.Map;
 
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.buildPath;
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.parseRubyVersionString;
-import static au.id.wolfe.bamboo.ruby.util.ExecUtils.cmdExec;
 import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getGemPathString;
 import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
 
@@ -54,9 +52,9 @@ public class SystemRubyLocator implements RubyLocator {
 
         // As everything is static with the system ruby install we just need to clean this stuff
         // out of the environment and let ruby do it's thing.
-        for (String key : currentEnv.keySet()) {
-            if (!filterList.contains(key)) {
-                filteredRubyEnv.put(key, currentEnv.get(key));
+        for (Map.Entry<String, String> entry : currentEnv.entrySet()) {
+            if (!filterList.contains(entry.getKey())) {
+                filteredRubyEnv.put(entry.getKey(), entry.getValue());
             }
         }
 
@@ -126,7 +124,7 @@ public class SystemRubyLocator implements RubyLocator {
                 }
 
             }
-        }  else {
+        } else {
             log.warn("This plugin currently only supports UNIX based operating systems.");
         }
 

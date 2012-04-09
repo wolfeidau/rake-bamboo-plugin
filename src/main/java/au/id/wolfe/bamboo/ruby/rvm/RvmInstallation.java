@@ -58,4 +58,12 @@ public class RvmInstallation {
         return EqualsBuilder.reflectionEquals(this, o);
     }
 
+    @Override
+    public int hashCode() {
+        int result = installType != null ? installType.hashCode() : 0;
+        result = 31 * result + (installPath != null ? installPath.hashCode() : 0);
+        result = 31 * result + (rubiesPath != null ? rubiesPath.hashCode() : 0);
+        result = 31 * result + (gemsPath != null ? gemsPath.hashCode() : 0);
+        return result;
+    }
 }

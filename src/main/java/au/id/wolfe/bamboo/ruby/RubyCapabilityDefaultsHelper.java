@@ -1,10 +1,9 @@
 package au.id.wolfe.bamboo.ruby;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.tasks.rake.RakeTask;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
