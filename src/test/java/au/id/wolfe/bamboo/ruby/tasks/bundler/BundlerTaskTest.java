@@ -78,22 +78,6 @@ public class BundlerTaskTest {
         assertTrue(commandList.contains(BundlerTask.BUNDLE_INSTALL_ARG));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testBuildCommandListWhenRvmInstallationIsTypeSystem() {
-
-        RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        ConfigurationMap configurationMap = new ConfigurationMapImpl();
-
-        configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
-
-        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
-        when(rvmRubyLocator.isReadOnly()).thenReturn(true);
-
-        bundlerTaskTester.buildCommandList(rubyLabel, configurationMap);
-    }
-
     @Test
     public void testBuildEnvironment() {
         RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
