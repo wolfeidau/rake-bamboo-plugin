@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.id.wolfe.bamboo</groupId>
     <artifactId>rake-bamboo-plugin</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
     <name>Ruby Rake Plugin</name>
     <description>Ruby rake plugin for Atlassian Bamboo.</description>
     <packaging>atlassian-plugin</packaging>
