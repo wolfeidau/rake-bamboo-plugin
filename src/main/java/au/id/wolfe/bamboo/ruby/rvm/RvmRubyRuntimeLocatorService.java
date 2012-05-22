@@ -7,6 +7,8 @@ import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import org.apache.commons.lang.SystemUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -14,6 +16,8 @@ import java.io.File;
  * RVM Utility methods, these are entirely  as there is only one filesystem involved.
  */
 public class RvmRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
+
+    private static final Logger log = LoggerFactory.getLogger(RvmRubyRuntimeLocatorService.class);
 
     public static final String MANAGER_LABEL = "RVM";
 
@@ -42,15 +46,20 @@ public class RvmRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
 
         // No RVM on windows at the moment.
         if (SystemUtils.IS_OS_WINDOWS) {
+            log.warn("Windows isn't support for RVM installations");
             return null;
         }
 
         final String userRvmInstallPath = systemHelper.getUserHome() + File.separator + Constants.LOCAL_RVM_HOME_FOLDER_NAME;
 
+        log.info("Searching for rvm installation in users home directory located at - {}", userRvmInstallPath);
+
         // Is rvm is installed in the users home directory
         if (fileSystemHelper.pathExists(userRvmInstallPath)) {
             return checkRvmInstallation(userRvmInstallPath, RvmInstallation.Type.USER);
         }
+
+        log.info("Search for rvm installation in system paths {}", KNOWN_RVM_HOME_PATHS);
 
         // Is rvm is installed in one of the system paths
         for (String rvmSystemPath : KNOWN_RVM_HOME_PATHS) {
