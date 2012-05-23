@@ -1,18 +1,11 @@
 # Overview
 
-This is a bamboo plugin project which when installed enables configuration of rake build tasks.
-
-# Goals
-
-* Discover ruby installations managed by RVM and list them in bamboo.
-* Discover ruby installations managed by the systems package manager.
-* Perform a rake build based on selection of a ruby runtime and entry of some build targets.
-* Parse the output of RSpec2 run and display a table of results.
+This is a bamboo plugin project which when installed enables configuration of tasks which run various ruby based build tools.
 
 # Usage
 
 To use this plugin you will need a ruby runtime, this can either be the one installed by default on OSX or one installed
-via package manager in for example ubuntu. If your build server is not running as root, which is preferable, you will need
+via package manager in for example Ubuntu. If your build server is not running as root, which is preferable, you will need
 to install all the gems used by your project prior to running a build.
 
 # RVM Support
