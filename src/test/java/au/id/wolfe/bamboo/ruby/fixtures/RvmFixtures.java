@@ -19,6 +19,7 @@ public final class RvmFixtures {
     public static final String BUNDLE_HOME = GEM_HOME;
     public static final String BUNDLER_PATH = USER_HOME + "/.rvm/gems/ruby-1.9.3-p0/bin/bundle";
     public static final String RAKE_PATH = USER_HOME + "/.rvm/gems/ruby-1.9.3-p0/bin/rake";
+    public static final String CAP_PATH = USER_HOME + "/.rvm/gems/ruby-1.9.3-p0/bin/cap";
 
     private RvmFixtures() {
     }

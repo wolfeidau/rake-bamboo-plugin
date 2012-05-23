@@ -2,20 +2,14 @@ package au.id.wolfe.bamboo.ruby.tasks.rake;
 
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService;
-import au.id.wolfe.bamboo.ruby.system.SystemRubyRuntimeLocatorService;
+import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
-import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
-import com.atlassian.bamboo.process.ProcessService;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Iterator;
@@ -32,29 +26,19 @@ import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.*;
  * Do some basic checking of the rake task.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RakeTaskTest {
+public class RakeTaskTest extends AbstractTaskTest {
 
-    public static final String DB_MIGRATE_TARGET = "db:migrate";
-    @Mock
-    ProcessService processService;
+    private static final String DB_MIGRATE_TARGET = "db:migrate";
 
-    @Mock
-    RubyLocatorServiceFactory rubyLocatorServiceFactory;
-
-    @Mock
-    EnvironmentVariableAccessor environmentVariableAccessor;
-
-    @Mock
-    RvmRubyLocator rvmRubyLocator;
-
-    RakeTask rakeTaskTester = new RakeTask();
+    private RakeTask rakeTask = new RakeTask();
 
     @Before
     public void setUp() throws Exception {
 
-        rakeTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
-        rakeTaskTester.setProcessService(processService);
-        rakeTaskTester.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        rakeTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
+        rakeTask.setProcessService(processService);
+        rakeTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+
     }
 
     @Test
@@ -78,7 +62,7 @@ public class RakeTaskTest {
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
 
-        List<String> commandList = rakeTaskTester.buildCommandList(rubyLabel, configurationMap);
+        List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
 
         assertEquals(5, commandList.size());
 
@@ -106,7 +90,7 @@ public class RakeTaskTest {
 
         when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        Map<String, String> envVars = rakeTaskTester.buildEnvironment(rubyLabel, configurationMap);
+        Map<String, String> envVars = rakeTask.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
 

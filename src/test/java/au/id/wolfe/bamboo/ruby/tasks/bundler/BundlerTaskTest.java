@@ -2,18 +2,14 @@ package au.id.wolfe.bamboo.ruby.tasks.bundler;
 
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
+import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
-import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
-import com.atlassian.bamboo.process.ProcessService;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
@@ -27,30 +23,18 @@ import static org.mockito.Mockito.when;
  * Do some basic checking of the bundler task.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BundlerTaskTest {
+public class BundlerTaskTest extends AbstractTaskTest {
 
-    @Mock
-    ProcessService processService;
-
-    @Mock
-    RubyLocatorServiceFactory rubyLocatorServiceFactory;
-
-    @Mock
-    EnvironmentVariableAccessor environmentVariableAccessor;
-
-    @Mock
-    RvmRubyLocator rvmRubyLocator;
-
-    BundlerTask bundlerTaskTester = new BundlerTask();
+    BundlerTask bundlerTask = new BundlerTask();
 
     @Before
     public void setUp() throws Exception {
 
-        bundlerTaskTester.setEnvironmentVariableAccessor(environmentVariableAccessor);
-        bundlerTaskTester.setProcessService(processService);
+        bundlerTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
+        bundlerTask.setProcessService(processService);
 
         //rubyLocatorServiceFactory.setRvmLocatorService(rvmLocatorService);
-        bundlerTaskTester.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        bundlerTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
         
     }
 
@@ -69,7 +53,7 @@ public class BundlerTaskTest {
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerTask.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
-        List<String> commandList = bundlerTaskTester.buildCommandList(rubyLabel, configurationMap);
+        List<String> commandList = bundlerTask.buildCommandList(rubyLabel, configurationMap);
 
         assertTrue(commandList.size() == 3);
 
@@ -91,7 +75,7 @@ public class BundlerTaskTest {
 
         when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        Map<String, String> envVars = bundlerTaskTester.buildEnvironment(rubyLabel, configurationMap);
+        Map<String, String> envVars = bundlerTask.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
 

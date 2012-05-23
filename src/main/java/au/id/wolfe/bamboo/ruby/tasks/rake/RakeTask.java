@@ -4,7 +4,7 @@ import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
-import au.id.wolfe.bamboo.ruby.tasks.BaseRubyTask;
+import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.TaskType;
 import com.google.common.base.Preconditions;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Bamboo task which interfaces with RVM and runs ruby make (rake).
  */
-public class RakeTask extends BaseRubyTask implements TaskType {
+public class RakeTask extends AbstractRubyTask implements TaskType {
 
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
