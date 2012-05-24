@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.tasks.capistrano;
+package au.id.wolfe.bamboo.ruby.tasks.jekyll;
 
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
@@ -9,12 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Task which interacts with Capistrano.
- * <p/>
- * Supports the following switches:
- * --url [URL]
+ * Task which interacts with Jekyll.
  */
-public class CapistranoTask extends AbstractRubyTask {
+public class JekyllTask extends AbstractRubyTask {
 
     @Override
     protected Map<String, String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {

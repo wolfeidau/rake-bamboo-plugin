@@ -11,15 +11,15 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.BUNDLE_COMMAND;
-import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.RAKE_COMMAND;
+import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.BUNDLE_COMMAND;
+import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.CAP_COMMAND;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
  * Test the Capistrano Ruby task.
  */
-public class CapistranoTaskTest extends AbstractTaskTest{
+public class CapistranoTaskTest extends AbstractTaskTest {
 
     private static final String DEPLOY_SETUP_TASKS = "deploy:setup";
 
@@ -52,7 +52,7 @@ public class CapistranoTaskTest extends AbstractTaskTest{
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
 
         List<String> commandList = capistranoTask.buildCommandList(rubyLabel, configurationMap);
 
