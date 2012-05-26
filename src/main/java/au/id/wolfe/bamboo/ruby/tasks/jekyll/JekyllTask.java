@@ -10,6 +10,9 @@ import java.util.Map;
 
 /**
  * Task which interacts with Jekyll.
+ *
+ * Arguments.
+ *  --url
  */
 public class JekyllTask extends AbstractRubyTask {
 
