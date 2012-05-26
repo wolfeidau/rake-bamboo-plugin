@@ -18,38 +18,6 @@ import java.util.Map;
 public class RakeTask extends AbstractRubyTask implements TaskType {
 
     @Override
-    protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
-
-        final RubyLocator rvmRubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
-
-        final String rakefile = config.get("rakefile");
-        final String rakelibdir = config.get("rakelibdir");
-
-        final String targets = config.get("targets");
-        Preconditions.checkArgument(targets != null);
-
-        final String bundleExecFlag = config.get("bundleexec");
-        final String verboseFlag = config.get("verbose");
-        final String traceFlag = config.get("trace");
-
-        final List<String> targetList = RvmUtils.splitRakeTargets(targets);
-
-        final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
-
-        return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime)
-                .addRubyExecutable()
-                .addIfBundleExec(bundleExecFlag)
-                .addRakeExecutable()
-                .addIfRakeFile(rakefile)
-                .addIfRakeLibDir(rakelibdir)
-                .addIfVerbose(verboseFlag)
-                .addIfTrace(traceFlag)
-                .addTargets(targetList)
-                .build();
-
-    }
-
-    @Override
     protected Map<String, String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
         log.info("Using manager {} runtime {}", rubyRuntimeLabel.getRubyRuntimeManager(), rubyRuntimeLabel.getRubyRuntime());
@@ -61,5 +29,36 @@ public class RakeTask extends AbstractRubyTask implements TaskType {
         return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(), currentEnvVars);
     }
 
+    @Override
+    protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
+
+        final RubyLocator rvmRubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
+
+        final String rakeFile = config.get("rakefile");
+        final String rakeLibDir = config.get("rakelibdir");
+
+        final String targets = config.get("targets");
+        Preconditions.checkArgument(targets != null); // TODO Fix Error handling
+
+        final String bundleExecFlag = config.get("bundleexec");
+        final String verboseFlag = config.get("verbose");
+        final String traceFlag = config.get("trace");
+
+        final List<String> targetList = RvmUtils.splitRakeTargets(targets);
+
+        final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
+
+        return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime)
+                .addRubyExecutable()
+                .addIfBundleExec(bundleExecFlag)
+                .addRakeExecutable()
+                .addIfRakeFile(rakeFile)
+                .addIfRakeLibDir(rakeLibDir)
+                .addIfVerbose(verboseFlag)
+                .addIfTrace(traceFlag)
+                .addTargets(targetList)
+                .build();
+
+    }
 
 }

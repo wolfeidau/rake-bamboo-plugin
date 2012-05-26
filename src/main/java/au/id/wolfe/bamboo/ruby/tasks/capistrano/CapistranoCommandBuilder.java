@@ -14,7 +14,7 @@ import java.util.List;
 public class CapistranoCommandBuilder {
 
     public static final String BUNDLE_COMMAND = "bundle";
-    public static final String CAP_COMMAND = "rake";
+    public static final String CAP_COMMAND = "cap";
 
     public static final String BUNDLE_EXEC_ARG = "exec";
 
@@ -97,7 +97,7 @@ public class CapistranoCommandBuilder {
      * @param tasks List of targets.
      * @return Capistrano command builder.
      */
-    public CapistranoCommandBuilder addTargets(List<String> tasks) {
+    public CapistranoCommandBuilder addTasks(List<String> tasks) {
         commandList.addAll(tasks);
         return this;
     }

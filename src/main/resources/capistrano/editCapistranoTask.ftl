@@ -1,0 +1,20 @@
+[#-- @ftlvariable name="uiConfigBean" type="com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport" --]
+
+[@ww.select cssClass="builderSelectWidget" labelKey='capistrano.ruby' name='ruby'
+            list=uiConfigBean.getExecutableLabels('ruby')
+            extraUtility=addExecutableLink required='true' /]
+
+[@ww.textfield labelKey='capistrano.tasks' name='targets' required='true' cssClass="long-field" /]
+
+[@ww.checkbox labelKey='capistrano.bundleexec'
+                  name='bundleexec'
+                  toggle='true' /]
+
+[@ww.checkbox labelKey='capistrano.debug'
+                  name='debug'
+                  toggle='true' /]
+
+[@ww.checkbox labelKey='capistrano.verbose'
+                  name='verbose'
+                  toggle='true' /]
+

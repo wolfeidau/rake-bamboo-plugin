@@ -6,19 +6,30 @@ import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
+import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.BUNDLE_COMMAND;
 import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.CAP_COMMAND;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
  * Test the Capistrano Ruby task.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class CapistranoTaskTest extends AbstractTaskTest {
 
     private static final String DEPLOY_SETUP_TASKS = "deploy:setup";
@@ -36,11 +47,11 @@ public class CapistranoTaskTest extends AbstractTaskTest {
     @Override
     public void testBuildCommandList() {
 
-        RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
-        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
+        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
-        ConfigurationMap configurationMap = new ConfigurationMapImpl();
+        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("tasks", DEPLOY_SETUP_TASKS);
@@ -52,15 +63,38 @@ public class CapistranoTaskTest extends AbstractTaskTest {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
 
-        List<String> commandList = capistranoTask.buildCommandList(rubyLabel, configurationMap);
+        final List<String> commandList = capistranoTask.buildCommandList(rubyLabel, configurationMap);
 
+        final Iterator<String> commandsIterator = commandList.iterator();
+
+        assertThat(rubyRuntime.getRubyExecutablePath(), is(commandsIterator.next()));
+        assertThat(RvmFixtures.BUNDLER_PATH, is(commandsIterator.next()));
+        assertThat("exec", is(commandsIterator.next()));
+        assertThat(RvmFixtures.CAP_PATH, is(commandsIterator.next()));
+        assertThat(DEPLOY_SETUP_TASKS, is(commandsIterator.next()));
+
+        assertThat(commandList.size(), is(5));
     }
 
     @Test
     @Override
     public void testBuildEnvironment() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
+
+        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
+
+        configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
+
+        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
+
+        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
+
+        final Map<String, String> envVars = capistranoTask.buildEnvironment(rubyLabel, configurationMap);
+
+        assertThat(envVars.size(), is(0));
+
     }
 }

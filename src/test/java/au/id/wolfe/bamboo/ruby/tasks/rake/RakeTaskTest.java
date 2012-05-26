@@ -44,11 +44,11 @@ public class RakeTaskTest extends AbstractTaskTest {
     @Test
     public void testBuildCommandList() {
 
-        RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
-        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
+        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
-        ConfigurationMap configurationMap = new ConfigurationMapImpl();
+        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("targets", DB_MIGRATE_TARGET);
@@ -62,11 +62,11 @@ public class RakeTaskTest extends AbstractTaskTest {
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
 
-        List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
+        final List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
 
         assertEquals(5, commandList.size());
 
-        Iterator<String> commandsIterator = commandList.iterator();
+        final Iterator<String> commandsIterator = commandList.iterator();
 
         assertEquals(rubyRuntime.getRubyExecutablePath(), commandsIterator.next());
         assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
@@ -79,10 +79,10 @@ public class RakeTaskTest extends AbstractTaskTest {
     @Test
     public void testBuildEnvironment() {
 
-        RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-        RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
+        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
 
-        ConfigurationMap configurationMap = new ConfigurationMapImpl();
+        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
@@ -90,7 +90,7 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        Map<String, String> envVars = rakeTask.buildEnvironment(rubyLabel, configurationMap);
+        final Map<String, String> envVars = rakeTask.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
 

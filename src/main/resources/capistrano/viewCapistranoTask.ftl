@@ -1,0 +1,5 @@
+[@ww.label labelKey="Ruby" name="ruby"/]
+[@ww.label labelKey="Tasks" name="tasks"/]
+[@ww.label labelKey="Bundle Exec" name="bundleexec"/]
+[@ww.label labelKey="Debug" name="debug"/]
+[@ww.label labelKey="Verbose" name="verbose"/]
