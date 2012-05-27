@@ -4,7 +4,7 @@
             list=uiConfigBean.getExecutableLabels('ruby')
             extraUtility=addExecutableLink required='true' /]
 
-[@ww.textfield labelKey='capistrano.tasks' name='targets' required='true' cssClass="long-field" /]
+[@ww.textfield labelKey='capistrano.tasks' name='tasks' required='true' cssClass="long-field" /]
 
 [@ww.checkbox labelKey='ruby.bundleexec'
                   name='bundleexec'

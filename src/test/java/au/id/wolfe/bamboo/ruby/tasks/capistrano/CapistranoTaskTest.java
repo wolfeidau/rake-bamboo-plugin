@@ -19,10 +19,7 @@ import java.util.Map;
 import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.BUNDLE_COMMAND;
 import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.CAP_COMMAND;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
