@@ -24,11 +24,6 @@ public class BundlerTask extends AbstractRubyTask implements TaskType {
 
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
-        if(rubyLocator.isReadOnly()){
-            // TODO need to rethink the readonly flag a bit.
-            log.info("This is a system install of ruby ensure the user bamboo is running under is given permission to sudo see the README.md");
-        }
-
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 
         final List<String> commandsList = Lists.newLinkedList();
