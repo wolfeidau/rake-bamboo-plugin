@@ -1,0 +1,5 @@
+[@ww.label labelKey="ruby.runtime" name="ruby"/]
+[@ww.label labelKey="capistrano.tasks" name="tasks"/]
+[@ww.label labelKey="capistrano.bundleexec" name="bundleexec"/]
+[@ww.label labelKey="capistrano.debug" name="debug"/]
+[@ww.label labelKey="capistrano.verbose" name="verbose"/]

@@ -1,1 +1,1 @@
-[@ww.label labelKey="Ruby" name="ruby"/]
+[@ww.label labelKey="ruby.runtime" name="ruby"/]

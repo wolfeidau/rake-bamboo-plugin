@@ -74,6 +74,8 @@ public interface RubyLocator {
     /**
      * Indicates whether the ruby installations are read only, for instance RVM system installations.
      *
+     * TODO Need to actually test if stuff is read only rather than guessing based on it's path.
+     *
      * @return true if ready only installation(s) of ruby.
      */
     boolean isReadOnly();

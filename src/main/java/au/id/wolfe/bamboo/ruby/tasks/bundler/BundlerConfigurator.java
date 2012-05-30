@@ -1,5 +1,7 @@
 package au.id.wolfe.bamboo.ruby.tasks.bundler;
 
+import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
+import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskDefinition;
@@ -16,17 +18,7 @@ import java.util.Map;
 /**
  * Bundler configurator which acts as a binding to the task UI in bamboo.
  */
-public class BundlerConfigurator extends AbstractTaskConfigurator {
-
-    private static final Logger log = LoggerFactory.getLogger(BundlerConfigurator.class);
-
-    public static final String CREATE_MODE = "create";
-    public static final String EDIT_MODE = "edit";
-    public static final String MODE = "mode";
-
-    private static final String CTX_UI_CONFIG_BEAN = "uiConfigBean";
-
-    private UIConfigSupport uiConfigBean;
+public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
     @NotNull
     @Override
@@ -40,8 +32,8 @@ public class BundlerConfigurator extends AbstractTaskConfigurator {
 
     @Override
     public void populateContextForCreate(@NotNull Map<String, Object> context) {
-        super.populateContextForCreate(context);
-        log.info("populateContextForCreate");
+
+        log.debug("populateContextForCreate");
 
         context.put("ruby", "");
 
@@ -52,8 +44,7 @@ public class BundlerConfigurator extends AbstractTaskConfigurator {
     @Override
     public void populateContextForEdit(@NotNull Map<String, Object> context, @NotNull TaskDefinition taskDefinition) {
 
-        super.populateContextForEdit(context, taskDefinition);
-        log.info("populateContextForEdit");
+        log.debug("populateContextForEdit");
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
 
@@ -64,8 +55,7 @@ public class BundlerConfigurator extends AbstractTaskConfigurator {
     @Override
     public void populateContextForView(@NotNull Map<String, Object> context, @NotNull TaskDefinition taskDefinition) {
 
-        super.populateContextForView(context, taskDefinition);
-        log.info("populateContextForView");
+        log.debug("populateContextForView");
 
         context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
 
@@ -73,7 +63,6 @@ public class BundlerConfigurator extends AbstractTaskConfigurator {
 
     @Override
     public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
-        super.validate(params, errorCollection);
 
         String ruby = params.getString("ruby");
 
@@ -81,9 +70,5 @@ public class BundlerConfigurator extends AbstractTaskConfigurator {
             errorCollection.addError("ruby", "You must specify a ruby runtime");
         }
 
-    }
-
-    public void setUiConfigBean(final UIConfigSupport uiConfigBean) {
-        this.uiConfigBean = uiConfigBean;
     }
 }

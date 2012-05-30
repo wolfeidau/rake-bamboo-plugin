@@ -4,21 +4,17 @@
             list=uiConfigBean.getExecutableLabels('ruby')
             extraUtility=addExecutableLink required='true' /]
 
-[@ww.textfield labelKey='rake.rakefile' name='rakefile' required='false' cssClass="long-field" /]
-
-[@ww.textfield labelKey='rake.rakelibdir' name='rakelibdir' required='false' cssClass="long-field" /]
-
-[@ww.textfield labelKey='rake.targets' name='targets' required='true' cssClass="long-field" /]
+[@ww.textfield labelKey='capistrano.tasks' name='tasks' required='true' cssClass="long-field" /]
 
 [@ww.checkbox labelKey='ruby.bundleexec'
                   name='bundleexec'
                   toggle='true' /]
 
-[@ww.checkbox labelKey='rake.trace'
-                  name='trace'
+[@ww.checkbox labelKey='capistrano.debug'
+                  name='debug'
                   toggle='true' /]
 
-[@ww.checkbox labelKey='rake.verbose'
+[@ww.checkbox labelKey='capistrano.verbose'
                   name='verbose'
                   toggle='true' /]
 

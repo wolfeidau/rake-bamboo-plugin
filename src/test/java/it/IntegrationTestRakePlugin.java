@@ -34,7 +34,7 @@ public class IntegrationTestRakePlugin extends TestCase {
 
         getWebDriver().waitUntilElementIsLocated(By.id("updateDefaultsCapabilities"));
 
-        assertTextPresent("1.8.7-p249@default");
+        assertTextPresent("1.8.7-p352@default");
     }
 
     public void testAddingRakeTaskToDefaultJob() throws Exception {
