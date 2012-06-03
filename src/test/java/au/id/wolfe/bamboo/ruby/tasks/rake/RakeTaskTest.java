@@ -71,7 +71,7 @@ public class RakeTaskTest extends AbstractTaskTest {
         assertEquals(rubyRuntime.getRubyExecutablePath(), commandsIterator.next());
         assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
         assertEquals(BUNDLE_EXEC_ARG, commandsIterator.next());
-        assertEquals(RvmFixtures.RAKE_PATH, commandsIterator.next());
+        assertEquals(RakeCommandBuilder.RAKE_COMMAND, commandsIterator.next());
         assertEquals(DB_MIGRATE_TARGET, commandsIterator.next());
     }
 

@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Builder to assemble the rake command list.
+ *
+ * TODO Need to reconsider the design of this class, probably moving to properties over a list, with the command list being built in the build method.
  */
 public class RakeCommandBuilder {
 
@@ -27,6 +29,8 @@ public class RakeCommandBuilder {
 
     private RubyLocator rvmRubyLocator;
     private RubyRuntime rubyRuntime;
+
+    private boolean bundleExecFlagSet = false;
 
     private List<String> commandList = Lists.newLinkedList();
 
@@ -55,6 +59,7 @@ public class RakeCommandBuilder {
         if (BooleanUtils.toBoolean(bundleFlag)) {
             commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
+            bundleExecFlagSet = true; // flag to indicate we are using bundle exec
         }
         return this;
     }
@@ -65,7 +70,11 @@ public class RakeCommandBuilder {
      * @return Rake command builder.
      */
     public RakeCommandBuilder addRakeExecutable() {
-        commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
+        if (bundleExecFlagSet){
+            commandList.add(RAKE_COMMAND);
+        } else  {
+            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
+        }
         return this;
     }
 
