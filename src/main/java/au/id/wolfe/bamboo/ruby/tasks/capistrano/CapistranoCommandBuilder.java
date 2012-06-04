@@ -60,8 +60,12 @@ public class CapistranoCommandBuilder {
      *
      * @return Capistrano command builder.
      */
-    public CapistranoCommandBuilder addCapistranoExecutable() {
-        commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND));
+    public CapistranoCommandBuilder addCapistranoExecutable(@Nullable String bundleFlag) {
+        if (BooleanUtils.toBoolean(bundleFlag)){
+            commandList.add(CAP_COMMAND);
+        } else {
+            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND));
+        }
         return this;
     }
 

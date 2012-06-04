@@ -67,7 +67,9 @@ public class RakeCommandBuilderTest {
     @Test
     public void testAddRakeExecutableWithBundleExec(){
 
-        rakeCommandBuilder.addIfBundleExec("true").addRakeExecutable();
+        final String bundleExecFlag = "true";
+
+        rakeCommandBuilder.addIfBundleExec(bundleExecFlag).addRakeExecutable(bundleExecFlag);
 
         Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
 
@@ -80,7 +82,9 @@ public class RakeCommandBuilderTest {
     @Test
     public void testAddRakeExecutable(){
 
-        rakeCommandBuilder.addRakeExecutable();
+        final String bundleExecFlag = "false";
+
+        rakeCommandBuilder.addRakeExecutable(bundleExecFlag);
 
         Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
 

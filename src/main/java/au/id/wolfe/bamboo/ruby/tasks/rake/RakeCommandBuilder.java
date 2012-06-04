@@ -27,10 +27,8 @@ public class RakeCommandBuilder {
     public static final String VERBOSE_ARG = "--verbose";
     public static final String TRACE_ARG = "--trace";
 
-    private RubyLocator rvmRubyLocator;
-    private RubyRuntime rubyRuntime;
-
-    private boolean bundleExecFlagSet = false;
+    private final RubyLocator rvmRubyLocator;
+    private final RubyRuntime rubyRuntime;
 
     private List<String> commandList = Lists.newLinkedList();
 
@@ -59,7 +57,6 @@ public class RakeCommandBuilder {
         if (BooleanUtils.toBoolean(bundleFlag)) {
             commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
-            bundleExecFlagSet = true; // flag to indicate we are using bundle exec
         }
         return this;
     }
@@ -67,10 +64,11 @@ public class RakeCommandBuilder {
     /**
      * Append the rake executable to the command list.
      *
+     * @param bundleFlag String which takes null or "true", this indicates whether to use short command or full path.
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addRakeExecutable() {
-        if (bundleExecFlagSet){
+    public RakeCommandBuilder addRakeExecutable(@Nullable String bundleFlag) {
+        if (BooleanUtils.toBoolean(bundleFlag)){
             commandList.add(RAKE_COMMAND);
         } else  {
             commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));

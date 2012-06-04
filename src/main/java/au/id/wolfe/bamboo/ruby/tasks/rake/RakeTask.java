@@ -51,7 +51,7 @@ public class RakeTask extends AbstractRubyTask implements TaskType {
         return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime)
                 .addRubyExecutable()
                 .addIfBundleExec(bundleExecFlag)
-                .addRakeExecutable()
+                .addRakeExecutable(bundleExecFlag)
                 .addIfRakeFile(rakeFile)
                 .addIfRakeLibDir(rakeLibDir)
                 .addIfVerbose(verboseFlag)
