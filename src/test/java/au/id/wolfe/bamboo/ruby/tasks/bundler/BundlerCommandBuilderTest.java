@@ -56,6 +56,7 @@ public class BundlerCommandBuilderTest {
 
     @Test
     public void testAddInstall() throws Exception {
+
         bundlerCommandBuilder.addInstall();
         assertThat(bundlerCommandBuilder.build(), hasItem("install"));
 

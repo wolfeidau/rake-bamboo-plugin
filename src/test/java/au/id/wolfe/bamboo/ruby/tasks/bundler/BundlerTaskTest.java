@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,11 +41,10 @@ public class BundlerTaskTest extends AbstractTaskTest {
 
         bundlerTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
         bundlerTask.setProcessService(processService);
-
-        //rubyLocatorServiceFactory.setRvmLocatorService(rvmLocatorService);
         bundlerTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
+
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
     }
@@ -53,22 +53,40 @@ public class BundlerTaskTest extends AbstractTaskTest {
     public void testBuildCommandList() {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerTask.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         List<String> commandList = bundlerTask.buildCommandList(rubyLabel, configurationMap);
 
-        assertThat(commandList.size(), is(3));
+        Iterator<String> commandTokens = commandList.iterator();
 
-        assertThat(commandList, hasItem(rubyRuntime.getRubyExecutablePath()));
-        assertThat(commandList, hasItem(RvmFixtures.BUNDLER_PATH));
-        assertThat(commandList, hasItem(BundlerTask.BUNDLE_INSTALL_ARG));
+        assertThat(commandTokens.next(), is(rubyRuntime.getRubyExecutablePath()));
+        assertThat(commandTokens.next(), is(RvmFixtures.BUNDLER_PATH));
+        assertThat(commandTokens.next(), is("install"));
 
     }
 
     @Test
-    public void testBuildEnvironment() {
+    public void testBuildCommandListWithPathAndBinStubs(){
+        when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
+        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
-        when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
+        configurationMap.put("path", "gems");
+        configurationMap.put("binstubs", "true");
+
+        List<String> commandList = bundlerTask.buildCommandList(rubyLabel, configurationMap);
+
+        Iterator<String> commandTokens = commandList.iterator();
+
+        assertThat(commandTokens.next(), is(rubyRuntime.getRubyExecutablePath()));
+        assertThat(commandTokens.next(), is(RvmFixtures.BUNDLER_PATH));
+        assertThat(commandTokens.next(), is("install"));
+        assertThat(commandTokens.next(), is("--path"));
+        assertThat(commandTokens.next(), is("gems"));
+        assertThat(commandTokens.next(), is("--binstubs"));
+    }
+
+    @Test
+    public void testBuildEnvironment() {
 
         when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 

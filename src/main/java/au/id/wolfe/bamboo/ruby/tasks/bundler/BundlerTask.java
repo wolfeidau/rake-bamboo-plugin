@@ -16,24 +16,23 @@ import java.util.Map;
  */
 public class BundlerTask extends AbstractRubyTask implements TaskType {
 
-    public static final String BUNDLE_COMMAND = "bundle";
-    public static final String BUNDLE_INSTALL_ARG = "install";
-
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
+        final String path = config.get("path");
+        final String binStubsFlag = config.get("binstubs");
+
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 
-        final List<String> commandsList = Lists.newLinkedList();
-
-        commandsList.add(rubyRuntime.getRubyExecutablePath());
-
-        commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeLabel.getRubyRuntime(), BUNDLE_COMMAND));
-        commandsList.add(BUNDLE_INSTALL_ARG);
-
-        return commandsList;
+        return new BundlerCommandBuilder(rubyLocator, rubyRuntime)
+                .addRubyExecutable()
+                .addBundleExecutable()
+                .addInstall()
+                .addPath(path)
+                .addIfBinStubs(binStubsFlag)
+                .build();
     }
 
     @Override

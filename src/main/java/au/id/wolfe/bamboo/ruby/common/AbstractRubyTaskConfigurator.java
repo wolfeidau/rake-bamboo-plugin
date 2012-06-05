@@ -17,6 +17,8 @@ public class AbstractRubyTaskConfigurator extends AbstractTaskConfigurator {
     protected static final String EDIT_MODE = "edit";
     protected static final String MODE = "mode";
 
+    protected static final String RUBY_KEY = "ruby";
+
     protected static final String CTX_UI_CONFIG_BEAN = "uiConfigBean";
 
     protected UIConfigSupport uiConfigBean;

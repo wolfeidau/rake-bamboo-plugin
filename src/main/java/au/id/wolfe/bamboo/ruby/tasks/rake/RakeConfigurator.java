@@ -2,15 +2,11 @@ package au.id.wolfe.bamboo.ruby.tasks.rake;
 
 import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import com.atlassian.bamboo.collections.ActionParametersMap;
-import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
-import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -19,13 +15,15 @@ import java.util.Map;
  */
 public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
+    protected static final String BIN_STUBS_KEY = "binstubs";
+
     @NotNull
     @Override
     public Map<String, String> generateTaskConfigMap(@NotNull ActionParametersMap params, @Nullable TaskDefinition previousTaskDefinition) {
 
-        final Map<String, String> config = generateTaskConfigMap(params, previousTaskDefinition);
+        final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 
-        config.put("ruby", params.getString("ruby"));
+        config.put(RUBY_KEY, params.getString(RUBY_KEY));
         config.put("rakefile", params.getString("rakefile"));
         config.put("rakelibdir", params.getString("rakelibdir"));
         config.put("targets", params.getString("targets"));
@@ -42,7 +40,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForCreate");
 
-        context.put("ruby", "");
+        context.put(RUBY_KEY, "");
         context.put("rakefile", "");
         context.put("rakelibdir", "");
         context.put("targets", "");
@@ -60,7 +58,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForEdit");
 
-        context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
+        context.put(RUBY_KEY, taskDefinition.getConfiguration().get(RUBY_KEY));
         context.put("rakefile", taskDefinition.getConfiguration().get("rakefile"));
         context.put("rakelibdir", taskDefinition.getConfiguration().get("rakelibdir"));
         context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
@@ -79,7 +77,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForView");
 
-        context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
+        context.put(RUBY_KEY, taskDefinition.getConfiguration().get(RUBY_KEY));
         context.put("rakefile", taskDefinition.getConfiguration().get("rakefile"));
         context.put("rakelibdir", taskDefinition.getConfiguration().get("rakelibdir"));
         context.put("targets", taskDefinition.getConfiguration().get("targets"));
@@ -93,10 +91,10 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
     @Override
     public void validate(@NotNull ActionParametersMap params, @NotNull ErrorCollection errorCollection) {
 
-        final String ruby = params.getString("ruby");
+        final String ruby = params.getString(RUBY_KEY);
 
         if (StringUtils.isEmpty(ruby)) {
-            errorCollection.addError("ruby", "You must specify a ruby runtime");
+            errorCollection.addError(RUBY_KEY, "You must specify a ruby runtime");
         }
 
         final String targets = params.getString("targets");
