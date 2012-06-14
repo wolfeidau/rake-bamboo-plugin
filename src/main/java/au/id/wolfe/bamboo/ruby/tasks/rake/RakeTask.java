@@ -41,7 +41,6 @@ public class RakeTask extends AbstractRubyTask implements TaskType {
         Preconditions.checkArgument(targets != null); // TODO Fix Error handling
 
         final String bundleExecFlag = config.get("bundleexec");
-        final String binStubsFlag = config.get("binstubs");
         final String verboseFlag = config.get("verbose");
         final String traceFlag = config.get("trace");
 
