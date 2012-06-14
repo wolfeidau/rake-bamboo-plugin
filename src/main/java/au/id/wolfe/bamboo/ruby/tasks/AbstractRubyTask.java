@@ -11,6 +11,7 @@ import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.TaskException;
 import com.atlassian.bamboo.task.TaskResult;
 import com.atlassian.bamboo.task.TaskResultBuilder;
+import com.atlassian.bamboo.task.TaskType;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.utils.process.ExternalProcess;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,7 @@ import java.util.Map;
 /**
  * Basis for ruby tasks.
  */
-public abstract class AbstractRubyTask {
+public abstract class AbstractRubyTask implements TaskType {
 
     public static final String RUBY_CAPABILITY_PREFIX = CapabilityDefaultsHelper.CAPABILITY_BUILDER_PREFIX + ".ruby";
 
@@ -39,6 +40,7 @@ public abstract class AbstractRubyTask {
 
     }
 
+    @NotNull
     public TaskResult execute(@NotNull TaskContext taskContext) throws TaskException {
 
         final TaskResultBuilder taskResultBuilder = TaskResultBuilder.create(taskContext);
@@ -68,16 +70,16 @@ public abstract class AbstractRubyTask {
      * Invoked as a part of the task execute routine to enable modifications to the environment.
      *
      * @param rubyRuntimeLabel The ruby runtime label.
-     * @param config The configuration map.
+     * @param config           The configuration map.
      * @return Map containing final env to be used when executing the task.
      */
-    protected abstract Map<String,String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config);
+    protected abstract Map<String, String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config);
 
     /**
      * Invoked as a part of the task execute routine to enable building of a list of elements which will be executed.
      *
      * @param rubyRuntimeLabel The ruby runtime label.
-     * @param config The configuration map.
+     * @param config           The configuration map.
      * @return List of command elements to be executed.
      */
     protected abstract List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config);

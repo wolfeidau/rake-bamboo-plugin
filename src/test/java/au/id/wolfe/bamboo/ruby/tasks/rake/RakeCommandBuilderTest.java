@@ -25,20 +25,21 @@ public class RakeCommandBuilderTest {
 
     final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
+    RakeCommandBuilder rakeCommandBuilder;
+
     @Before
     public void setUp() throws Exception {
 
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
         when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
+        rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
     }
 
     @Test
     public void testAddRubyExecutable() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addRubyExecutable();
-
         assertEquals(1, rakeCommandBuilder.build().size());
 
         Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
@@ -49,7 +50,6 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfRakefile() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfRakeFile(null);
         assertEquals(0, rakeCommandBuilder.build().size());
@@ -65,8 +65,36 @@ public class RakeCommandBuilderTest {
     }
 
     @Test
+    public void testAddRakeExecutableWithBundleExec(){
+
+        final String bundleExecFlag = "true";
+
+        rakeCommandBuilder.addIfBundleExec(bundleExecFlag).addRakeExecutable(bundleExecFlag);
+
+        Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
+
+        assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
+        assertEquals(RakeCommandBuilder.BUNDLE_EXEC_ARG, commandsIterator.next());
+        assertEquals(RakeCommandBuilder.RAKE_COMMAND, commandsIterator.next());
+
+    }
+
+    @Test
+    public void testAddRakeExecutable(){
+
+        final String bundleExecFlag = "false";
+
+        rakeCommandBuilder.addRakeExecutable(bundleExecFlag);
+
+        Iterator<String> commandsIterator = rakeCommandBuilder.build().iterator();
+
+        assertEquals(RvmFixtures.RAKE_PATH, commandsIterator.next());
+
+    }
+
+
+    @Test
     public void testAddIfRakeLibDir() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfRakeLibDir(null);
         assertEquals(0, rakeCommandBuilder.build().size());
@@ -83,7 +111,6 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfVerbose() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfVerbose(null);
         assertEquals(0, rakeCommandBuilder.build().size());
@@ -102,7 +129,6 @@ public class RakeCommandBuilderTest {
 
     @Test
     public void testAddIfTrace() throws Exception {
-        RakeCommandBuilder rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
 
         rakeCommandBuilder.addIfTrace(null);
         assertEquals(0, rakeCommandBuilder.build().size());

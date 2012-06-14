@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Builder to assemble the rake command list.
+ * <p/>
+ * TODO Need to reconsider the design of this class, probably moving to properties over a list, with the command list being built in the build method.
  */
 public class RakeCommandBuilder {
 
@@ -25,8 +27,8 @@ public class RakeCommandBuilder {
     public static final String VERBOSE_ARG = "--verbose";
     public static final String TRACE_ARG = "--trace";
 
-    private RubyLocator rvmRubyLocator;
-    private RubyRuntime rubyRuntime;
+    private final RubyLocator rvmRubyLocator;
+    private final RubyRuntime rubyRuntime;
 
     private List<String> commandList = Lists.newLinkedList();
 
@@ -62,10 +64,15 @@ public class RakeCommandBuilder {
     /**
      * Append the rake executable to the command list.
      *
+     * @param bundleFlag String which takes null or "true", this indicates whether to use short command or full path.
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addRakeExecutable() {
-        commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
+    public RakeCommandBuilder addRakeExecutable(@Nullable String bundleFlag) {
+        if (BooleanUtils.toBoolean(bundleFlag)) {
+            commandList.add(RAKE_COMMAND);
+        } else {
+            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
+        }
         return this;
     }
 

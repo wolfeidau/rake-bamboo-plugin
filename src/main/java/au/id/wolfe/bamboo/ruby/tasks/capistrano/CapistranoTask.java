@@ -48,7 +48,7 @@ public class CapistranoTask extends AbstractRubyTask {
         return new CapistranoCommandBuilder(rubyLocator, rubyRuntime)
                 .addRubyExecutable()
                 .addIfBundleExec(bundleExecFlag)
-                .addCapistranoExecutable()
+                .addCapistranoExecutable(bundleExecFlag)
                 .addIfDebug(debugFlag)
                 .addIfVerbose(verboseFlag)
                 .addTasks(tasksList)

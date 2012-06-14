@@ -5,8 +5,6 @@ import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.task.TaskType;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Map;
@@ -14,26 +12,25 @@ import java.util.Map;
 /**
  * Bamboo task which interfaces with RVM and runs bundler to install the gems required by the project.
  */
-public class BundlerTask extends AbstractRubyTask implements TaskType {
-
-    public static final String BUNDLE_COMMAND = "bundle";
-    public static final String BUNDLE_INSTALL_ARG = "install";
+public class BundlerTask extends AbstractRubyTask {
 
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
+        final String path = config.get("path");
+        final String binStubsFlag = config.get("binstubs");
+
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 
-        final List<String> commandsList = Lists.newLinkedList();
-
-        commandsList.add(rubyRuntime.getRubyExecutablePath());
-
-        commandsList.add(rubyLocator.searchForRubyExecutable(rubyRuntimeLabel.getRubyRuntime(), BUNDLE_COMMAND));
-        commandsList.add(BUNDLE_INSTALL_ARG);
-
-        return commandsList;
+        return new BundlerCommandBuilder(rubyLocator, rubyRuntime)
+                .addRubyExecutable()
+                .addBundleExecutable()
+                .addInstall()
+                .addPath(path)
+                .addIfBinStubs(binStubsFlag)
+                .build();
     }
 
     @Override

@@ -24,9 +24,9 @@ public class CapistranoCommandBuilderTest {
     private static final String TEST_TASK = "cold:deploy";
 
     @Mock
-    RvmRubyLocator rvmRubyLocator;
+    private RvmRubyLocator rvmRubyLocator;
 
-    final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+    private final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
 
     private CapistranoCommandBuilder capistranoCommandBuilder;
 
@@ -57,8 +57,14 @@ public class CapistranoCommandBuilderTest {
 
     @Test
     public void testAddCapExecutable() throws Exception {
-        capistranoCommandBuilder.addCapistranoExecutable();
+        capistranoCommandBuilder.addCapistranoExecutable("false");
         assertThat(capistranoCommandBuilder.build(), hasItem(RvmFixtures.CAP_PATH));
+    }
+
+    @Test
+    public void testAddCapExecutableWithBundleExec() throws Exception {
+        capistranoCommandBuilder.addCapistranoExecutable("true");
+        assertThat(capistranoCommandBuilder.build(), hasItem("cap"));
     }
 
     @Test
@@ -82,7 +88,10 @@ public class CapistranoCommandBuilderTest {
 
     @Test
     public void testBuild() throws Exception {
-        capistranoCommandBuilder.addRubyExecutable().addIfBundleExec("true").addCapistranoExecutable().addIfDebug("true").addIfVerbose("true").addTasks(Lists.newArrayList(TEST_TASK));
+
+        String bundleExecFlag = "true";
+
+        capistranoCommandBuilder.addRubyExecutable().addIfBundleExec(bundleExecFlag).addCapistranoExecutable(bundleExecFlag).addIfDebug("true").addIfVerbose("true").addTasks(Lists.newArrayList(TEST_TASK));
         assertThat(capistranoCommandBuilder.build().size(), is(7));
     }
 }

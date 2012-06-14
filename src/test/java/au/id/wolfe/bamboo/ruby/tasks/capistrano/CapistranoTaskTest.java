@@ -66,11 +66,11 @@ public class CapistranoTaskTest extends AbstractTaskTest {
 
         final Iterator<String> commandsIterator = commandList.iterator();
 
-        assertThat(rubyRuntime.getRubyExecutablePath(), is(commandsIterator.next()));
-        assertThat(RvmFixtures.BUNDLER_PATH, is(commandsIterator.next()));
-        assertThat("exec", is(commandsIterator.next()));
-        assertThat(RvmFixtures.CAP_PATH, is(commandsIterator.next()));
-        assertThat(DEPLOY_SETUP_TASKS, is(commandsIterator.next()));
+        assertThat(commandsIterator.next(), is(rubyRuntime.getRubyExecutablePath()));
+        assertThat(commandsIterator.next(), is(RvmFixtures.BUNDLER_PATH));
+        assertThat(commandsIterator.next(), is("exec"));
+        assertThat(commandsIterator.next(), is("cap"));
+        assertThat(commandsIterator.next(), is(DEPLOY_SETUP_TASKS));
 
         assertThat(commandList.size(), is(5));
     }
