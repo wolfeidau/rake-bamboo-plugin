@@ -6,7 +6,6 @@ import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.task.TaskType;
 import com.google.common.base.Preconditions;
 
 import java.util.List;
