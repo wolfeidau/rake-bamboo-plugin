@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Bamboo task which interfaces with RVM and runs ruby make (rake).
  */
-public class RakeTask extends AbstractRubyTask implements TaskType {
+public class RakeTask extends AbstractRubyTask {
 
     @Override
     protected Map<String, String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {

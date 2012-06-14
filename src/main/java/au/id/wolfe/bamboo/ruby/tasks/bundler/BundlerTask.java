@@ -5,8 +5,6 @@ import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.task.TaskType;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +12,7 @@ import java.util.Map;
 /**
  * Bamboo task which interfaces with RVM and runs bundler to install the gems required by the project.
  */
-public class BundlerTask extends AbstractRubyTask implements TaskType {
+public class BundlerTask extends AbstractRubyTask {
 
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
