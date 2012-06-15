@@ -37,7 +37,7 @@ public class SystemRubyLocatorTest {
 
         assertThat(rubyRuntimeList.size(), equalTo(1));
 
-        assertThat(rubyRuntimeList.get(0).getRubyName(), equalTo("1.8.7-p357"));
+        assertThat(rubyRuntimeList.get(0).getRubyName(), equalTo("1.8.7-p352"));
 
 
     }

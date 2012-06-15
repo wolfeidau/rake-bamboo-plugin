@@ -20,6 +20,14 @@ public class RubyLocatorServiceFactory {
 
     private final List<RubyRuntimeLocatorService> rubyRuntimeLocatorServices;
 
+    public RubyLocatorServiceFactory() {
+        rubyRuntimeLocatorServices = Lists.newArrayList(new SystemRubyRuntimeLocatorService(),
+                new RvmRubyRuntimeLocatorService(),
+                new WindowsRubyRuntimeLocatorService());
+
+        log.info("Loaded ruby runtime managers {} ", rubyRuntimeLocatorServices);
+    }
+
     public RubyLocatorServiceFactory(SystemRubyRuntimeLocatorService systemRubyRuntimeLocatorService,
                                      RvmRubyRuntimeLocatorService rvmRubyRuntimeLocatorService,
                                      WindowsRubyRuntimeLocatorService windowsRubyRuntimeLocatorService) {
@@ -28,7 +36,7 @@ public class RubyLocatorServiceFactory {
                 rvmRubyRuntimeLocatorService,
                 windowsRubyRuntimeLocatorService);
 
-        log.info("Loading ruby runtime managers {} ", rubyRuntimeLocatorServices);
+        log.info("Loaded ruby runtime managers {} ", rubyRuntimeLocatorServices);
 
     }
 

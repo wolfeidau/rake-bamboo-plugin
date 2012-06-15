@@ -14,6 +14,10 @@ public class SystemRubyRuntimeLocatorService implements RubyRuntimeLocatorServic
 
     private final SystemRubyLocator systemRubyLocator;
 
+    public SystemRubyRuntimeLocatorService() {
+        systemRubyLocator = new SystemRubyLocator(new FileSystemHelper());
+    }
+
     public SystemRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
         systemRubyLocator = new SystemRubyLocator(fileSystemHelper);
     }

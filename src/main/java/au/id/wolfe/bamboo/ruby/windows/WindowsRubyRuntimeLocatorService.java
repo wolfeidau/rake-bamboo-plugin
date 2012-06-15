@@ -15,6 +15,10 @@ public class WindowsRubyRuntimeLocatorService implements RubyRuntimeLocatorServi
 
     private final WindowsRubyLocator windowsRubyLocator;
 
+    public WindowsRubyRuntimeLocatorService() {
+        this.windowsRubyLocator = new WindowsRubyLocator(new ExecHelper());
+    }
+
     public WindowsRubyRuntimeLocatorService(ExecHelper execHelper) {
         this.windowsRubyLocator = new WindowsRubyLocator(execHelper);
     }

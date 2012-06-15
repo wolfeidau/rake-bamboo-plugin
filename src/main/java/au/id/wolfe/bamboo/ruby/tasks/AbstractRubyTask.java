@@ -85,6 +85,9 @@ public abstract class AbstractRubyTask implements TaskType {
     protected abstract List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config);
 
     protected RubyLocator getRubyLocator(String rubyRuntimeManager) {
+        if (rubyLocatorServiceFactory == null) {
+            rubyLocatorServiceFactory = new RubyLocatorServiceFactory();
+        }
         return rubyLocatorServiceFactory.acquireRubyLocator(rubyRuntimeManager);
     }
 

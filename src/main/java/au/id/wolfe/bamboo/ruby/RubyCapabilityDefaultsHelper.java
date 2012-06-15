@@ -24,6 +24,10 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
 
     private final RubyLocatorServiceFactory rubyLocatorServiceFactory;
 
+    public RubyCapabilityDefaultsHelper() {
+        this.rubyLocatorServiceFactory = new RubyLocatorServiceFactory();
+    }
+
     public RubyCapabilityDefaultsHelper(RubyLocatorServiceFactory rubyLocatorServiceFactory) {
         log.info("loading rubyLocatorServiceFactory = " + rubyLocatorServiceFactory);
         this.rubyLocatorServiceFactory = rubyLocatorServiceFactory;
