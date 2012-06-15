@@ -33,7 +33,7 @@
     <scm>
         <connection>scm:git:git@github.com:wolfeidau/rake-bamboo-plugin.git</connection>
         <url>scm:git:git://github.com/wolfeidau/rake-bamboo-plugin.git</url>
-        <developerConnection>scm:git:git://github.com/wolfeidau/rake-bamboo-plugin.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:wolfeidau/rake-bamboo-plugin.git</developerConnection>
     </scm>
 
     <properties>
