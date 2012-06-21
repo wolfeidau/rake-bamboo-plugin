@@ -1,5 +1,6 @@
 package au.id.wolfe.bamboo.ruby.tasks;
 
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
@@ -48,21 +49,31 @@ public abstract class AbstractRubyTask implements TaskType {
         final ConfigurationMap config = taskContext.getConfigurationMap();
         final String rubyRuntimeLabel = config.get("ruby");
 
-        final RubyLabel rubyLabel = RubyLabel.getLabelFromString(rubyRuntimeLabel);
+        try {
 
-        Map<String, String> envVars = buildEnvironment(rubyLabel, config);
+            final RubyLabel rubyLabel = RubyLabel.getLabelFromString(rubyRuntimeLabel);
 
-        List<String> commandsList = buildCommandList(rubyLabel, config);
+            Map<String, String> envVars = buildEnvironment(rubyLabel, config);
 
-        ExternalProcess externalProcess = processService.createProcess(taskContext,
-                new ExternalProcessBuilder()
-                        .env(envVars)
-                        .command(commandsList)
-                        .workingDirectory(taskContext.getWorkingDirectory()));
+            List<String> commandsList = buildCommandList(rubyLabel, config);
 
-        externalProcess.execute();
+            ExternalProcess externalProcess = processService.createProcess(taskContext,
+                    new ExternalProcessBuilder()
+                            .env(envVars)
+                            .command(commandsList)
+                            .workingDirectory(taskContext.getWorkingDirectory()));
 
-        return taskResultBuilder.checkReturnCode(externalProcess, 0).build();
+            externalProcess.execute();
+
+            return taskResultBuilder.checkReturnCode(externalProcess, 0).build();
+
+        } catch (IllegalArgumentException e){
+            taskContext.getBuildContext().getErrorCollection().addErrorMessage(e.getMessage());
+            return TaskResultBuilder.create(taskContext).failedWithError().build();
+        } catch (PathNotFoundException e ){
+            taskContext.getBuildContext().getErrorCollection().addErrorMessage(e.getMessage());
+            return TaskResultBuilder.create(taskContext).failedWithError().build();
+        }
 
     }
 
