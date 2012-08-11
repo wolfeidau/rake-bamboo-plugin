@@ -3,7 +3,6 @@ package au.id.wolfe.bamboo.ruby.system;
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -19,6 +18,7 @@ import java.util.Map;
 
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.buildPath;
 import static au.id.wolfe.bamboo.ruby.system.SystemRubyUtils.parseRubyVersionString;
+import static au.id.wolfe.bamboo.ruby.util.EnvUtils.filterList;
 import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getGemPathString;
 import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
 
@@ -33,9 +33,6 @@ import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
 public class SystemRubyLocator implements RubyLocator {
 
     private static final Logger log = LoggerFactory.getLogger(SystemRubyLocator.class);
-
-    private static final List<String> filterList =
-            ImmutableList.of(EnvUtils.MY_RUBY_HOME, EnvUtils.GEM_HOME, EnvUtils.GEM_PATH, EnvUtils.BUNDLE_HOME);
 
     private static final List<String> searchPaths = ImmutableList.of("/usr/bin", "/usr/local/bin");
 
