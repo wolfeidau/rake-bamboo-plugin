@@ -7,6 +7,7 @@ import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,6 +70,8 @@ public class RbenvRubyLocatorTest {
     @Test
     public void testSearchForRubyExecutable() throws Exception {
 
+        assertThat(rbenvRubyLocator.searchForRubyExecutable("1.9.2-p290@default", "rake"),
+                equalTo("/Users/markw/.rbenv/versions/1.9.2-p290/bin/rake"));
     }
 
     @Test
@@ -84,7 +87,7 @@ public class RbenvRubyLocatorTest {
 
         doThrow(new PathNotFoundException("Some exception")).when(fileSystemHelper).assertPathExists(ruby192p290default.getRubyExecutablePath(), "Unable to location ruby executable for " + ruby192p290default.getRubyName());
 
-        RubyRuntime rubyRuntime = rbenvRubyLocator.getRubyRuntime("1.9.2-p290", "default");
+        rbenvRubyLocator.getRubyRuntime("1.9.2-p290", "default");
 
     }
 
@@ -110,6 +113,14 @@ public class RbenvRubyLocatorTest {
 
     @Test
     public void testHasRuby() throws Exception {
+
+        when(fileSystemHelper.pathExists(ruby192p290default.getRubyExecutablePath())).thenReturn(true);
+
+        assertThat(rbenvRubyLocator.hasRuby("1.9.2-p290@default"), equalTo(true));
+
+        when(fileSystemHelper.pathExists(ruby192p290default.getRubyExecutablePath())).thenReturn(false);
+
+        assertThat(rbenvRubyLocator.hasRuby("1.9.2-p290@default"), equalTo(false));
 
     }
 

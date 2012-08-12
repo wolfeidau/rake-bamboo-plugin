@@ -47,7 +47,16 @@ public class RbenvUtils {
 
     }
 
-    public static String buildRubyExecutablePath(String userRbenvInstallPath, String rubyName) {
+    /**
+     * This function assembles a path using the supplied attributes. It assumes all executables for a given ruby runtime name
+     * are located in that rubies bin directory.
+     *
+     * @param userRbenvInstallPath The location of rbenv.
+     * @param rubyName The name of the ruby runtime.
+     * @param commandName The command to append to the path.
+     * @return The assembled path.
+     */
+    public static String buildRbenvRubyBinPath(String userRbenvInstallPath, String rubyName, String commandName) {
         return userRbenvInstallPath +
                 File.separator +
                 RBENV_VERSIONS_FOLDER_NAME +
@@ -55,6 +64,17 @@ public class RbenvUtils {
                 rubyName +
                 BIN_FOLDER_RELATIVE_PATH +
                 File.separator +
-                "ruby";
+                commandName;
+    }
+
+    /**
+     * This function assembles the path to the ruby executable using the supplied attributes.
+     *
+     * @param userRbenvInstallPath The location of rbenv.
+     * @param rubyName The name of the ruby runtime.
+     * @return The assembled path.
+     */
+    public static String buildRubyExecutablePath(String userRbenvInstallPath, String rubyName) {
+        return buildRbenvRubyBinPath(userRbenvInstallPath, rubyName, "ruby");
     }
 }

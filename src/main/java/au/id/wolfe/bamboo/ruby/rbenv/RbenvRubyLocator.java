@@ -50,8 +50,12 @@ public class RbenvRubyLocator implements RubyLocator {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
+        // search the ruby bin directory for the command
+        String commandPath = RbenvUtils.buildRbenvRubyBinPath(userRbenvInstallPath, rubyRuntime.getRubyName(), name);
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        fileSystemHelper.executableFileExists(commandPath);
+
+        return commandPath;
     }
 
     @Override
@@ -89,12 +93,19 @@ public class RbenvRubyLocator implements RubyLocator {
     }
 
     @Override
-    public boolean hasRuby(String rubyNamePattern) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    public boolean hasRuby(String rubyRuntimeName) {
+
+        Pair<String, String> rubyRuntimeTokens = RbenvUtils.parseRubyRuntimeName(rubyRuntimeName);
+
+        final String rubyName = rubyRuntimeTokens.left();
+
+        final String rubyExecutablePath = RbenvUtils.buildRubyExecutablePath(userRbenvInstallPath, rubyName);
+
+        return fileSystemHelper.pathExists(rubyExecutablePath);
     }
 
     @Override
     public boolean isReadOnly() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 }

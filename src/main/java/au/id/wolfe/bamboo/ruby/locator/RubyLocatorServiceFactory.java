@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.locator;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
+import au.id.wolfe.bamboo.ruby.rbenv.RbenvRubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.system.SystemRubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.windows.WindowsRubyRuntimeLocatorService;
@@ -22,6 +23,7 @@ public class RubyLocatorServiceFactory {
 
     public RubyLocatorServiceFactory() {
         rubyRuntimeLocatorServices = Lists.newArrayList(new SystemRubyRuntimeLocatorService(),
+                new RbenvRubyRuntimeLocatorService(),
                 new RvmRubyRuntimeLocatorService(),
                 new WindowsRubyRuntimeLocatorService());
 
@@ -30,9 +32,11 @@ public class RubyLocatorServiceFactory {
 
     public RubyLocatorServiceFactory(SystemRubyRuntimeLocatorService systemRubyRuntimeLocatorService,
                                      RvmRubyRuntimeLocatorService rvmRubyRuntimeLocatorService,
+                                     RbenvRubyRuntimeLocatorService rbenvRubyRuntimeLocatorService,
                                      WindowsRubyRuntimeLocatorService windowsRubyRuntimeLocatorService) {
 
         rubyRuntimeLocatorServices = Lists.newArrayList(systemRubyRuntimeLocatorService,
+                rbenvRubyRuntimeLocatorService,
                 rvmRubyRuntimeLocatorService,
                 windowsRubyRuntimeLocatorService);
 
