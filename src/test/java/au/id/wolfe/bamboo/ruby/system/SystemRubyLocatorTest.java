@@ -12,28 +12,32 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
  * Test the system ruby locator
  */
+@RunWith(MockitoJUnitRunner.class)
 public class SystemRubyLocatorTest {
 
-    FileSystemHelper fileSystemHelper = new FileSystemHelper();
+    @Mock
+    FileSystemHelper fileSystemHelper;
 
+    @Mock
     SystemRubyLocator systemRubyLocator;
 
     @Before
-    public void setup(){
+    public void setup() {
         systemRubyLocator = new SystemRubyLocator(fileSystemHelper);
     }
 
     @Test
     public void testListRubyRuntimes() throws Exception {
 
-        List<RubyRuntime> rubyRuntimeList =  systemRubyLocator.listRubyRuntimes();
+        when(fileSystemHelper.pathExists("/usr/bin", "ruby")).thenReturn(true);
+        when(fileSystemHelper.pathExists("/usr/bin", "gem")).thenReturn(true);
+
+        List<RubyRuntime> rubyRuntimeList = systemRubyLocator.listRubyRuntimes();
 
         assertThat(rubyRuntimeList.size(), equalTo(1));
 

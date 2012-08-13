@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 /**
  * All the RVM utility functions in one place.
  */
-public class RvmUtils {
+public final class RvmUtils {
 
     public static final String BIN_FOLDER_RELATIVE_PATH = "/bin";
     public static final String DEFAULT_GEMSET_SEPARATOR = "@";

@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
- * Ruby locator tests
+ * RVM locator tests
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RubyLocatorTest {
