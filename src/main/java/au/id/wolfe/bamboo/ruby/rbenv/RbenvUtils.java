@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 /**
  * All the rbenv utility functions in one place.
  */
-public class RbenvUtils {
+public final class RbenvUtils {
 
     public static final String BIN_FOLDER_RELATIVE_PATH = "/bin";
     public static final String RBENV_VERSIONS_FOLDER_NAME = "versions";
@@ -76,5 +76,21 @@ public class RbenvUtils {
      */
     public static String buildRubyExecutablePath(String userRbenvInstallPath, String rubyName) {
         return buildRbenvRubyBinPath(userRbenvInstallPath, rubyName, "ruby");
+    }
+
+    /**
+     * This function assembles the bin path using the supplied attributes.
+     *
+     * @param userRbenvInstallPath The location of rbenv.
+     * @param rubyName The name of the ruby runtime.
+     * @return The assembled path.
+     */
+    public static String buildRbenvRubyBinDirectoryPath(String userRbenvInstallPath, String rubyName) {
+        return userRbenvInstallPath +
+                File.separator +
+                RBENV_VERSIONS_FOLDER_NAME +
+                File.separator +
+                rubyName +
+                BIN_FOLDER_RELATIVE_PATH;
     }
 }

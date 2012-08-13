@@ -57,13 +57,16 @@ public class RbenvRubyLocatorTest {
         // us running ruby from rbenv installation.
         Map<String, String> existingEnv = Maps.newHashMap();
         existingEnv.put(EnvUtils.GEM_HOME, badGemHomePath);
+        existingEnv.put(EnvUtils.PATH, "/usr/bin:/bin:/usr/sbin:/sbin");
 
-        Map<String, String> updatedEnv = rbenvRubyLocator.buildEnv("rbenv.1.9.3@default", existingEnv);
+        Map<String, String> updatedEnv = rbenvRubyLocator.buildEnv("1.9.2-p290@default", existingEnv);
 
         assertThat(updatedEnv.containsKey(EnvUtils.GEM_HOME), equalTo(false));
 
         assertThat(updatedEnv.get(EnvUtils.GEM_HOME), nullValue());
         assertThat(updatedEnv.get(EnvUtils.GEM_PATH), nullValue());
+
+       assertThat(updatedEnv.get(EnvUtils.PATH), equalTo("/Users/markw/.rbenv/versions/1.9.2-p290/bin:/usr/bin:/bin:/usr/sbin:/sbin"));
 
     }
 

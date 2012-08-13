@@ -7,6 +7,7 @@ import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,8 @@ public class RbenvRubyLocator implements RubyLocator {
 
         Map<String, String> filteredRubyEnv = Maps.newHashMap();
 
+        RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
+
         // As everything is static with the rbenv ruby install we just need to clean this stuff
         // out of the environment and let ruby do it's thing.
         for (Map.Entry<String, String> entry : currentEnv.entrySet()) {
@@ -41,6 +44,13 @@ public class RbenvRubyLocator implements RubyLocator {
                 filteredRubyEnv.put(entry.getKey(), entry.getValue());
             }
         }
+
+        // prepend the ruby bin director to the path.
+        if (currentEnv.containsKey("PATH")){
+            String pathEnvEntry = currentEnv.get("PATH");
+            filteredRubyEnv.put("PATH", RbenvUtils.buildRbenvRubyBinDirectoryPath(userRbenvInstallPath, rubyRuntime.getRubyName()) + File.pathSeparator + pathEnvEntry);
+        }
+
 
         return filteredRubyEnv;
     }
