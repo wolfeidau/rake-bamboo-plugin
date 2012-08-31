@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.id.wolfe.bamboo</groupId>
-    <artifactId>rake-bamboo-plugin</artifactId> <!-- Leaving this the OLD name to ensure we don't loose anyone -->
+    <artifactId>rake-bamboo-plugin</artifactId>
+    <!-- Leaving this the OLD name to ensure we don't loose anyone -->
     <version>1.11-SNAPSHOT</version>
     <name>Bamboo Ruby Plugin</name>
     <description>Plugin for Atlassian Bamboo which contains an array of ruby tasks.</description>
@@ -50,7 +52,7 @@
             <version>r09</version>
         </dependency>
 
-       <dependency>
+        <dependency>
             <groupId>com.atlassian.bamboo</groupId>
             <artifactId>atlassian-bamboo-web</artifactId>
             <version>${bamboo.version}</version>
@@ -149,5 +151,29 @@
             <layout>default</layout>
         </repository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>noTest</id>
+            <activation>
+                <property>
+                    <name>noTest</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.4.2</version>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

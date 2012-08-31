@@ -158,7 +158,7 @@ public class WindowsRubyLocator implements RubyLocator {
 
         try {
 
-            final String executablePathOutput = execHelper.getExecutablePath("where", executableName, true);
+            final String executablePathOutput = execHelper.getExecutablePath(executableName, true);
 
             if (executablePathOutput.contains("Could not find files")) {
                 throw new PathNotFoundException("Unable to locate executable - " + executableName);
