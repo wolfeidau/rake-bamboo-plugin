@@ -5,6 +5,7 @@ import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,17 @@ import java.util.Map;
  */
 public class BundlerTask extends AbstractRubyTask {
 
+    public static final String PATH = "path";
+    public static final String ENVIRONMENT = "environmentVariables";
+    public static final String BIN_STUBS = "binstubs";
+
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
-        final String path = config.get("path");
-        final String binStubsFlag = config.get("binstubs");
+        final String path = config.get(PATH);
+        final String binStubsFlag = config.get(BIN_STUBS);
 
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 
@@ -40,9 +45,15 @@ public class BundlerTask extends AbstractRubyTask {
 
         final Map<String, String> currentEnvVars = environmentVariableAccessor.getEnvironment();
 
+        // get variables from our configuration
+        final String environmentVariables = config.get(ENVIRONMENT);
+
+        Map<String, String> configEnvVars = environmentVariableAccessor.splitEnvironmentAssignments(environmentVariables);
+
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
-        return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(), currentEnvVars);
+        return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(),
+                ImmutableMap.<String, String>builder().putAll(currentEnvVars).putAll(configEnvVars).build());
     }
 
 }

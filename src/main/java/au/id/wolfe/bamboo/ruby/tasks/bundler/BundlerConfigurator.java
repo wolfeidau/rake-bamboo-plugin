@@ -7,6 +7,7 @@ import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,25 +15,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Bundler configurator which acts as a binding to the task UI in bamboo.
  */
 public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
-    private static final String PATH_KEY = "path";
-    private static final String BIN_STUBS_KEY = "binstubs";
+    private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
+            RUBY_KEY,
+            BundlerTask.PATH,
+            BundlerTask.ENVIRONMENT,
+            BundlerTask.BIN_STUBS);
+
 
     @NotNull
     @Override
     public Map<String, String> generateTaskConfigMap(@NotNull ActionParametersMap params, @Nullable TaskDefinition previousTaskDefinition) {
-        final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 
-        config.put(RUBY_KEY, params.getString(RUBY_KEY));
-        config.put(PATH_KEY, params.getString(PATH_KEY));
-        config.put(BIN_STUBS_KEY, params.getString(BIN_STUBS_KEY));
+        final Map<String, String> map = super.generateTaskConfigMap(params, previousTaskDefinition);
+        taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(map, params, FIELDS_TO_COPY);
 
-        return config;
+        return map;
     }
 
     @Override
@@ -40,9 +44,7 @@ public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForCreate");
 
-        context.put(RUBY_KEY, "");
-        context.put(PATH_KEY, "");
-        context.put(BIN_STUBS_KEY, "");
+        context.put(BundlerTask.PATH, "vendor/bundle");
 
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
@@ -53,9 +55,7 @@ public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForEdit");
 
-        context.put(RUBY_KEY, taskDefinition.getConfiguration().get(RUBY_KEY));
-        context.put(PATH_KEY, taskDefinition.getConfiguration().get(PATH_KEY));
-        context.put(BIN_STUBS_KEY, taskDefinition.getConfiguration().get(BIN_STUBS_KEY));
+        taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
 
         context.put(MODE, EDIT_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
@@ -66,9 +66,7 @@ public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForView");
 
-        context.put(RUBY_KEY, taskDefinition.getConfiguration().get(RUBY_KEY));
-        context.put(PATH_KEY, taskDefinition.getConfiguration().get(PATH_KEY));
-        context.put(BIN_STUBS_KEY, taskDefinition.getConfiguration().get(BIN_STUBS_KEY));
+        taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
 
     }
 

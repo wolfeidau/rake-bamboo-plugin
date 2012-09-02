@@ -47,10 +47,9 @@ public class RbenvRubyLocator implements RubyLocator {
 
         // prepend the ruby bin director to the path.
         if (currentEnv.containsKey("PATH")){
-            String pathEnvEntry = currentEnv.get("PATH");
+            final String pathEnvEntry = currentEnv.get("PATH");
             filteredRubyEnv.put("PATH", RbenvUtils.buildRbenvRubyBinDirectoryPath(userRbenvInstallPath, rubyRuntime.getRubyName()) + File.pathSeparator + pathEnvEntry);
         }
-
 
         return filteredRubyEnv;
     }
@@ -58,10 +57,10 @@ public class RbenvRubyLocator implements RubyLocator {
     @Override
     public String searchForRubyExecutable(String rubyRuntimeName, String name) {
 
-        RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
+        final RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
         // search the ruby bin directory for the command
-        String commandPath = RbenvUtils.buildRbenvRubyBinPath(userRbenvInstallPath, rubyRuntime.getRubyName(), name);
+        final String commandPath = RbenvUtils.buildRbenvRubyBinPath(userRbenvInstallPath, rubyRuntime.getRubyName(), name);
 
         fileSystemHelper.executableFileExists(commandPath);
 

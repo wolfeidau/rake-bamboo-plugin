@@ -4,35 +4,39 @@ import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Rake configurator which acts as a binding to the task UI in bamboo.
  */
 public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
-    protected static final String BIN_STUBS_KEY = "binstubs";
+    private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
+            RUBY_KEY,
+            RakeTask.RAKE_FILE,
+            RakeTask.RAKE_LIB_DIR,
+            RakeTask.TARGETS,
+            RakeTask.BUNDLE_EXEC,
+            RakeTask.ENVIRONMENT,
+            RakeTask.VERBOSE,
+            RakeTask.TRACE);
+
 
     @NotNull
     @Override
     public Map<String, String> generateTaskConfigMap(@NotNull ActionParametersMap params, @Nullable TaskDefinition previousTaskDefinition) {
 
-        final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
+        final Map<String, String> map = super.generateTaskConfigMap(params, previousTaskDefinition);
+        taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(map, params, FIELDS_TO_COPY);
 
-        config.put(RUBY_KEY, params.getString(RUBY_KEY));
-        config.put("rakefile", params.getString("rakefile"));
-        config.put("rakelibdir", params.getString("rakelibdir"));
-        config.put("targets", params.getString("targets"));
-        config.put("bundleexec", params.getString("bundleexec"));
+        return map;
 
-        config.put("verbose", params.getString("verbose"));
-        config.put("trace", params.getString("trace"));
-
-        return config;
     }
 
     @Override
@@ -40,17 +44,9 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForCreate");
 
-        context.put(RUBY_KEY, "");
-        context.put("rakefile", "");
-        context.put("rakelibdir", "");
-        context.put("targets", "");
-        context.put("bundleexec", "");
-
-        context.put("verbose", "");
-        context.put("trace", "");
-
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
+
     }
 
     @Override
@@ -58,15 +54,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForEdit");
 
-        context.put(RUBY_KEY, taskDefinition.getConfiguration().get(RUBY_KEY));
-        context.put("rakefile", taskDefinition.getConfiguration().get("rakefile"));
-        context.put("rakelibdir", taskDefinition.getConfiguration().get("rakelibdir"));
-        context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
-
-        context.put("verbose", taskDefinition.getConfiguration().get("verbose"));
-        context.put("trace", taskDefinition.getConfiguration().get("trace"));
-
-        context.put("targets", taskDefinition.getConfiguration().get("targets"));
+        taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
 
         context.put(MODE, EDIT_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
@@ -77,14 +65,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForView");
 
-        context.put(RUBY_KEY, taskDefinition.getConfiguration().get(RUBY_KEY));
-        context.put("rakefile", taskDefinition.getConfiguration().get("rakefile"));
-        context.put("rakelibdir", taskDefinition.getConfiguration().get("rakelibdir"));
-        context.put("targets", taskDefinition.getConfiguration().get("targets"));
-        context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
-
-        context.put("verbose", taskDefinition.getConfiguration().get("verbose"));
-        context.put("trace", taskDefinition.getConfiguration().get("trace"));
+        taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
 
     }
 
@@ -97,7 +78,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
             errorCollection.addError(RUBY_KEY, "You must specify a ruby runtime");
         }
 
-        final String targets = params.getString("targets");
+        final String targets = params.getString(RakeTask.TARGETS);
 
         if (StringUtils.isEmpty(targets)) {
             errorCollection.addError("targets", "You must specify at least one target");

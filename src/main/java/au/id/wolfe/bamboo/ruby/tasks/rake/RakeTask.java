@@ -7,6 +7,8 @@ import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,16 @@ import java.util.Map;
  */
 public class RakeTask extends AbstractRubyTask {
 
+    public static final String RAKE_FILE = "rakefile";
+    public static final String RAKE_LIB_DIR = "rakelibdir";
+    public static final String TARGETS = "targets";
+    public static final String BUNDLE_EXEC = "bundleexec";
+
+    public static final String ENVIRONMENT = "environmentVariables";
+
+    public static final String VERBOSE = "verbose";
+    public static final String TRACE = "trace";
+
     @Override
     protected Map<String, String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
@@ -23,9 +35,15 @@ public class RakeTask extends AbstractRubyTask {
 
         final Map<String, String> currentEnvVars = environmentVariableAccessor.getEnvironment();
 
+        // Get the variables from our configuration
+        final String environmentVariables = config.get(ENVIRONMENT);
+
+        Map<String, String> configEnvVars = environmentVariableAccessor.splitEnvironmentAssignments(environmentVariables);
+
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
-        return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(), currentEnvVars);
+        return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(),
+                ImmutableMap.<String, String>builder().putAll(currentEnvVars).putAll(configEnvVars).build());
     }
 
     @Override
@@ -33,15 +51,15 @@ public class RakeTask extends AbstractRubyTask {
 
         final RubyLocator rvmRubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
 
-        final String rakeFile = config.get("rakefile");
-        final String rakeLibDir = config.get("rakelibdir");
+        final String rakeFile = config.get(RAKE_FILE);
+        final String rakeLibDir = config.get(RAKE_LIB_DIR);
 
-        final String targets = config.get("targets");
+        final String targets = config.get(TARGETS);
         Preconditions.checkArgument(targets != null); // TODO Fix Error handling
 
-        final String bundleExecFlag = config.get("bundleexec");
-        final String verboseFlag = config.get("verbose");
-        final String traceFlag = config.get("trace");
+        final String bundleExecFlag = config.get(BUNDLE_EXEC);
+        final String verboseFlag = config.get(VERBOSE);
+        final String traceFlag = config.get(TRACE);
 
         final List<String> targetList = RvmUtils.splitRakeTargets(targets);
 

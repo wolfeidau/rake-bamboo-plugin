@@ -4,31 +4,37 @@ import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Capistrano configurator which acts as a binding to the task UI in bamboo.
  */
 public class CapistranoConfigurator extends AbstractRubyTaskConfigurator {
 
+    private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
+            RUBY_KEY,
+            CapistranoTask.TASKS,
+            CapistranoTask.ENVIRONMENT,
+            CapistranoTask.BUNDLE_EXEC,
+            CapistranoTask.VERBOSE,
+            CapistranoTask.DEBUG);
+
+
     @NotNull
     @Override
     public Map<String, String> generateTaskConfigMap(@NotNull ActionParametersMap params, @Nullable TaskDefinition previousTaskDefinition) {
-        final Map<String, String> config = super.generateTaskConfigMap(params, previousTaskDefinition);
 
-        config.put("ruby", params.getString("ruby"));
-        config.put("bundleexec", params.getString("bundleexec"));
+        final Map<String, String> map = super.generateTaskConfigMap(params, previousTaskDefinition);
 
-        config.put("verbose", params.getString("verbose"));
-        config.put("debug", params.getString("debug"));
+        taskConfiguratorHelper.populateTaskConfigMapWithActionParameters(map, params, FIELDS_TO_COPY);
 
-        config.put("tasks", params.getString("tasks"));
-
-        return config;
+        return map;
     }
 
     @Override
@@ -36,16 +42,9 @@ public class CapistranoConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForCreate");
 
-        context.put("ruby", "");
-        context.put("bundleexec", "");
-
-        context.put("verbose", "");
-        context.put("debug", "");
-
-        context.put("tasks", "");
-
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
+
     }
 
     @Override
@@ -53,16 +52,11 @@ public class CapistranoConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForEdit");
 
-        context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
-        context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
-
-        context.put("verbose", taskDefinition.getConfiguration().get("verbose"));
-        context.put("debug", taskDefinition.getConfiguration().get("debug"));
-
-        context.put("tasks", taskDefinition.getConfiguration().get("tasks"));
+        taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
 
         context.put(MODE, EDIT_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3
+
     }
 
     @Override
@@ -70,13 +64,8 @@ public class CapistranoConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForView");
 
-        context.put("ruby", taskDefinition.getConfiguration().get("ruby"));
-        context.put("bundleexec", taskDefinition.getConfiguration().get("bundleexec"));
+        taskConfiguratorHelper.populateContextWithConfiguration(context, taskDefinition, FIELDS_TO_COPY);
 
-        context.put("verbose", taskDefinition.getConfiguration().get("verbose"));
-        context.put("debug", taskDefinition.getConfiguration().get("debug"));
-
-        context.put("tasks", taskDefinition.getConfiguration().get("tasks"));
     }
 
     @Override

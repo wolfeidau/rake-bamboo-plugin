@@ -6,6 +6,8 @@
 
 [@ww.textfield labelKey='bundler.path' name='path' required='false' cssClass="long-field" /]
 
+[@ww.textfield labelKey='bundler.environment' name='environmentVariables' required='false' cssClass="long-field" /]
+
 [@ww.checkbox labelKey='bundler.binstubs'
                   name='binstubs'
                   toggle='true' /]

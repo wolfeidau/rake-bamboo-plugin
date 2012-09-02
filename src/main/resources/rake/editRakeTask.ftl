@@ -10,6 +10,8 @@
 
 [@ww.textfield labelKey='rake.targets' name='targets' required='true' cssClass="long-field" /]
 
+[@ww.textfield labelKey='rake.environment' name='environmentVariables' required='false' cssClass="long-field" /]
+
 [@ww.checkbox labelKey='ruby.bundleexec'
                   name='bundleexec'
                   toggle='true' /]

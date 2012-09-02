@@ -45,10 +45,16 @@ public class RvmRubyLocator implements RubyLocator {
         final String gemPath = RvmUtils.buildGemPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
         final String rvmGemSetName = rubyRuntime.getGemSetName();
         final String rvmPathPrefix = RvmUtils.buildBinPath(rvmInstallation.getRubiesPath(), rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+
+        // get the existing path.
         final String currentPath = StringUtils.defaultString(currentEnv.get("PATH"), "");
 
         Map<String, String> envVars = Maps.newHashMap();
 
+        // propagate existing environment
+        envVars.putAll(currentEnv);
+
+        // overwrite all the ruby related variables
         envVars.put(EnvUtils.MY_RUBY_HOME, rubyHomePath);
         envVars.put(EnvUtils.GEM_HOME, gemHomePath);
         envVars.put(EnvUtils.GEM_PATH, gemPath);
