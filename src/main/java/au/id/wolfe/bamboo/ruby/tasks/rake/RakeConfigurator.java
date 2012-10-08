@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.tasks.rake;
 
 import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import com.atlassian.bamboo.collections.ActionParametersMap;
+import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.google.common.collect.Sets;
@@ -19,6 +20,7 @@ public class RakeConfigurator extends AbstractRubyTaskConfigurator {
 
     private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
             RUBY_KEY,
+            TaskConfigConstants.CFG_WORKING_SUB_DIRECTORY,
             RakeTask.RAKE_FILE,
             RakeTask.RAKE_LIB_DIR,
             RakeTask.TARGETS,

@@ -4,6 +4,8 @@
             list=uiConfigBean.getExecutableLabels('ruby')
             extraUtility=addExecutableLink required='true' /]
 
+[@ww.textfield labelKey='ruby.workingSubDirectory' name='workingSubDirectory' required='false' cssClass="long-field" /]
+
 [@ww.textfield labelKey='rake.rakefile' name='rakefile' required='false' cssClass="long-field" /]
 
 [@ww.textfield labelKey='rake.rakelibdir' name='rakelibdir' required='false' cssClass="long-field" /]

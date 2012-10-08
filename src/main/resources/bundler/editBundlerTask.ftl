@@ -4,6 +4,8 @@
             list=uiConfigBean.getExecutableLabels('ruby')
             extraUtility=addExecutableLink required='true' /]
 
+[@ww.textfield labelKey='ruby.workingSubDirectory' name='workingSubDirectory' required='false' cssClass="long-field" /]
+
 [@ww.textfield labelKey='bundler.path' name='path' required='false' cssClass="long-field" /]
 
 [@ww.textfield labelKey='bundler.environment' name='environmentVariables' required='false' cssClass="long-field" /]

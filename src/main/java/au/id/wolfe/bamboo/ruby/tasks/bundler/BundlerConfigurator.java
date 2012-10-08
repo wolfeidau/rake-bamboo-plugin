@@ -4,6 +4,7 @@ import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.AbstractTaskConfigurator;
+import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
@@ -24,6 +25,7 @@ public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
     private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
             RUBY_KEY,
+            TaskConfigConstants.CFG_WORKING_SUB_DIRECTORY,
             BundlerTask.PATH,
             BundlerTask.ENVIRONMENT,
             BundlerTask.BIN_STUBS);
