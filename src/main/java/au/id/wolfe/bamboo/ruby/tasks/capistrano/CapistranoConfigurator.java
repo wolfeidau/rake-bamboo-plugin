@@ -3,7 +3,6 @@ package au.id.wolfe.bamboo.ruby.tasks.capistrano;
 import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import com.atlassian.bamboo.collections.ActionParametersMap;
 import com.atlassian.bamboo.task.TaskConfigConstants;
-import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.google.common.collect.Sets;

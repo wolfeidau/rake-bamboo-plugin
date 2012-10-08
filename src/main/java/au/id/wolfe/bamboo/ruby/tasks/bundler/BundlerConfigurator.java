@@ -1,19 +1,14 @@
 package au.id.wolfe.bamboo.ruby.tasks.bundler;
 
 import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
-import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.collections.ActionParametersMap;
-import com.atlassian.bamboo.task.AbstractTaskConfigurator;
 import com.atlassian.bamboo.task.TaskConfigConstants;
 import com.atlassian.bamboo.task.TaskDefinition;
 import com.atlassian.bamboo.utils.error.ErrorCollection;
-import com.atlassian.bamboo.ww2.actions.build.admin.create.UIConfigSupport;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Set;
