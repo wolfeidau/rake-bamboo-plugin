@@ -1,10 +1,9 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
-import com.atlassian.fage.Pair;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 import com.google.common.base.Preconditions;
 
 import java.io.File;
-import java.util.StringTokenizer;
 
 /**
  * All the rbenv utility functions in one place.
@@ -13,8 +12,6 @@ public final class RbenvUtils {
 
     public static final String BIN_FOLDER_RELATIVE_PATH = "/bin";
     public static final String RBENV_VERSIONS_FOLDER_NAME = "versions";
-    public static final String DEFAULT_GEMSET_SEPARATOR = "@";
-    public static final String DEFAULT_GEMSET_NAME = "default";
 
     public static String buildRbenvRubiesPath(String userRbenvInstallPath) {
         return userRbenvInstallPath +
@@ -28,23 +25,14 @@ public final class RbenvUtils {
      * @param rubyRuntimeName The name to be split.
      * @return A pair containing the two tokens.
      */
-    public static Pair<String, String> parseRubyRuntimeName(final String rubyRuntimeName) {
+    public static RubyRuntimeName parseRubyRuntimeName(final String rubyRuntimeName) {
 
-        final StringTokenizer stringTokenizer = new StringTokenizer(rubyRuntimeName, DEFAULT_GEMSET_SEPARATOR);
+        final RubyRuntimeName tokens = RubyRuntimeName.parseString(rubyRuntimeName);
 
-        if (stringTokenizer.countTokens() == 2) {
+        // ensure the second token is default as we can't have any gem sets.
+        Preconditions.checkArgument(tokens.getGemSet().equals(RubyRuntimeName.DEFAULT_GEMSET_NAME), "Bad gem set, expected only default gemset for rbenv runtimes.");
 
-            Pair<String, String> tokens = new Pair<String, String>(stringTokenizer.nextToken(), stringTokenizer.nextToken());
-
-            // ensure the second token is default as we can't have any gem sets.
-            Preconditions.checkArgument(tokens.right().equals(DEFAULT_GEMSET_NAME), "Bad gem set, expected only default gemset for rbenv runtimes.");
-
-            return tokens;
-
-        } else {
-            throw new IllegalArgumentException("Could not parse rubyRuntime string, expected something like ruby-1.9.2-p123@default, not " + rubyRuntimeName);
-        }
-
+        return tokens;
     }
 
     /**
@@ -52,8 +40,8 @@ public final class RbenvUtils {
      * are located in that rubies bin directory.
      *
      * @param userRbenvInstallPath The location of rbenv.
-     * @param rubyName The name of the ruby runtime.
-     * @param commandName The command to append to the path.
+     * @param rubyName             The name of the ruby runtime.
+     * @param commandName          The command to append to the path.
      * @return The assembled path.
      */
     public static String buildRbenvRubyBinPath(String userRbenvInstallPath, String rubyName, String commandName) {
@@ -71,7 +59,7 @@ public final class RbenvUtils {
      * This function assembles the path to the ruby executable using the supplied attributes.
      *
      * @param userRbenvInstallPath The location of rbenv.
-     * @param rubyName The name of the ruby runtime.
+     * @param rubyName             The name of the ruby runtime.
      * @return The assembled path.
      */
     public static String buildRubyExecutablePath(String userRbenvInstallPath, String rubyName) {
@@ -82,7 +70,7 @@ public final class RbenvUtils {
      * This function assembles the bin path using the supplied attributes.
      *
      * @param userRbenvInstallPath The location of rbenv.
-     * @param rubyName The name of the ruby runtime.
+     * @param rubyName             The name of the ruby runtime.
      * @return The assembled path.
      */
     public static String buildRbenvRubyBinDirectoryPath(String userRbenvInstallPath, String rubyName) {

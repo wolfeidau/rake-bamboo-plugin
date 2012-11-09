@@ -1,14 +1,13 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
 
-import com.atlassian.fage.Pair;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * All the RVM utility functions in one place.
@@ -29,16 +28,8 @@ public final class RvmUtils {
      * @param rubyRuntimeName The name to be split.
      * @return A pair containing the two tokens.
      */
-    public static Pair<String, String> parseRubyRuntimeName(final String rubyRuntimeName) {
-
-        final StringTokenizer stringTokenizer = new StringTokenizer(rubyRuntimeName, DEFAULT_GEMSET_SEPARATOR);
-
-        if (stringTokenizer.countTokens() == 2) {
-            return new Pair<String, String>(stringTokenizer.nextToken(), stringTokenizer.nextToken());
-        } else {
-            throw new IllegalArgumentException("Could not parse rubyRuntime string, expected something like ruby-1.9.2@rails31, not " + rubyRuntimeName);
-        }
-
+    public static RubyRuntimeName parseRubyRuntimeName(final String rubyRuntimeName) {
+        return RubyRuntimeName.parseString(rubyRuntimeName);
     }
 
     /**

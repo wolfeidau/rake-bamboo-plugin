@@ -1,9 +1,9 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -46,7 +46,7 @@ public class RbenvRubyLocator implements RubyLocator {
         }
 
         // prepend the ruby bin director to the path.
-        if (currentEnv.containsKey("PATH")){
+        if (currentEnv.containsKey("PATH")) {
             final String pathEnvEntry = currentEnv.get("PATH");
             filteredRubyEnv.put("PATH", RbenvUtils.buildRbenvRubyBinDirectoryPath(userRbenvInstallPath, rubyRuntime.getRubyName()) + File.pathSeparator + pathEnvEntry);
         }
@@ -79,10 +79,10 @@ public class RbenvRubyLocator implements RubyLocator {
     @Override
     public RubyRuntime getRubyRuntime(String rubyRuntimeName) {
 
-        Pair<String, String> rubyRuntimeTokens = RbenvUtils.parseRubyRuntimeName(rubyRuntimeName);
+        RubyRuntimeName rubyRuntimeTokens = RbenvUtils.parseRubyRuntimeName(rubyRuntimeName);
 
-        final String rubyName = rubyRuntimeTokens.left();
-        final String gemSetName = rubyRuntimeTokens.right();
+        final String rubyName = rubyRuntimeTokens.getVersion();
+        final String gemSetName = rubyRuntimeTokens.getGemSet();
 
         return getRubyRuntime(rubyName, gemSetName);
     }
@@ -95,7 +95,7 @@ public class RbenvRubyLocator implements RubyLocator {
         List<String> rubiesList = fileSystemHelper.listPathDirNames(RbenvUtils.buildRbenvRubiesPath(userRbenvInstallPath));
 
         for (String rubyPath : rubiesList) {
-            rubyRuntimeList.add(getRubyRuntime(rubyPath, RbenvUtils.DEFAULT_GEMSET_NAME));
+            rubyRuntimeList.add(getRubyRuntime(rubyPath, RubyRuntimeName.DEFAULT_GEMSET_NAME));
         }
 
         return rubyRuntimeList;
@@ -104,9 +104,9 @@ public class RbenvRubyLocator implements RubyLocator {
     @Override
     public boolean hasRuby(String rubyRuntimeName) {
 
-        Pair<String, String> rubyRuntimeTokens = RbenvUtils.parseRubyRuntimeName(rubyRuntimeName);
+        RubyRuntimeName rubyRuntimeTokens = RbenvUtils.parseRubyRuntimeName(rubyRuntimeName);
 
-        final String rubyName = rubyRuntimeTokens.left();
+        final String rubyName = rubyRuntimeTokens.getVersion();
 
         final String rubyExecutablePath = RbenvUtils.buildRubyExecutablePath(userRbenvInstallPath, rubyName);
 

@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
-import com.atlassian.fage.Pair;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,10 +21,10 @@ public class RbenvUtilsTest {
     @Test
     public void testParseRubyRuntimeName() throws Exception {
 
-        Pair<String, String> rubyNameTokens = RbenvUtils.parseRubyRuntimeName("1.9.3-p194@default");
+        RubyRuntimeName rubyRuntimeName = RbenvUtils.parseRubyRuntimeName("1.9.3-p194@default");
 
-        assertThat(rubyNameTokens.left(), equalTo("1.9.3-p194"));
-        assertThat(rubyNameTokens.right(), equalTo("default"));
+        assertThat(rubyRuntimeName.getVersion(), equalTo("1.9.3-p194"));
+        assertThat(rubyRuntimeName.getGemSet(), equalTo("default"));
     }
 
     @Test

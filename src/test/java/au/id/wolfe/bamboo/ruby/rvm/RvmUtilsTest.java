@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import com.atlassian.fage.Pair;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,10 +16,10 @@ public class RvmUtilsTest {
     @Test
     public void testParseRubyRuntimeName() throws Exception {
 
-        Pair<String, String> rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName("ruby-1.9.3-p0@rails31");
+        RubyRuntimeName rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName("ruby-1.9.3-p0@rails31");
 
-        assertEquals("ruby-1.9.3-p0", rubyRuntimeTokens.left());
-        assertEquals("rails31", rubyRuntimeTokens.right());
+        assertEquals("ruby-1.9.3-p0", rubyRuntimeTokens.getVersion());
+        assertEquals("rails31", rubyRuntimeTokens.getGemSet());
 
     }
 

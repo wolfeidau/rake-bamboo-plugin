@@ -1,10 +1,10 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import com.atlassian.fage.Pair;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.FilenameUtils;
@@ -103,7 +103,8 @@ public class RvmRubyLocator implements RubyLocator {
      * @param gemSetName The name of the gem set
      * @return A ruby runtime.
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
-     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException
+     *                                  thrown if the ruby runtime supplied doesn't exist in rvm.
      */
     @Override
     public RubyRuntime getRubyRuntime(final String rubyName, final String gemSetName) {
@@ -127,15 +128,16 @@ public class RvmRubyLocator implements RubyLocator {
      * @param rubyRuntimeName The name of the ruby runtime
      * @return A ruby runtime.
      * @throws IllegalArgumentException thrown if the ruby runtime name is an invalid format.
-     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException    thrown if the ruby runtime supplied doesn't exist in rvm.
+     * @throws au.id.wolfe.bamboo.ruby.common.PathNotFoundException
+     *                                  thrown if the ruby runtime supplied doesn't exist in rvm.
      */
     @Override
     public RubyRuntime getRubyRuntime(String rubyRuntimeName) {
 
-        Pair<String, String> rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName(rubyRuntimeName);
+        RubyRuntimeName rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName(rubyRuntimeName);
 
-        final String rubyName = rubyRuntimeTokens.left();
-        final String gemSetName = rubyRuntimeTokens.right();
+        final String rubyName = rubyRuntimeTokens.getVersion();
+        final String gemSetName = rubyRuntimeTokens.getGemSet();
 
         return getRubyRuntime(rubyName, gemSetName);
     }
@@ -160,8 +162,8 @@ public class RvmRubyLocator implements RubyLocator {
                     if (rubyName.equals(gemSetDirectoryName)) {
                         rubyRuntimeList.add(getRubyRuntime(rubyName, "default"));
                     } else {
-                        Pair<String, String> rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName(gemSetDirectoryName);
-                        rubyRuntimeList.add(getRubyRuntime(rubyRuntimeTokens.left(), rubyRuntimeTokens.right()));
+                        RubyRuntimeName rubyRuntimeTokens = RvmUtils.parseRubyRuntimeName(gemSetDirectoryName);
+                        rubyRuntimeList.add(getRubyRuntime(rubyRuntimeTokens.getVersion(), rubyRuntimeTokens.getGemSet()));
                     }
                 }
             }
