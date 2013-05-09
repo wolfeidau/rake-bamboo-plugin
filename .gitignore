@@ -6,3 +6,4 @@
 target
 activemq-data
 build.log
+.DS_Store
