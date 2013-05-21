@@ -38,7 +38,7 @@
     </scm>
 
     <properties>
-        <bamboo.version>4.4</bamboo.version>
+        <bamboo.version>5.0-beta1</bamboo.version>
         <bamboo.data.version>3.2.2</bamboo.data.version>
         <!--<amps.version>4.0</amps.version>-->
     </properties>
@@ -101,7 +101,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.6</version>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
             <scope>test</scope>
         </dependency>
 

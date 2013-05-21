@@ -2,9 +2,9 @@ package it;
 
 import com.atlassian.bamboo.pageobjects.BambooTestedProduct;
 import com.atlassian.bamboo.pageobjects.pages.global.BambooDashboardPage;
+import com.atlassian.bamboo.pageobjects.pages.plan.configuration.CreatePlanPage;
 import com.atlassian.bamboo.testutils.TestBuildDetails;
 import com.atlassian.bamboo.testutils.TestStageDetails;
-import com.atlassian.bamboo.webdriver.page.CreatePlanPage;
 import com.atlassian.pageobjects.TestedProductFactory;
 import com.atlassian.webdriver.AtlassianWebDriver;
 import junit.framework.TestCase;
@@ -39,7 +39,7 @@ public class IntegrationTestRakePlugin extends TestCase {
 
     public void testAddingRakeTaskToDefaultJob() throws Exception {
 
-        TestBuildDetails plan = product.visit(CreatePlanPage.class).createNewPassingPlan();
+        TestBuildDetails plan = product.visit(CreatePlanPage.class).createNewPassingPlan(true);
 
         TestBuildDetails defaultJob = plan.getDefaultJob();
 
