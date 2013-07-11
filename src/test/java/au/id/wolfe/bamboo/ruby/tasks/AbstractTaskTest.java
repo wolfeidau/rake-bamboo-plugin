@@ -4,6 +4,7 @@ import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import org.mockito.Mock;
 
 /**
@@ -13,6 +14,9 @@ public abstract class AbstractTaskTest {
 
     @Mock
     protected ProcessService processService;
+
+    @Mock
+    protected CapabilityContext capabilityContext;
 
     @Mock
     protected RubyLocatorServiceFactory rubyLocatorServiceFactory;

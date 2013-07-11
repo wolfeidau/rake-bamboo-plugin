@@ -13,6 +13,7 @@ import com.atlassian.bamboo.task.TaskException;
 import com.atlassian.bamboo.task.TaskResult;
 import com.atlassian.bamboo.task.TaskResultBuilder;
 import com.atlassian.bamboo.task.TaskType;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.utils.process.ExternalProcess;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,8 @@ public abstract class AbstractRubyTask implements TaskType {
     private RubyLocatorServiceFactory rubyLocatorServiceFactory;
 
     protected EnvironmentVariableAccessor environmentVariableAccessor;
+
+    protected CapabilityContext capabilityContext;
 
     public AbstractRubyTask() {
 
@@ -104,6 +107,10 @@ public abstract class AbstractRubyTask implements TaskType {
 
     public void setProcessService(ProcessService processService) {
         this.processService = processService;
+    }
+
+    public void setCapabilityContext(CapabilityContext capabilityContext) {
+        this.capabilityContext = capabilityContext;
     }
 
     public void setRubyLocatorServiceFactory(RubyLocatorServiceFactory rubyLocatorServiceFactory) {
