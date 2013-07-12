@@ -11,9 +11,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Iterator;
 
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Mockito.when;
 
 /**
@@ -42,7 +42,7 @@ public class BundlerCommandBuilderTest {
 
         bundlerCommandBuilder.addRubyExecutable();
         assertThat(bundlerCommandBuilder.build().size(), is(1));
-        assertThat(bundlerCommandBuilder.build(), hasItem(rubyRuntime.getRubyExecutablePath()));
+        assertThat(bundlerCommandBuilder.build(), hasItems(rubyRuntime.getRubyExecutablePath()));
 
     }
 
@@ -50,7 +50,7 @@ public class BundlerCommandBuilderTest {
     public void testAddBundleExecutable() throws Exception {
 
         bundlerCommandBuilder.addBundleExecutable();
-        assertThat(bundlerCommandBuilder.build(), hasItem(RvmFixtures.BUNDLER_PATH));
+        assertThat(bundlerCommandBuilder.build(), hasItems(RvmFixtures.BUNDLER_PATH));
 
     }
 
@@ -58,7 +58,7 @@ public class BundlerCommandBuilderTest {
     public void testAddInstall() throws Exception {
 
         bundlerCommandBuilder.addInstall();
-        assertThat(bundlerCommandBuilder.build(), hasItem("install"));
+        assertThat(bundlerCommandBuilder.build(), hasItems("install"));
 
     }
 
@@ -66,8 +66,8 @@ public class BundlerCommandBuilderTest {
     public void testAddPath() throws Exception {
 
         bundlerCommandBuilder.addPath("gems");
-        assertThat(bundlerCommandBuilder.build(), hasItem("--path"));
-        assertThat(bundlerCommandBuilder.build(), hasItem("gems"));
+        assertThat(bundlerCommandBuilder.build(), hasItems("--path"));
+        assertThat(bundlerCommandBuilder.build(), hasItems("gems"));
 
     }
 
@@ -75,7 +75,7 @@ public class BundlerCommandBuilderTest {
     public void testAddIfBinStubs() throws Exception {
 
         bundlerCommandBuilder.addIfBinStubs("true");
-        assertThat(bundlerCommandBuilder.build(), hasItem("--binstubs"));
+        assertThat(bundlerCommandBuilder.build(), hasItems("--binstubs"));
 
     }
 
