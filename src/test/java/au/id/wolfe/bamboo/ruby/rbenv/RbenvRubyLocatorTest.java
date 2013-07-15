@@ -7,11 +7,9 @@ import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import au.id.wolfe.bamboo.ruby.util.SystemHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -20,7 +18,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.matchers.JUnitMatchers.hasItems;
+import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
