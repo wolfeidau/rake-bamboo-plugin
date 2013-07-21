@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.windows;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.ExecHelper;
@@ -32,7 +33,7 @@ import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
  * command searches the path for all instances of the file passed in. This routine will take the first instance of
  * said command and return it.
  */
-public class WindowsRubyLocator implements RubyLocator {
+public class WindowsRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private static final Logger log = LoggerFactory.getLogger(WindowsRubyLocator.class);
     private static final List<String> filterList =

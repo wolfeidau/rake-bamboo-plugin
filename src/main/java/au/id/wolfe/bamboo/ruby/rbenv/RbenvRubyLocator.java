@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rbenv;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.Lists;
@@ -20,7 +21,7 @@ import static au.id.wolfe.bamboo.ruby.util.EnvUtils.filterList;
  * - You will typically only have one version of a given ruby installed at one time.
  * - There are no gemsets (YAY!)
  */
-public class RbenvRubyLocator implements RubyLocator {
+public class RbenvRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private final FileSystemHelper fileSystemHelper;
     private final String userRbenvInstallPath;

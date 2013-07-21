@@ -79,4 +79,13 @@ public interface RubyLocator {
      * @return true if ready only installation(s) of ruby.
      */
     boolean isReadOnly();
+
+    /**
+     * Uses the ruby executable to guess the path of associated ruby commands.
+     *
+     * @param rubyExecutablePath The full path to the ruby executable.
+     * @param command The command to generate a path for.
+     * @return The full path of the executable.
+     */
+    String buildExecutablePath(String rubyExecutablePath, String command);
 }

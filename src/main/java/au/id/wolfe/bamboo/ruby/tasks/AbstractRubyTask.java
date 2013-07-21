@@ -4,6 +4,7 @@ import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
+import au.id.wolfe.bamboo.ruby.util.TaskUtils;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;
@@ -13,9 +14,11 @@ import com.atlassian.bamboo.task.TaskException;
 import com.atlassian.bamboo.task.TaskResult;
 import com.atlassian.bamboo.task.TaskResultBuilder;
 import com.atlassian.bamboo.task.TaskType;
+import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.utils.process.ExternalProcess;
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +30,6 @@ import java.util.Map;
  * Basis for ruby tasks.
  */
 public abstract class AbstractRubyTask implements TaskType {
-
-    public static final String RUBY_CAPABILITY_PREFIX = CapabilityDefaultsHelper.CAPABILITY_BUILDER_PREFIX + ".ruby";
 
     protected final Logger log = LoggerFactory.getLogger(AbstractRubyTask.class);
 
@@ -120,5 +121,14 @@ public abstract class AbstractRubyTask implements TaskType {
     public void setEnvironmentVariableAccessor(EnvironmentVariableAccessor environmentVariableAccessor) {
         this.environmentVariableAccessor = environmentVariableAccessor;
     }
+
+    protected String getRubyExecutablePath(final RubyLabel rubyRuntimeLabel) {
+        final Capability capability = capabilityContext.getCapabilitySet().getCapability(TaskUtils.buildCapabilityLabel(rubyRuntimeLabel));
+        Preconditions.checkNotNull(capability, "Capability");
+        final String rubyRuntimeExecutable = capability.getValue();
+        Preconditions.checkNotNull(rubyRuntimeExecutable, "rubyRuntimeExecutable");
+        return rubyRuntimeExecutable;
+    }
+
 }
 

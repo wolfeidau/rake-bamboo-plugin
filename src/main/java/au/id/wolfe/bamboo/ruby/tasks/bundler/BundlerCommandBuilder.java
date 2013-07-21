@@ -21,12 +21,14 @@ public class BundlerCommandBuilder {
 
     private final RubyLocator rvmRubyLocator;
     private final RubyRuntime rubyRuntime;
+    private final String rubyExecutablePath;
 
     private final List<String> commandList = Lists.newLinkedList();
 
-    public BundlerCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime) {
+    public BundlerCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
         this.rvmRubyLocator = rvmRubyLocator;
         this.rubyRuntime = rubyRuntime;
+        this.rubyExecutablePath = rubyExecutablePath;
     }
 
     public BundlerCommandBuilder addRubyExecutable() {
@@ -40,7 +42,7 @@ public class BundlerCommandBuilder {
      * @return Bundler command builder.
      */
     public BundlerCommandBuilder addBundleExecutable() {
-        commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
+        commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BUNDLE_COMMAND));
         return this;
     }
 

@@ -4,8 +4,11 @@ import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
+import au.id.wolfe.bamboo.ruby.util.TaskUtils;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
+import com.atlassian.bamboo.v2.build.agent.capability.Capability;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +22,7 @@ import java.util.Map;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.*;
 
@@ -37,18 +41,14 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         rakeTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
         rakeTask.setProcessService(processService);
+        rakeTask.setCapabilityContext(capabilityContext);
         rakeTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        rakeTask.setCapabilityContext(capabilityContext);
 
     }
 
     @Test
     public void testBuildCommandList() {
-
-        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-
-        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("targets", DB_MIGRATE_TARGET);
@@ -59,8 +59,16 @@ public class RakeTaskTest extends AbstractTaskTest {
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+
+        Capability capability = mock(Capability.class);
+        CapabilitySet capabilitySet = mock(CapabilitySet.class);
+
+        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
+        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
+        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
 
         final List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -78,11 +86,6 @@ public class RakeTaskTest extends AbstractTaskTest {
 
     @Test
     public void testBuildEnvironment() {
-
-        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 

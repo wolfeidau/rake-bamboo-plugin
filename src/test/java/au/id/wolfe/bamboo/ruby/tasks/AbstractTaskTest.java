@@ -1,7 +1,12 @@
 package au.id.wolfe.bamboo.ruby.tasks;
 
+import au.id.wolfe.bamboo.ruby.common.RubyLabel;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
+import com.atlassian.bamboo.configuration.ConfigurationMap;
+import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
@@ -30,5 +35,13 @@ public abstract class AbstractTaskTest {
     public abstract void testBuildCommandList();
 
     public abstract void testBuildEnvironment();
+
+    protected final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+    protected final String rubyExecutablePath = RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath();
+
+    protected final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
+
+    protected final ConfigurationMap configurationMap = new ConfigurationMapImpl();
+
 
 }

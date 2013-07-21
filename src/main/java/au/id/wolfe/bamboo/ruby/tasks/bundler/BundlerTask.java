@@ -29,7 +29,9 @@ public class BundlerTask extends AbstractRubyTask {
 
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 
-        return new BundlerCommandBuilder(rubyLocator, rubyRuntime)
+        final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
+
+        return new BundlerCommandBuilder(rubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addBundleExecutable()
                 .addInstall()

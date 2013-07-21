@@ -21,14 +21,16 @@ public class CapistranoCommandBuilder {
     public static final String VERBOSE_ARG = "--verbose";
     public static final String DEBUG_ARG = "--debug";
 
-    private RubyLocator rvmRubyLocator;
-    private RubyRuntime rubyRuntime;
+    private final RubyLocator rvmRubyLocator;
+    private final RubyRuntime rubyRuntime;
+    private final String rubyExecutablePath;
 
     private List<String> commandList = Lists.newLinkedList();
 
-    public CapistranoCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime) {
+    public CapistranoCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
         this.rvmRubyLocator = rvmRubyLocator;
         this.rubyRuntime = rubyRuntime;
+        this.rubyExecutablePath = rubyExecutablePath;
     }
 
     /**
@@ -49,7 +51,7 @@ public class CapistranoCommandBuilder {
      */
     public CapistranoCommandBuilder addIfBundleExec(@Nullable String bundleFlag) {
         if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
         }
         return this;
@@ -64,7 +66,7 @@ public class CapistranoCommandBuilder {
         if (BooleanUtils.toBoolean(bundleFlag)){
             commandList.add(CAP_COMMAND);
         } else {
-            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CAP_COMMAND));
         }
         return this;
     }

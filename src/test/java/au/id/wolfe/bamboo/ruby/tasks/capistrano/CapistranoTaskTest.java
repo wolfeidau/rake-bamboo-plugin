@@ -4,8 +4,11 @@ import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
+import au.id.wolfe.bamboo.ruby.util.TaskUtils;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
+import com.atlassian.bamboo.v2.build.agent.capability.Capability;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +24,7 @@ import static au.id.wolfe.bamboo.ruby.tasks.capistrano.CapistranoCommandBuilder.
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -38,17 +42,12 @@ public class CapistranoTaskTest extends AbstractTaskTest {
         capistranoTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
         capistranoTask.setProcessService(processService);
         capistranoTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        capistranoTask.setCapabilityContext(capabilityContext);
     }
 
     @Test
     @Override
     public void testBuildCommandList() {
-
-        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-
-        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("tasks", DEPLOY_SETUP_TASKS);
@@ -59,8 +58,15 @@ public class CapistranoTaskTest extends AbstractTaskTest {
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+
+        Capability capability = mock(Capability.class);
+        CapabilitySet capabilitySet = mock(CapabilitySet.class);
+
+        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
+        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
+        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
 
         final List<String> commandList = capistranoTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -78,10 +84,6 @@ public class CapistranoTaskTest extends AbstractTaskTest {
     @Test
     @Override
     public void testBuildEnvironment() {
-        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 

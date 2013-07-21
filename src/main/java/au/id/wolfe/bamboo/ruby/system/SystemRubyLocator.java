@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.system;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
@@ -30,7 +31,7 @@ import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
  * - the 'gem' executable is in the same path as the 'ruby' executable.
  * - at the moment I will locate only one installation to keep it simple.
  */
-public class SystemRubyLocator implements RubyLocator {
+public class SystemRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private static final Logger log = LoggerFactory.getLogger(SystemRubyLocator.class);
 

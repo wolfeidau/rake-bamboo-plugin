@@ -29,12 +29,14 @@ public class RakeCommandBuilder {
 
     private final RubyLocator rvmRubyLocator;
     private final RubyRuntime rubyRuntime;
+    private final String rubyExecutablePath;
 
     private List<String> commandList = Lists.newLinkedList();
 
-    public RakeCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime) {
+    public RakeCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
         this.rvmRubyLocator = rvmRubyLocator;
         this.rubyRuntime = rubyRuntime;
+        this.rubyExecutablePath = rubyExecutablePath;
     }
 
     /**
@@ -55,7 +57,7 @@ public class RakeCommandBuilder {
      */
     public RakeCommandBuilder addIfBundleExec(@Nullable String bundleFlag) {
         if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
         }
         return this;
@@ -71,7 +73,7 @@ public class RakeCommandBuilder {
         if (BooleanUtils.toBoolean(bundleFlag)) {
             commandList.add(RAKE_COMMAND);
         } else {
-            commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, RAKE_COMMAND));
         }
         return this;
     }
@@ -149,4 +151,5 @@ public class RakeCommandBuilder {
     public List<String> build() {
         return commandList;
     }
+
 }

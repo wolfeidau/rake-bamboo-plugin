@@ -4,8 +4,11 @@ import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
+import au.id.wolfe.bamboo.ruby.util.TaskUtils;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
+import com.atlassian.bamboo.v2.build.agent.capability.Capability;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +25,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -32,16 +36,13 @@ public class BundlerTaskTest extends AbstractTaskTest {
 
     BundlerTask bundlerTask = new BundlerTask();
 
-    RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-    RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-    ConfigurationMap configurationMap = new ConfigurationMapImpl();
-
     @Before
     public void setUp() throws Exception {
 
         bundlerTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
         bundlerTask.setProcessService(processService);
         bundlerTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        bundlerTask.setCapabilityContext(capabilityContext);
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
@@ -53,7 +54,14 @@ public class BundlerTaskTest extends AbstractTaskTest {
     public void testBuildCommandList() {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+
+        Capability capability = mock(Capability.class);
+        CapabilitySet capabilitySet = mock(CapabilitySet.class);
+
+        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
+        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
+        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
 
         List<String> commandList = bundlerTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -67,8 +75,16 @@ public class BundlerTaskTest extends AbstractTaskTest {
 
     @Test
     public void testBuildCommandListWithPathAndBinStubs(){
+
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+
+        Capability capability = mock(Capability.class);
+        CapabilitySet capabilitySet = mock(CapabilitySet.class);
+
+        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
+        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
+        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
 
         configurationMap.put("path", "gems");
         configurationMap.put("binstubs", "true");

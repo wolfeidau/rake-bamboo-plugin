@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * This class locates ruby installations within an Rvm Installation.
  */
-public class RvmRubyLocator implements RubyLocator {
+public class RvmRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     final FileSystemHelper fileSystemHelper;
     final RvmInstallation rvmInstallation;

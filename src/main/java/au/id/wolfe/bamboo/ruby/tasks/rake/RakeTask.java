@@ -8,7 +8,6 @@ import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,9 @@ public class RakeTask extends AbstractRubyTask {
 
         final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
 
-        return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime)
+        final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
+
+        return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addIfBundleExec(bundleExecFlag)
                 .addRakeExecutable(bundleExecFlag)

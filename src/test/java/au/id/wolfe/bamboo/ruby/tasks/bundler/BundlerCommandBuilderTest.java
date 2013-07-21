@@ -26,14 +26,15 @@ public class BundlerCommandBuilderTest {
     private RvmRubyLocator rvmRubyLocator;
 
     private final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+    private final String rubyExecutablePath = RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath();
 
     private BundlerCommandBuilder bundlerCommandBuilder;
 
     @Before
     public void setUp() throws Exception {
 
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        bundlerCommandBuilder = new BundlerCommandBuilder(rvmRubyLocator, rubyRuntime);
+        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        bundlerCommandBuilder = new BundlerCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath);
 
     }
 
