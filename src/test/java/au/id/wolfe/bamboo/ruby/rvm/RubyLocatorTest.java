@@ -47,7 +47,7 @@ public class RubyLocatorTest {
 
         currentEnvVars.put("PATH", RvmFixtures.TEST_CURRENT_PATH);
 
-        Map<String, String> envVars = rvmRubyLocator.buildEnv("ruby-1.9.3-p0@default", currentEnvVars);
+        Map<String, String> envVars = rvmRubyLocator.buildEnv("ruby-1.9.3-p0@default", "/Users/markw/.rvm/versions/ruby-1.9.3-p/bin/ruby",  currentEnvVars);
 
         assertTrue(envVars.containsKey(EnvUtils.MY_RUBY_HOME));
 
@@ -146,35 +146,6 @@ public class RubyLocatorTest {
         assertTrue(rubyRuntimeList.contains(getJRubyRuntimeDefaultGemSet()));
 
     }
-
-    @Test
-    public void testSearchForRubyExecutable() {
-
-        final RubyRuntime mriRuby = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-
-        when(fileSystemHelper.pathExists(mriRuby.getRubyExecutablePath())).thenReturn(true);
-        when(fileSystemHelper.pathExists(mriRuby.getGemPath())).thenReturn(true);
-        when(fileSystemHelper.executableFileExists(mriRuby.getGemPath() + "/bin/rake")).thenReturn(true);
-
-        String executablePath = rvmRubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
-
-        assertEquals(mriRuby.getGemPath() + "/bin/rake", executablePath);
-
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testSearchForRubyExecutableWhenNotFound() {
-
-        final RubyRuntime mriRuby = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-
-        when(fileSystemHelper.pathExists(mriRuby.getRubyExecutablePath())).thenReturn(true);
-        when(fileSystemHelper.pathExists(mriRuby.getGemPath())).thenReturn(true);
-        when(fileSystemHelper.executableFileExists(mriRuby.getGemPath() + "/bin/rake")).thenReturn(false);
-
-        rvmRubyLocator.searchForRubyExecutable("ruby-1.9.3-p0@default", "rake");
-    }
-
 
     @Test
     public void testHasRuby() throws Exception {

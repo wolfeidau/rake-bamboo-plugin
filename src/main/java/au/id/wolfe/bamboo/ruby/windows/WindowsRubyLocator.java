@@ -46,7 +46,7 @@ public class WindowsRubyLocator extends BaseRubyLocator implements RubyLocator {
     }
 
     @Override
-    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv) {
 
         final Map<String, String> filteredRubyEnv = Maps.newHashMap();
 
@@ -59,23 +59,6 @@ public class WindowsRubyLocator extends BaseRubyLocator implements RubyLocator {
         }
 
         return filteredRubyEnv;
-    }
-
-    @Override
-    public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-
-        // I don't really like this however it will work as long as the user
-        // doesn't have more than one ruby installed. Need to do more research
-        // on how best to deal with that.
-        String rubyExecutable = detectExecutableOnPath(name);
-
-        log.info("ruby executable {}", rubyExecutable);
-
-        if (rubyExecutable != null) {
-            return rubyExecutable;
-        }
-
-        throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
     }
 
     @Override

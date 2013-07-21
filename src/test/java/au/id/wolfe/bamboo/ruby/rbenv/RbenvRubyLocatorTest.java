@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rbenv;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import au.id.wolfe.bamboo.ruby.util.SystemHelper;
@@ -39,6 +40,7 @@ public class RbenvRubyLocatorTest {
     private SystemHelper systemHelper;
 
     final static RubyRuntime ruby192p290default = new RubyRuntime("1.9.2-p290", "default", "/Users/markw/.rbenv/versions/1.9.2-p290/bin/ruby", null);
+    final static String rubyExecutablePath = ruby192p290default.getRubyExecutablePath();
 
     @Before
     public void setUp() throws Exception {
@@ -57,7 +59,7 @@ public class RbenvRubyLocatorTest {
         existingEnv.put(EnvUtils.GEM_HOME, badGemHomePath);
         existingEnv.put(EnvUtils.PATH, "/usr/bin:/bin:/usr/sbin:/sbin");
 
-        Map<String, String> updatedEnv = rbenvRubyLocator.buildEnv("1.9.2-p290@default", existingEnv);
+        Map<String, String> updatedEnv = rbenvRubyLocator.buildEnv("1.9.2-p290@default", rubyExecutablePath, existingEnv);
 
         assertThat(updatedEnv.containsKey(EnvUtils.GEM_HOME), equalTo(false));
 
@@ -66,13 +68,6 @@ public class RbenvRubyLocatorTest {
 
        assertThat(updatedEnv.get(EnvUtils.PATH), equalTo("/Users/markw/.rbenv/versions/1.9.2-p290/bin:/usr/bin:/bin:/usr/sbin:/sbin"));
 
-    }
-
-    @Test
-    public void testSearchForRubyExecutable() throws Exception {
-
-        assertThat(rbenvRubyLocator.searchForRubyExecutable("1.9.2-p290@default", "rake"),
-                equalTo("/Users/markw/.rbenv/versions/1.9.2-p290/bin/rake"));
     }
 
     @Test

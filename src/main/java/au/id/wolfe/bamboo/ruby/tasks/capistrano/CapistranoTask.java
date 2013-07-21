@@ -39,6 +39,7 @@ public class CapistranoTask extends AbstractRubyTask {
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
 
         return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(),
+                getRubyExecutablePath(rubyRuntimeLabel),
                 ImmutableMap.<String, String>builder().putAll(currentEnvVars).putAll(configEnvVars).build());
     }
 

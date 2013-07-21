@@ -12,7 +12,6 @@ import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class SystemRubyLocator extends BaseRubyLocator implements RubyLocator {
     }
 
     @Override
-    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv) {
 
         Map<String, String> filteredRubyEnv = Maps.newHashMap();
 
@@ -57,19 +56,6 @@ public class SystemRubyLocator extends BaseRubyLocator implements RubyLocator {
         }
 
         return filteredRubyEnv;
-    }
-
-    @Override
-    public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-
-        // currently commands are found in the /usr/bin directory or not at all.
-        for (String path : searchPaths) {
-            if (fileSystemHelper.executableFileExists(path, name)) {
-                return path + File.separator + name;
-            }
-        }
-
-        throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
     }
 
     @Override

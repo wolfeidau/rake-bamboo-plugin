@@ -1,12 +1,8 @@
 package au.id.wolfe.bamboo.ruby.tasks.rake;
 
-import au.id.wolfe.bamboo.ruby.common.RubyLabel;
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
 import au.id.wolfe.bamboo.ruby.util.TaskUtils;
-import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import com.google.common.collect.Maps;
@@ -19,12 +15,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.BUNDLE_EXEC_ARG;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.*;
 
 /**
  * Do some basic checking of the rake task.
@@ -45,6 +41,12 @@ public class RakeTaskTest extends AbstractTaskTest {
         rakeTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
         rakeTask.setCapabilityContext(capabilityContext);
 
+        Capability capability = mock(Capability.class);
+        CapabilitySet capabilitySet = mock(CapabilitySet.class);
+
+        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
+        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
+        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
     }
 
     @Test
@@ -62,13 +64,6 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
         when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-
-        Capability capability = mock(Capability.class);
-        CapabilitySet capabilitySet = mock(CapabilitySet.class);
-
-        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
-        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
-        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
 
         final List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -91,7 +86,7 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
-        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
+        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
         final Map<String, String> envVars = rakeTask.buildEnvironment(rubyLabel, configurationMap);
 
