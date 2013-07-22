@@ -45,7 +45,7 @@ public class RakeCommandBuilder {
      * @return Rake command builder.
      */
     public RakeCommandBuilder addRubyExecutable() {
-        commandList.add(rubyRuntime.getRubyExecutablePath());
+        commandList.add(rubyExecutablePath);
         return this;
     }
 

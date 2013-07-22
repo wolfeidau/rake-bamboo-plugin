@@ -39,7 +39,7 @@ public class CapistranoCommandBuilder {
      * @return Capistrano command builder.
      */
     public CapistranoCommandBuilder addRubyExecutable() {
-        commandList.add(rubyRuntime.getRubyExecutablePath());
+        commandList.add(rubyExecutablePath);
         return this;
     }
 

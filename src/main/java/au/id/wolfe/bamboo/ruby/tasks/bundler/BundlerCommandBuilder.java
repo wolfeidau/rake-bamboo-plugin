@@ -32,7 +32,7 @@ public class BundlerCommandBuilder {
     }
 
     public BundlerCommandBuilder addRubyExecutable() {
-        commandList.add(rubyRuntime.getRubyExecutablePath());
+        commandList.add(rubyExecutablePath);
         return this;
     }
 
