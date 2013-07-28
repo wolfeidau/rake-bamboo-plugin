@@ -72,11 +72,12 @@ public interface RubyLocator {
     boolean isReadOnly();
 
     /**
-     * Uses the ruby executable to guess the path of associated ruby commands.
+     * Uses the ruby executable to deduce the path of associated ruby commands.
      *
+     * @param rubyRuntimeName The name of the ruby runtime
      * @param rubyExecutablePath The full path to the ruby executable.
      * @param command The command to generate a path for.
      * @return The full path of the executable.
      */
-    String buildExecutablePath(String rubyExecutablePath, String command);
+    String buildExecutablePath(String rubyRuntimeName, String rubyExecutablePath, String command);
 }

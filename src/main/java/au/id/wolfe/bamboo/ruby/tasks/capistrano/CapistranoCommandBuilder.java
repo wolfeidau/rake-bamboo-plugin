@@ -51,7 +51,7 @@ public class CapistranoCommandBuilder {
      */
     public CapistranoCommandBuilder addIfBundleExec(@Nullable String bundleFlag) {
         if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BUNDLE_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
         }
         return this;
@@ -66,7 +66,7 @@ public class CapistranoCommandBuilder {
         if (BooleanUtils.toBoolean(bundleFlag)){
             commandList.add(CAP_COMMAND);
         } else {
-            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CAP_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CAP_COMMAND));
         }
         return this;
     }

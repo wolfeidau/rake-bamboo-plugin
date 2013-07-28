@@ -36,8 +36,8 @@ public class CapistranoCommandBuilderTest {
 
         capistranoCommandBuilder = new CapistranoCommandBuilder(rvmRubyLocator, rubyRuntime, RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath());
 
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
     }
 

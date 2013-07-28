@@ -36,8 +36,6 @@ public class SystemRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private static final List<String> searchPaths = ImmutableList.of("/usr/bin", "/usr/local/bin");
 
-    private final FileSystemHelper fileSystemHelper;
-
     public SystemRubyLocator(FileSystemHelper fileSystemHelper) {
         this.fileSystemHelper = fileSystemHelper;
     }
@@ -80,7 +78,6 @@ public class SystemRubyLocator extends BaseRubyLocator implements RubyLocator {
         throw new PathNotFoundException("Ruby runtime not found for - " + rubyRuntimeName);
     }
 
-    //
     @Override
     public List<RubyRuntime> listRubyRuntimes() {
 

@@ -33,7 +33,7 @@ public class BundlerCommandBuilderTest {
     @Before
     public void setUp() throws Exception {
 
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
         bundlerCommandBuilder = new BundlerCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath);
 
     }

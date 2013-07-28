@@ -60,8 +60,8 @@ public class CapistranoTaskTest extends AbstractTaskTest {
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         final List<String> commandList = capistranoTask.buildCommandList(rubyLabel, configurationMap);
 

@@ -24,7 +24,6 @@ import static au.id.wolfe.bamboo.ruby.util.EnvUtils.filterList;
  */
 public class RbenvRubyLocator extends BaseRubyLocator implements RubyLocator {
 
-    private final FileSystemHelper fileSystemHelper;
     private final String userRbenvInstallPath;
 
     public RbenvRubyLocator(FileSystemHelper fileSystemHelper, String userRbenvInstallPath) {
@@ -104,4 +103,5 @@ public class RbenvRubyLocator extends BaseRubyLocator implements RubyLocator {
     public boolean isReadOnly() {
         return false;
     }
+
 }

@@ -6,7 +6,7 @@ import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.ExecHelper;
-import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -41,8 +41,9 @@ public class WindowsRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private final ExecHelper execHelper;
 
-    public WindowsRubyLocator(ExecHelper execHelper) {
+    public WindowsRubyLocator(FileSystemHelper fileSystemHelper, ExecHelper execHelper) {
         this.execHelper = execHelper;
+        this.fileSystemHelper = fileSystemHelper;
     }
 
     @Override
@@ -211,5 +212,4 @@ public class WindowsRubyLocator extends BaseRubyLocator implements RubyLocator {
         }
 
     }
-
 }

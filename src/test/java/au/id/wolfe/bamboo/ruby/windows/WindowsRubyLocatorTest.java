@@ -1,6 +1,7 @@
 package au.id.wolfe.bamboo.ruby.windows;
 
 import au.id.wolfe.bamboo.ruby.util.ExecHelper;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,9 @@ public class WindowsRubyLocatorTest {
     @Mock
     ExecHelper execHelper;
 
+    @Mock
+    FileSystemHelper fileSystemHelper;
+
     WindowsRubyLocator windowsRubyLocator;
 
     @Before
@@ -37,7 +41,7 @@ public class WindowsRubyLocatorTest {
 
         when(execHelper.getExecutablePath(any(String.class), eq(true))).thenReturn(whereOutput);
 
-        windowsRubyLocator = new WindowsRubyLocator(execHelper);
+        windowsRubyLocator = new WindowsRubyLocator(fileSystemHelper, execHelper);
 
     }
 

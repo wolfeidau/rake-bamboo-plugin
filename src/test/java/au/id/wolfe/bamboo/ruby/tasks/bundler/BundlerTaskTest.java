@@ -54,7 +54,7 @@ public class BundlerTaskTest extends AbstractTaskTest {
     public void testBuildCommandList() {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         List<String> commandList = bundlerTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -70,7 +70,7 @@ public class BundlerTaskTest extends AbstractTaskTest {
     public void testBuildCommandListWithPathAndBinStubs() {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         configurationMap.put("path", "gems");
         configurationMap.put("binstubs", "true");

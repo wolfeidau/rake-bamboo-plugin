@@ -20,7 +20,6 @@ import java.util.Map;
  */
 public class RvmRubyLocator extends BaseRubyLocator implements RubyLocator {
 
-    final FileSystemHelper fileSystemHelper;
     final RvmInstallation rvmInstallation;
 
     public RvmRubyLocator(FileSystemHelper fileSystemHelper, RvmInstallation rvmInstallation) {
@@ -166,7 +165,27 @@ public class RvmRubyLocator extends BaseRubyLocator implements RubyLocator {
     }
 
     @Override
+    public String buildExecutablePath(String rubyRuntimeName, String rubyExecutablePath, String command) {
+
+        RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
+
+        List<String> gemBinSearchList = RvmUtils.buildGemBinSearchPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+
+        for (String pathBinSearch : gemBinSearchList) {
+
+            String binCandidate = FilenameUtils.concat(pathBinSearch, command);
+
+            if (fileSystemHelper.executableFileExists(binCandidate)) {
+                return binCandidate;
+            }
+        }
+
+        throw new IllegalArgumentException("Unable to locate executable " + command + " in gem path for ruby runtime " + rubyRuntimeName);
+    }
+
+    @Override
     public boolean isReadOnly() {
         return rvmInstallation.isSystemInstall();
     }
+
 }

@@ -42,7 +42,7 @@ public class BundlerCommandBuilder {
      * @return Bundler command builder.
      */
     public BundlerCommandBuilder addBundleExecutable() {
-        commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BUNDLE_COMMAND));
+        commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
         return this;
     }
 

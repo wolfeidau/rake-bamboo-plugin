@@ -57,7 +57,7 @@ public class RakeCommandBuilder {
      */
     public RakeCommandBuilder addIfBundleExec(@Nullable String bundleFlag) {
         if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, BUNDLE_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
             commandList.add(BUNDLE_EXEC_ARG);
         }
         return this;
@@ -73,7 +73,7 @@ public class RakeCommandBuilder {
         if (BooleanUtils.toBoolean(bundleFlag)) {
             commandList.add(RAKE_COMMAND);
         } else {
-            commandList.add(rvmRubyLocator.buildExecutablePath(rubyExecutablePath, RAKE_COMMAND));
+            commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RAKE_COMMAND));
         }
         return this;
     }
