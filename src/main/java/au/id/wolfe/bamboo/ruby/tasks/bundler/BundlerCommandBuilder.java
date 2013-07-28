@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
  * Builder to assemble the bundler command list.
  */
 public class BundlerCommandBuilder {
+
+    private final Logger log = LoggerFactory.getLogger(BundlerCommandBuilder.class);
 
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String PATH_ARG = "--path";
@@ -92,6 +96,7 @@ public class BundlerCommandBuilder {
      * @return The list of commands.
      */
     public List<String> build() {
+        log.info("commandList {}", commandList.toString());
         return commandList;
     }
 

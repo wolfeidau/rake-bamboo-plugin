@@ -9,7 +9,9 @@ import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ProcessService;
+import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import org.mockito.Mock;
 
 /**
@@ -22,6 +24,12 @@ public abstract class AbstractTaskTest {
 
     @Mock
     protected CapabilityContext capabilityContext;
+
+    @Mock
+    protected Capability capability;
+
+    @Mock
+    protected CapabilitySet capabilitySet;
 
     @Mock
     protected RubyLocatorServiceFactory rubyLocatorServiceFactory;

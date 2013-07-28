@@ -37,9 +37,6 @@ public class BundlerTaskTest extends AbstractTaskTest {
         bundlerTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
         bundlerTask.setCapabilityContext(capabilityContext);
 
-        Capability capability = mock(Capability.class);
-        CapabilitySet capabilitySet = mock(CapabilitySet.class);
-
         when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
         when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
         when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);

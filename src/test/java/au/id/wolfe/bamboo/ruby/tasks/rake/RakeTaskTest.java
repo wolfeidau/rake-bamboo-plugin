@@ -41,9 +41,6 @@ public class RakeTaskTest extends AbstractTaskTest {
         rakeTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
         rakeTask.setCapabilityContext(capabilityContext);
 
-        Capability capability = mock(Capability.class);
-        CapabilitySet capabilitySet = mock(CapabilitySet.class);
-
         when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
         when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
         when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);

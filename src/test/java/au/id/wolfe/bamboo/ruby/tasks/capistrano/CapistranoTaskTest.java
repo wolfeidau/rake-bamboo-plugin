@@ -38,9 +38,6 @@ public class CapistranoTaskTest extends AbstractTaskTest {
         capistranoTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
         capistranoTask.setCapabilityContext(capabilityContext);
 
-        Capability capability = mock(Capability.class);
-        CapabilitySet capabilitySet = mock(CapabilitySet.class);
-
         when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
         when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
         when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);

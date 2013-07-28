@@ -40,7 +40,6 @@ public class WindowsRubyLocatorTest {
     public void setup() throws Exception {
 
         when(execHelper.getExecutablePath(any(String.class), eq(true))).thenReturn(whereOutput);
-
         windowsRubyLocator = new WindowsRubyLocator(fileSystemHelper, execHelper);
 
     }
