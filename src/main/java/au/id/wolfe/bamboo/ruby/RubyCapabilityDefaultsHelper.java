@@ -4,7 +4,6 @@ import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
-import au.id.wolfe.bamboo.ruby.tasks.rake.RakeTask;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityImpl;
@@ -14,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static au.id.wolfe.bamboo.ruby.util.TaskUtils.buildCapabilityLabel;
 
 /**
  * Detects ruby runtimes which were installed using rvm.
@@ -57,7 +58,7 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
 
                     final RubyLabel rubyLabel = new RubyLabel(rubyRuntimeLocatorService.getRuntimeManagerName(),
                             rubyRuntime.getRubyRuntimeName());
-                    final String capabilityLabel = buildCapabilityLabel(RakeTask.RUBY_CAPABILITY_PREFIX, rubyLabel);
+                    final String capabilityLabel = buildCapabilityLabel(rubyLabel);
                     final Capability capability = new CapabilityImpl(capabilityLabel, rubyRuntime.getRubyExecutablePath());
 
                     log.info("Adding " + capability);
@@ -71,7 +72,4 @@ public class RubyCapabilityDefaultsHelper implements CapabilityDefaultsHelper {
         return capabilitySet;
     }
 
-    private String buildCapabilityLabel(String prefix, RubyLabel rubyLabel) {
-        return String.format("%s.%s", prefix, rubyLabel);
-    }
 }

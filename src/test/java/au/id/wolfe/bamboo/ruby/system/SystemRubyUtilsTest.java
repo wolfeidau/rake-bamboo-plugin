@@ -18,6 +18,8 @@ public class SystemRubyUtilsTest {
 
     static final String rubyWindowsVersionString = "ruby 1.9.3p125 (2012-02-16) [i386-mingw32]";
 
+    static final String jrubyWindowsVersionString = "jruby 1.7.4 (1.9.3p392) 2013-05-16 2390d3b on Java HotSpot(TM) 64-Bit Server VM 1.7.0_25-b17 [Windows 7-amd64]";
+
     @Test
     public void testParseOsxRubyVersionString() throws Exception {
 
@@ -40,5 +42,14 @@ public class SystemRubyUtilsTest {
         String rubyVersion =  SystemRubyUtils.parseRubyVersionString(rubyWindowsVersionString);
 
         assertThat(rubyVersion, equalTo("1.9.3-p125"));
+    }
+
+
+    @Test
+    public void testParseWindowsJRubyVersionString() throws Exception {
+
+        String rubyVersion =  SystemRubyUtils.parseRubyVersionString(jrubyWindowsVersionString);
+
+        assertThat(rubyVersion, equalTo("1.7.4-p0"));
     }
 }

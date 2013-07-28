@@ -2,10 +2,12 @@ package au.id.wolfe.bamboo.ruby.rbenv;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.maven.wagon.PathUtils;
 
 import java.io.File;
 import java.util.List;
@@ -20,9 +22,8 @@ import static au.id.wolfe.bamboo.ruby.util.EnvUtils.filterList;
  * - You will typically only have one version of a given ruby installed at one time.
  * - There are no gemsets (YAY!)
  */
-public class RbenvRubyLocator implements RubyLocator {
+public class RbenvRubyLocator extends BaseRubyLocator implements RubyLocator {
 
-    private final FileSystemHelper fileSystemHelper;
     private final String userRbenvInstallPath;
 
     public RbenvRubyLocator(FileSystemHelper fileSystemHelper, String userRbenvInstallPath) {
@@ -31,11 +32,9 @@ public class RbenvRubyLocator implements RubyLocator {
     }
 
     @Override
-    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv) {
 
         Map<String, String> filteredRubyEnv = Maps.newHashMap();
-
-        RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
         // As everything is static with the rbenv ruby install we just need to clean this stuff
         // out of the environment and let ruby do it's thing.
@@ -48,23 +47,10 @@ public class RbenvRubyLocator implements RubyLocator {
         // prepend the ruby bin director to the path.
         if (currentEnv.containsKey("PATH")) {
             final String pathEnvEntry = currentEnv.get("PATH");
-            filteredRubyEnv.put("PATH", RbenvUtils.buildRbenvRubyBinDirectoryPath(userRbenvInstallPath, rubyRuntime.getRubyName()) + File.pathSeparator + pathEnvEntry);
+            filteredRubyEnv.put("PATH", PathUtils.dirname(rubyExecutablePath) + File.pathSeparator + pathEnvEntry);
         }
 
         return filteredRubyEnv;
-    }
-
-    @Override
-    public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-
-        final RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
-
-        // search the ruby bin directory for the command
-        final String commandPath = RbenvUtils.buildRbenvRubyBinPath(userRbenvInstallPath, rubyRuntime.getRubyName(), name);
-
-        fileSystemHelper.executableFileExists(commandPath);
-
-        return commandPath;
     }
 
     @Override
@@ -117,4 +103,5 @@ public class RbenvRubyLocator implements RubyLocator {
     public boolean isReadOnly() {
         return false;
     }
+
 }

@@ -15,19 +15,10 @@ public interface RubyLocator {
      * to execute commands under this runtime.
      *
      * @param rubyRuntimeName The name of the ruby runtime.
+     * @param rubyExecutablePath The full path to the ruby executable.
      * @return Map of environment variables.
      */
-    Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv);
-
-    /**
-     * Given the name of a ruby script locate the executable in the gem path.
-     *
-     * @param rubyRuntimeName The name of the ruby runtime.
-     * @param name            Name the script/executable.
-     * @return The full path of the executable.
-     * @throws IllegalArgumentException If the command cannot be located in the gem path.
-     */
-    String searchForRubyExecutable(String rubyRuntimeName, String name);
+    Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv);
 
     /**
      * Given a ruby name 1.9.3-p0 and gem set name rails31 return a ruby runtime object for it.
@@ -79,4 +70,14 @@ public interface RubyLocator {
      * @return true if ready only installation(s) of ruby.
      */
     boolean isReadOnly();
+
+    /**
+     * Uses the ruby executable to deduce the path of associated ruby commands.
+     *
+     * @param rubyRuntimeName The name of the ruby runtime
+     * @param rubyExecutablePath The full path to the ruby executable.
+     * @param command The command to generate a path for.
+     * @return The full path of the executable.
+     */
+    String buildExecutablePath(String rubyRuntimeName, String rubyExecutablePath, String command);
 }

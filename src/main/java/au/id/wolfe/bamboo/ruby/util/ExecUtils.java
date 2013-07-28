@@ -50,10 +50,10 @@ public final class ExecUtils {
 
         final int exitValue = cmdExec(line, output);
 
-        log.info("ruby exit code  = {}", exitValue);
+        log.info("gem exit code  = {}", exitValue);
 
         if (exitValue == 0) {
-            log.info("ruby exec result = {}", output.toString());
+            log.info("gem path = {}", output.toString());
             return output.toString();
         } else {
             throw new IllegalArgumentException("Ruby executable failed to run.");
@@ -72,7 +72,7 @@ public final class ExecUtils {
         log.info("ruby exit code  = {}", exitValue);
 
         if (exitValue == 0) {
-            log.info("ruby exec result = {}", output.toString());
+            log.info("ruby version = {}", output.toString());
             return output.toString();
         } else {
             throw new IllegalArgumentException("Ruby executable failed to run.");

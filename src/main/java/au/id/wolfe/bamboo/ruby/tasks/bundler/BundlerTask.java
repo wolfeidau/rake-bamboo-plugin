@@ -29,7 +29,9 @@ public class BundlerTask extends AbstractRubyTask {
 
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime());
 
-        return new BundlerCommandBuilder(rubyLocator, rubyRuntime)
+        final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
+
+        return new BundlerCommandBuilder(rubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addBundleExecutable()
                 .addInstall()
@@ -53,6 +55,7 @@ public class BundlerTask extends AbstractRubyTask {
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
         return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(),
+                getRubyExecutablePath(rubyRuntimeLabel),
                 ImmutableMap.<String, String>builder().putAll(currentEnvVars).putAll(configEnvVars).build());
     }
 

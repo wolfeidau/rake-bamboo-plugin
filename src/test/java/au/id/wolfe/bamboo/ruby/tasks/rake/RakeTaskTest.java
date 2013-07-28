@@ -1,11 +1,10 @@
 package au.id.wolfe.bamboo.ruby.tasks.rake;
 
-import au.id.wolfe.bamboo.ruby.common.RubyLabel;
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
-import com.atlassian.bamboo.configuration.ConfigurationMap;
-import com.atlassian.bamboo.configuration.ConfigurationMapImpl;
+import au.id.wolfe.bamboo.ruby.util.TaskUtils;
+import com.atlassian.bamboo.v2.build.agent.capability.Capability;
+import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +15,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.BUNDLE_EXEC_ARG;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static au.id.wolfe.bamboo.ruby.tasks.rake.RakeCommandBuilder.*;
 
 /**
  * Do some basic checking of the rake task.
@@ -37,18 +37,17 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         rakeTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
         rakeTask.setProcessService(processService);
+        rakeTask.setCapabilityContext(capabilityContext);
         rakeTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        rakeTask.setCapabilityContext(capabilityContext);
 
+        when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
+        when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
+        when(capabilityContext.getCapabilitySet()).thenReturn(capabilitySet);
     }
 
     @Test
     public void testBuildCommandList() {
-
-        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-
-        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("targets", DB_MIGRATE_TARGET);
@@ -59,8 +58,9 @@ public class RakeTaskTest extends AbstractTaskTest {
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         final List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -79,16 +79,11 @@ public class RakeTaskTest extends AbstractTaskTest {
     @Test
     public void testBuildEnvironment() {
 
-        final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
-        final RubyLabel rubyLabel = new RubyLabel("RVM", rubyRuntime.getRubyRuntimeName());
-
-        final ConfigurationMap configurationMap = new ConfigurationMapImpl();
-
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
 
-        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
+        when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
         final Map<String, String> envVars = rakeTask.buildEnvironment(rubyLabel, configurationMap);
 

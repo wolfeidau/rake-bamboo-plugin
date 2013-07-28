@@ -24,16 +24,17 @@ public class RakeCommandBuilderTest {
     RvmRubyLocator rvmRubyLocator;
 
     final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+    final String rubyExecutablePath = RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath();
 
     RakeCommandBuilder rakeCommandBuilder;
 
     @Before
     public void setUp() throws Exception {
 
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
-        rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime);
+        rakeCommandBuilder = new RakeCommandBuilder(rvmRubyLocator, rubyRuntime, RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath());
     }
 
     @Test

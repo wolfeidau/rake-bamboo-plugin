@@ -2,14 +2,18 @@ package au.id.wolfe.bamboo.ruby.windows;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.ExecHelper;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.LineReader;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +28,12 @@ import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
 
 /**
  * Locates Ruby run times installed in windows.
- *
+ * <p/>
  * This ruby locator uses a pretty simplistic method of runtime detection being the which command in windows. This
  * command searches the path for all instances of the file passed in. This routine will take the first instance of
  * said command and return it.
  */
-public class WindowsRubyLocator implements RubyLocator {
+public class WindowsRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private static final Logger log = LoggerFactory.getLogger(WindowsRubyLocator.class);
     private static final List<String> filterList =
@@ -37,12 +41,13 @@ public class WindowsRubyLocator implements RubyLocator {
 
     private final ExecHelper execHelper;
 
-    public WindowsRubyLocator(ExecHelper execHelper) {
+    public WindowsRubyLocator(FileSystemHelper fileSystemHelper, ExecHelper execHelper) {
         this.execHelper = execHelper;
+        this.fileSystemHelper = fileSystemHelper;
     }
 
     @Override
-    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv) {
 
         final Map<String, String> filteredRubyEnv = Maps.newHashMap();
 
@@ -55,23 +60,6 @@ public class WindowsRubyLocator implements RubyLocator {
         }
 
         return filteredRubyEnv;
-    }
-
-    @Override
-    public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-
-        // I don't really like this however it will work as long as the user
-        // doesn't have more than one ruby installed. Need to do more research
-        // on how best to deal with that.
-        String rubyExecutable = detectExecutableOnPath(name);
-
-        log.info("ruby executable {}", rubyExecutable);
-
-        if (rubyExecutable != null) {
-            return rubyExecutable;
-        }
-
-        throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
     }
 
     @Override
@@ -104,29 +92,40 @@ public class WindowsRubyLocator implements RubyLocator {
         // only currently supports windows
         if (SystemUtils.IS_OS_WINDOWS) {
 
-            final String rubyExecutable = detectExecutableOnPath("ruby.exe");
-            log.info("ruby executable {}", rubyExecutable);
+            List<String> rubyExecutables = Lists.newArrayList();
 
-            final String gemExecutable = detectExecutableOnPath("gem.bat");
-            log.info("gem executable {}", gemExecutable);
+            rubyExecutables.addAll(detectExecutablesOnPath("ruby.exe"));
+            rubyExecutables.addAll(detectExecutablesOnPath("jruby.exe"));
 
-            if (rubyExecutable != null && gemExecutable != null) {
+            for (String rubyExecutable: rubyExecutables){
 
-                try {
+                log.info("ruby executable {}", rubyExecutable);
 
-                    final String rubyVersionString = getRubyVersionString(rubyExecutable);
-                    final String version = parseRubyVersionString(rubyVersionString);
-                    final String gemPathString = getGemPathString(gemExecutable);
+                String rubyBinDir = FileUtils.dirname(rubyExecutable);
 
-                    rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutable, gemPathString));
+                log.info("ruby bin dir {}", rubyBinDir);
 
-                } catch (IOException e) {
-                    log.error("IO Exception occurred trying to build Ruby Runtime - " + e.getMessage());
-                } catch (InterruptedException e) {
-                    log.error("Interrupted Exception occurred trying to build Ruby Runtime - " + e.getMessage());
+                final String gemExecutable = FilenameUtils.concat(rubyBinDir, "gem.bat");
+                log.info("gem executable {}", gemExecutable);
+
+                if (rubyExecutable != null && gemExecutable != null) {
+
+                    try {
+
+                        final String rubyVersionString = getRubyVersionString(rubyExecutable);
+                        final String version = parseRubyVersionString(rubyVersionString);
+                        final String gemPathString = getGemPathString(gemExecutable);
+
+                        rubyRuntimeList.add(new RubyRuntime(version, "default", rubyExecutable, gemPathString));
+
+                    } catch (IOException e) {
+                        log.error("IO Exception occurred trying to build Ruby Runtime - " + e.getMessage());
+                    } catch (InterruptedException e) {
+                        log.error("Interrupted Exception occurred trying to build Ruby Runtime - " + e.getMessage());
+                    }
                 }
-            }
 
+            }
 
         } else {
             log.warn("This plugin currently only supports Windows based operating systems.");
@@ -180,4 +179,37 @@ public class WindowsRubyLocator implements RubyLocator {
         throw new PathNotFoundException("Unable to locate executable - " + executableName);
     }
 
+    public List<String> detectExecutablesOnPath(String executableName) {
+
+        List<String> results = Lists.newArrayList();
+
+        try {
+
+            final String executablePathOutput = execHelper.getExecutablePath(executableName, true);
+
+            if (executablePathOutput.contains("Could not find files")) {
+                throw new PathNotFoundException("Unable to locate executable - " + executableName);
+            }
+
+            final LineReader lineReader = new LineReader(new StringReader(executablePathOutput));
+
+            String line;
+
+            while ((line = lineReader.readLine()) != null) {
+                results.add(line);
+            }
+
+        } catch (IOException e) {
+            log.error("IOException occurred locating executable - " + e.getMessage());
+        } catch (InterruptedException e) {
+            log.error("Interrupted occurred locating executable - " + e.getMessage());
+        }
+
+        if (results.size() == 0) {
+            throw new PathNotFoundException("Unable to locate executable - " + executableName);
+        } else {
+            return results;
+        }
+
+    }
 }

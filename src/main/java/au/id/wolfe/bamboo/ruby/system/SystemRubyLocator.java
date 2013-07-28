@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.system;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 import com.google.common.collect.ImmutableList;
@@ -11,7 +12,6 @@ import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -30,20 +30,18 @@ import static au.id.wolfe.bamboo.ruby.util.ExecUtils.getRubyVersionString;
  * - the 'gem' executable is in the same path as the 'ruby' executable.
  * - at the moment I will locate only one installation to keep it simple.
  */
-public class SystemRubyLocator implements RubyLocator {
+public class SystemRubyLocator extends BaseRubyLocator implements RubyLocator {
 
     private static final Logger log = LoggerFactory.getLogger(SystemRubyLocator.class);
 
     private static final List<String> searchPaths = ImmutableList.of("/usr/bin", "/usr/local/bin");
-
-    private final FileSystemHelper fileSystemHelper;
 
     public SystemRubyLocator(FileSystemHelper fileSystemHelper) {
         this.fileSystemHelper = fileSystemHelper;
     }
 
     @Override
-    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv) {
 
         Map<String, String> filteredRubyEnv = Maps.newHashMap();
 
@@ -56,19 +54,6 @@ public class SystemRubyLocator implements RubyLocator {
         }
 
         return filteredRubyEnv;
-    }
-
-    @Override
-    public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-
-        // currently commands are found in the /usr/bin directory or not at all.
-        for (String path : searchPaths) {
-            if (fileSystemHelper.executableFileExists(path, name)) {
-                return path + File.separator + name;
-            }
-        }
-
-        throw new PathNotFoundException("Ruby command not found for rubyRuntime (" + rubyRuntimeName + ") command - " + name);
     }
 
     @Override
@@ -93,7 +78,6 @@ public class SystemRubyLocator implements RubyLocator {
         throw new PathNotFoundException("Ruby runtime not found for - " + rubyRuntimeName);
     }
 
-    //
     @Override
     public List<RubyRuntime> listRubyRuntimes() {
 

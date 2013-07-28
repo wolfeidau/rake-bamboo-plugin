@@ -27,16 +27,17 @@ public class CapistranoCommandBuilderTest {
     private RvmRubyLocator rvmRubyLocator;
 
     private final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
+    private final String rubyExecutablePath = RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath();
 
     private CapistranoCommandBuilder capistranoCommandBuilder;
 
     @Before
     public void setUp() throws Exception {
 
-        capistranoCommandBuilder = new CapistranoCommandBuilder(rvmRubyLocator, rubyRuntime);
+        capistranoCommandBuilder = new CapistranoCommandBuilder(rvmRubyLocator, rubyRuntime, RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath());
 
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
-        when(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CapistranoCommandBuilder.CAP_COMMAND)).thenReturn(RvmFixtures.CAP_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, CapistranoCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
     }
 

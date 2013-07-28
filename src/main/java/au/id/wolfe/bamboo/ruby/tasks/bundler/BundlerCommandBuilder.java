@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
  */
 public class BundlerCommandBuilder {
 
+    private final Logger log = LoggerFactory.getLogger(BundlerCommandBuilder.class);
+
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String PATH_ARG = "--path";
     public static final String BIN_STUBS_ARG = "--binstubs";
@@ -21,16 +25,18 @@ public class BundlerCommandBuilder {
 
     private final RubyLocator rvmRubyLocator;
     private final RubyRuntime rubyRuntime;
+    private final String rubyExecutablePath;
 
     private final List<String> commandList = Lists.newLinkedList();
 
-    public BundlerCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime) {
+    public BundlerCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
         this.rvmRubyLocator = rvmRubyLocator;
         this.rubyRuntime = rubyRuntime;
+        this.rubyExecutablePath = rubyExecutablePath;
     }
 
     public BundlerCommandBuilder addRubyExecutable() {
-        commandList.add(rubyRuntime.getRubyExecutablePath());
+        commandList.add(rubyExecutablePath);
         return this;
     }
 
@@ -40,7 +46,7 @@ public class BundlerCommandBuilder {
      * @return Bundler command builder.
      */
     public BundlerCommandBuilder addBundleExecutable() {
-        commandList.add(rvmRubyLocator.searchForRubyExecutable(rubyRuntime.getRubyRuntimeName(), BUNDLE_COMMAND));
+        commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
         return this;
     }
 
@@ -90,6 +96,7 @@ public class BundlerCommandBuilder {
      * @return The list of commands.
      */
     public List<String> build() {
+        log.info("commandList {}", commandList.toString());
         return commandList;
     }
 

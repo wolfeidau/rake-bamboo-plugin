@@ -11,7 +11,7 @@ public final class SystemRubyUtils {
 
     static final Pattern ruby18pattern = Pattern.compile("ruby (\\d\\.\\d\\.\\d) \\((.*) patchlevel (\\d+)\\) \\[(.*)\\]");
     static final Pattern ruby19pattern = Pattern.compile("ruby (\\d+\\.\\d+\\.\\d)+p(\\d+) \\((.*)\\) \\[(.*)\\]");
-    static final Pattern ruby20pattern = Pattern.compile("ruby (\\d+\\.\\d+\\.\\d)+p(\\d+) \\((.*)\\) \\[(.*)\\]");
+    static final Pattern jrubypattern = Pattern.compile("jruby (\\d+\\.\\d+.\\d+).*");
 
     public static String parseRubyVersionString(String rubyVersionString) {
 
@@ -21,6 +21,16 @@ public final class SystemRubyUtils {
 
             if (matcher.matches() && matcher.groupCount() == 4) {
                 return String.format("%s-p%s", matcher.group(1), matcher.group(3));
+            } else {
+                throw new IllegalArgumentException("Unable to parse ruby version string.");
+            }
+
+        } else if (rubyVersionString.contains("jruby")) {
+
+            Matcher matcher = jrubypattern.matcher(rubyVersionString);
+
+            if (matcher.matches() && matcher.groupCount() == 1) {
+                return String.format("%s-p%s", matcher.group(1), "0");
             } else {
                 throw new IllegalArgumentException("Unable to parse ruby version string.");
             }

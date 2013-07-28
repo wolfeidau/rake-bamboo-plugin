@@ -2,6 +2,7 @@ package au.id.wolfe.bamboo.ruby.rvm;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
+import au.id.wolfe.bamboo.ruby.locator.BaseRubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.util.EnvUtils;
 import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
@@ -17,9 +18,8 @@ import java.util.Map;
 /**
  * This class locates ruby installations within an Rvm Installation.
  */
-public class RvmRubyLocator implements RubyLocator {
+public class RvmRubyLocator extends BaseRubyLocator implements RubyLocator {
 
-    final FileSystemHelper fileSystemHelper;
     final RvmInstallation rvmInstallation;
 
     public RvmRubyLocator(FileSystemHelper fileSystemHelper, RvmInstallation rvmInstallation) {
@@ -35,7 +35,7 @@ public class RvmRubyLocator implements RubyLocator {
      * @return Map of environment variables.
      */
     @Override
-    public Map<String, String> buildEnv(String rubyRuntimeName, Map<String, String> currentEnv) {
+    public Map<String, String> buildEnv(String rubyRuntimeName, String rubyExecutablePath, Map<String, String> currentEnv) {
 
         RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
 
@@ -64,34 +64,6 @@ public class RvmRubyLocator implements RubyLocator {
         envVars.put(EnvUtils.PATH, rvmPathPrefix + File.pathSeparator + currentPath);
 
         return envVars;
-    }
-
-    /**
-     * Given the name of a ruby script locate the executable in the gem path.
-     *
-     * @param rubyRuntimeName The name of the ruby runtime.
-     * @param name            Name the script/executable.
-     * @return The full path of the executable.
-     * @throws IllegalArgumentException If the command cannot be located in the gem path.
-     */
-    @Override
-    public String searchForRubyExecutable(String rubyRuntimeName, String name) {
-
-        RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
-
-        List<String> gemBinSearchList = RvmUtils.buildGemBinSearchPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
-
-        for (String pathBinSearch : gemBinSearchList) {
-
-            String binCandidate = FilenameUtils.concat(pathBinSearch, name);
-
-            if (fileSystemHelper.executableFileExists(binCandidate)) {
-                return binCandidate;
-            }
-        }
-
-        throw new IllegalArgumentException("Unable to locate executable " + name + " in gem path for ruby runtime " + rubyRuntimeName);
-
     }
 
     /**
@@ -193,7 +165,27 @@ public class RvmRubyLocator implements RubyLocator {
     }
 
     @Override
+    public String buildExecutablePath(String rubyRuntimeName, String rubyExecutablePath, String command) {
+
+        RubyRuntime rubyRuntime = getRubyRuntime(rubyRuntimeName);
+
+        List<String> gemBinSearchList = RvmUtils.buildGemBinSearchPath(rvmInstallation.getGemsPath(), rubyRuntime.getRubyName(), rubyRuntime.getGemSetName());
+
+        for (String pathBinSearch : gemBinSearchList) {
+
+            String binCandidate = FilenameUtils.concat(pathBinSearch, command);
+
+            if (fileSystemHelper.executableFileExists(binCandidate)) {
+                return binCandidate;
+            }
+        }
+
+        throw new IllegalArgumentException("Unable to locate executable " + command + " in gem path for ruby runtime " + rubyRuntimeName);
+    }
+
+    @Override
     public boolean isReadOnly() {
         return rvmInstallation.isSystemInstall();
     }
+
 }
