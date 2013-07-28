@@ -37,18 +37,6 @@ public class IntegrationTestRakePlugin extends TestCase {
         assertTextPresent("1.8.7-p358@default");
     }
 
-    public void testAddingRakeTaskToDefaultJob() throws Exception {
-
-        TestBuildDetails plan = product.visit(CreatePlanPage.class).createNewPassingPlan();
-
-        TestBuildDetails defaultJob = plan.getDefaultJob();
-
-        List<TestStageDetails> testStageDetailsList = defaultJob.getStages();
-
-        //testStageDetailsList.add( new TestStageDetails())
-
-    }
-
     public void assertTextPresent(String text) {
         assertTrue("Should contain '" + text + "'", getWebDriver().getDriver().getPageSource().contains(text));
     }
