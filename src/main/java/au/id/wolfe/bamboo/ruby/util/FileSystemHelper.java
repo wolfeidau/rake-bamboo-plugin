@@ -1,7 +1,6 @@
 package au.id.wolfe.bamboo.ruby.util;
 
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
-import com.atlassian.bamboo.v2.build.agent.capability.ExecutablePathUtils;
 import com.google.common.base.Preconditions;
 
 import java.io.File;

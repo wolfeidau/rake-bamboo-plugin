@@ -22,11 +22,15 @@ public abstract class BaseRubyLocator {
 
         final String executablePath = PathUtils.dirname(rubyExecutablePath) + File.separator + command;
 
-        log.info("located executable {}", executablePath);
+        log.info("Checking executable {}", executablePath);
 
-        Preconditions.checkArgument(fileSystemHelper.executableFileExists(executablePath), "Executable " + command + " not found in ruby bin path.");
+        if(!fileSystemHelper.executableFileExists(executablePath)){
+            log.error("Executable " + executablePath + " not found.");
+            throw new IllegalArgumentException("Executable " + executablePath + " not found in ruby bin path.");
+        } else{
+            return executablePath;
+        }
 
-        return executablePath;
     }
 
 }
