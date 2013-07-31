@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
  * TODO Need to reconsider the design of this class, probably moving to properties over a list, with the command list being built in the build method.
  */
 public class RakeCommandBuilder {
+
+    private final Logger log = LoggerFactory.getLogger(RakeCommandBuilder.class);
 
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String RAKE_COMMAND = "rake";
@@ -149,6 +153,7 @@ public class RakeCommandBuilder {
      * @return The list of commands.
      */
     public List<String> build() {
+        log.info("commandList {}", commandList.toString());
         return commandList;
     }
 

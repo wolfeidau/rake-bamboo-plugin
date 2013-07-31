@@ -5,6 +5,8 @@ import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * Assemble the command list for cap.
  */
 public class CapistranoCommandBuilder {
+
+    private final Logger log = LoggerFactory.getLogger(CapistranoCommandBuilder.class);
 
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String CAP_COMMAND = "cap";
@@ -114,6 +118,7 @@ public class CapistranoCommandBuilder {
      * @return The list of commands.
      */
     public List<String> build() {
+        log.info("commandList {}", commandList.toString());
         return commandList;
     }
 
