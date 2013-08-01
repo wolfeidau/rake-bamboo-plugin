@@ -9,11 +9,8 @@ import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;
 import com.atlassian.bamboo.process.ProcessService;
-import com.atlassian.bamboo.task.TaskContext;
-import com.atlassian.bamboo.task.TaskException;
-import com.atlassian.bamboo.task.TaskResult;
-import com.atlassian.bamboo.task.TaskResultBuilder;
-import com.atlassian.bamboo.task.TaskType;
+import com.atlassian.bamboo.task.*;
+import com.atlassian.bamboo.util.Narrow;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityDefaultsHelper;
@@ -29,7 +26,7 @@ import java.util.Map;
 /**
  * Basis for ruby tasks.
  */
-public abstract class AbstractRubyTask implements TaskType {
+public abstract class AbstractRubyTask implements CommonTaskType {
 
     protected final Logger log = LoggerFactory.getLogger(AbstractRubyTask.class);
 
@@ -46,9 +43,10 @@ public abstract class AbstractRubyTask implements TaskType {
     }
 
     @NotNull
-    public TaskResult execute(@NotNull TaskContext taskContext) throws TaskException {
+    public TaskResult execute(@NotNull CommonTaskContext taskContext) throws TaskException {
 
-        final TaskResultBuilder taskResultBuilder = TaskResultBuilder.create(taskContext);
+        final TaskResultBuilder taskResultBuilder = TaskResultBuilder.newBuilder(taskContext);
+        final TaskContext buildTaskContext = Narrow.to(taskContext, TaskContext.class);
 
         final ConfigurationMap config = taskContext.getConfigurationMap();
         final String rubyRuntimeLabel = config.get("ruby");
@@ -61,7 +59,7 @@ public abstract class AbstractRubyTask implements TaskType {
 
             List<String> commandsList = buildCommandList(rubyLabel, config);
 
-            ExternalProcess externalProcess = processService.createProcess(taskContext,
+            ExternalProcess externalProcess = processService.createExternalProcess(taskContext,
                     new ExternalProcessBuilder()
                             .env(envVars)
                             .command(commandsList)
@@ -69,16 +67,26 @@ public abstract class AbstractRubyTask implements TaskType {
 
             externalProcess.execute();
 
-            return taskResultBuilder.checkReturnCode(externalProcess, 0).build();
+            taskResultBuilder.checkReturnCode(externalProcess, 0);
 
         } catch (IllegalArgumentException e){
-            taskContext.getBuildContext().getErrorCollection().addErrorMessage(e.getMessage());
-            return TaskResultBuilder.create(taskContext).failedWithError().build();
+            logError(e, buildTaskContext);
+            return taskResultBuilder.failedWithError().build();
         } catch (PathNotFoundException e ){
-            taskContext.getBuildContext().getErrorCollection().addErrorMessage(e.getMessage());
-            return TaskResultBuilder.create(taskContext).failedWithError().build();
+            logError(e, buildTaskContext);
+            return taskResultBuilder.failedWithError().build();
         }
 
+        return taskResultBuilder.build();
+    }
+
+    private void logError(Throwable e, TaskContext taskContext)
+    {
+        log.error(e.getMessage(), e);
+        if (taskContext != null)
+        {
+            taskContext.getBuildContext().getErrorCollection().addErrorMessage(e.getMessage());
+        }
     }
 
     /**
