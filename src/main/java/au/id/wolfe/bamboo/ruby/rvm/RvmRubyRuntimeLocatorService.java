@@ -1,16 +1,16 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
-import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.util.SystemHelper;
+import java.io.File;
+
 import org.apache.commons.lang.SystemUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 
 /**
  * RVM Utility methods, these are entirely  as there is only one filesystem involved.
@@ -24,16 +24,13 @@ public class RvmRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
     static final String[] KNOWN_RVM_HOME_PATHS = new String[]{"/usr/local/rvm", "/opt/local/rvm"};
 
     private final FileSystemHelper fileSystemHelper;
-    private final SystemHelper systemHelper;
 
     public RvmRubyRuntimeLocatorService() {
-        fileSystemHelper = new FileSystemHelper();
-        systemHelper = new SystemHelper();
+        this(new FileSystemHelper());
     }
 
-    public RvmRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper, SystemHelper systemHelper) {
+    public RvmRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
         this.fileSystemHelper = fileSystemHelper;
-        this.systemHelper = systemHelper;
     }
 
     /**
@@ -50,7 +47,7 @@ public class RvmRubyRuntimeLocatorService implements RubyRuntimeLocatorService {
             return null;
         }
 
-        final String userRvmInstallPath = systemHelper.getUserHome() + File.separator + Constants.LOCAL_RVM_HOME_FOLDER_NAME;
+        final String userRvmInstallPath = fileSystemHelper.getUserHome() + File.separator + Constants.LOCAL_RVM_HOME_FOLDER_NAME;
 
         log.info("Searching for rvm installation in users home directory located at - {}", userRvmInstallPath);
 

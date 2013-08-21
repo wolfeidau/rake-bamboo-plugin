@@ -1,14 +1,14 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.util.SystemHelper;
+import java.io.File;
+
 import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeLocatorService;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 
 /**
  *
@@ -22,16 +22,13 @@ public class RbenvRubyRuntimeLocatorService implements RubyRuntimeLocatorService
     public static final String MANAGER_LABEL = "rbenv";
 
     private final FileSystemHelper fileSystemHelper;
-    private final SystemHelper systemHelper;
 
     public RbenvRubyRuntimeLocatorService() {
-        fileSystemHelper = new FileSystemHelper();
-        systemHelper = new SystemHelper();
+        this(new FileSystemHelper());
     }
 
-    public RbenvRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper, SystemHelper systemHelper) {
+    public RbenvRubyRuntimeLocatorService(FileSystemHelper fileSystemHelper) {
         this.fileSystemHelper = fileSystemHelper;
-        this.systemHelper = systemHelper;
     }
 
     @Override
@@ -42,7 +39,7 @@ public class RbenvRubyRuntimeLocatorService implements RubyRuntimeLocatorService
             return null;
         }
 
-        final String userRbenvInstallPath = systemHelper.getUserHome() + File.separator + RBENV_DEFAULT_PATH;
+        final String userRbenvInstallPath = fileSystemHelper.getUserHome() + File.separator + RBENV_DEFAULT_PATH;
 
         log.info("Searching for rbenv installation in users home directory located at - {}", userRbenvInstallPath);
 

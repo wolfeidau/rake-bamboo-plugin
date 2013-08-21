@@ -1,18 +1,18 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
-import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.util.SystemHelper;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.when;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 
 /**
  * Unit test for rbenv locator service.
@@ -28,14 +28,11 @@ public class RbenvRubyRuntimeLocatorServiceTest {
     @Mock
     private FileSystemHelper fileSystemHelper;
 
-    @Mock
-    private SystemHelper systemHelper;
-
     @Before
     public void setUp() throws Exception {
 
-        rbenvRubyRuntimeLocatorService = new RbenvRubyRuntimeLocatorService(fileSystemHelper, systemHelper);
-        when(systemHelper.getUserHome()).thenReturn(TEST_HOME_DIR);
+        rbenvRubyRuntimeLocatorService = new RbenvRubyRuntimeLocatorService(fileSystemHelper);
+        when(fileSystemHelper.getUserHome()).thenReturn(TEST_HOME_DIR);
 
     }
 

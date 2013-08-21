@@ -14,6 +14,29 @@ import java.util.List;
 public class FileSystemHelper {
 
     /**
+     * Adapter for the system properties primarily to enable testing of all cases.
+     * @return The path to the current users home directory.
+     */
+    public String getUserHome(){
+        return System.getProperty("user.home");
+    }
+
+    /**
+     * Resolve the path based on the user home if starts with ~
+     * 
+     * @param path
+     * @return
+     */
+    public String resolve(String path){
+        
+        if(path.startsWith("~")){
+            path = path.replaceAll("~", getUserHome());
+        }
+        
+        return path;
+    }    
+    
+    /**
      * Given the path to an executable check if it exists, and verify it is executable.
      *
      * @param fileSystemPath The path.

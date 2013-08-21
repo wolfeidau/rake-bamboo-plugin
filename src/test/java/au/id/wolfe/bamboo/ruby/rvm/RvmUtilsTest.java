@@ -1,12 +1,13 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import org.junit.Test;
+
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 
 /**
  * Test the RVM utility functions class.

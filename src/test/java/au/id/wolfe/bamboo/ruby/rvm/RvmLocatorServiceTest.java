@@ -1,19 +1,25 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.util.SystemHelper;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.USER_HOME;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getSystemRvmInstallation;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getUserRvmInstallation;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.when;
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 
 /**
  * Unit test for RVM related operations.
@@ -24,20 +30,17 @@ public class RvmLocatorServiceTest {
     @Mock
     private FileSystemHelper fileSystemHelper;
 
-    @Mock
-    private SystemHelper systemHelper;
-
     private RvmRubyRuntimeLocatorService rvmLocatorService;
 
     @Before
     public void setup() {
-        rvmLocatorService = new RvmRubyRuntimeLocatorService(fileSystemHelper, systemHelper);
+        rvmLocatorService = new RvmRubyRuntimeLocatorService(fileSystemHelper);
     }
 
     @Test
     public void testLocateRvmInstallation() {
 
-        when(systemHelper.getUserHome()).thenReturn(USER_HOME);
+        when(fileSystemHelper.getUserHome()).thenReturn(USER_HOME);
 
         RvmInstallation userRvm = getUserRvmInstallation();
 
@@ -77,7 +80,7 @@ public class RvmLocatorServiceTest {
 
     @Test
     public void testGetRubyLocator() {
-        when(systemHelper.getUserHome()).thenReturn(USER_HOME);
+        when(fileSystemHelper.getUserHome()).thenReturn(USER_HOME);
 
         RvmInstallation userRvm = getUserRvmInstallation();
 
@@ -91,7 +94,7 @@ public class RvmLocatorServiceTest {
 
     @Test(expected = PathNotFoundException.class)
     public void testGetRubyLocatorWhenNotFound() {
-        when(systemHelper.getUserHome()).thenReturn(null);
+        when(fileSystemHelper.getUserHome()).thenReturn(null);
         when(fileSystemHelper.pathExists("/usr/local/rvm")).thenReturn(false);
         when(fileSystemHelper.pathExists("/opt/local/rvm")).thenReturn(false);
 

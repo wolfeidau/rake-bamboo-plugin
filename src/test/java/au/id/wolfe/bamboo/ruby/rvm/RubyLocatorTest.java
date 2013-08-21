@@ -1,23 +1,29 @@
 package au.id.wolfe.bamboo.ruby.rvm;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.util.EnvUtils;
-import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getJRubyRuntimeDefaultGemSet;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getMRIRubyRuntimeDefaultGemSet;
+import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.getMRIRubyRuntimeRails31GemSet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
-import java.util.Map;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
+import au.id.wolfe.bamboo.ruby.util.EnvUtils;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 
-import static au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * RVM locator tests

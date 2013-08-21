@@ -1,27 +1,28 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
-import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.util.EnvUtils;
-import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
-import au.id.wolfe.bamboo.ruby.util.SystemHelper;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Map;
+import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.util.EnvUtils;
+import au.id.wolfe.bamboo.ruby.util.FileSystemHelper;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.hasItems;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * Test the rbenv Ruby Locator
@@ -36,9 +37,6 @@ public class RbenvRubyLocatorTest {
     @Mock
     private FileSystemHelper fileSystemHelper;
 
-    @Mock
-    private SystemHelper systemHelper;
-
     final static RubyRuntime ruby192p290default = new RubyRuntime("1.9.2-p290", "default", "/Users/markw/.rbenv/versions/1.9.2-p290/bin/ruby", null);
     final static String rubyExecutablePath = ruby192p290default.getRubyExecutablePath();
 
@@ -46,7 +44,7 @@ public class RbenvRubyLocatorTest {
     public void setUp() throws Exception {
 
         rbenvRubyLocator = new RbenvRubyLocator(fileSystemHelper, "/Users/markw/.rbenv");
-        when(systemHelper.getUserHome()).thenReturn("/Users/markw");
+        when(fileSystemHelper.getUserHome()).thenReturn("/Users/markw");
 
     }
 

@@ -1,10 +1,11 @@
 package au.id.wolfe.bamboo.ruby.rbenv;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.junit.Test;
+
+import au.id.wolfe.bamboo.ruby.common.RubyRuntimeName;
 
 /**
  * Tests for the rbenv util methods.
