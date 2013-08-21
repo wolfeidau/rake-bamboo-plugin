@@ -23,6 +23,27 @@
 
     </taskType>
 
+    <taskType name="Bundler CLI" class="au.id.wolfe.bamboo.ruby.tasks.bundler.cli.BundlerCliTask" key="task.builder.bundler.cli">
+
+        <description>Use Bundler with any command line options.</description>
+
+        <!--This binds to the ui for create and edit and saves settings -->
+        <configuration class="au.id.wolfe.bamboo.ruby.tasks.bundler.cli.BundlerCliConfigurator"/>
+
+        <!--This detects the ruby installations on the system -->
+        <capabilityDefaultsHelper class="au.id.wolfe.bamboo.ruby.RubyCapabilityDefaultsHelper"/>
+
+        <category name="builder"/>
+
+        <!--Some magic that makes a list of executables appear in a box on the UI -->
+        <executable key="ruby" nameKey="builder.ruby.executableName" pathHelpKey="builder.ruby.helpPath"/>
+
+        <!--The UI fragments used to configure the plugin-->
+        <resource type="freemarker" name="edit" location="bundler/cli/editBundlerCliTask.ftl"/>
+        <resource type="freemarker" name="view" location="bundler/cli/viewBundlerCliTask.ftl"/>
+
+    </taskType>
+    
     <taskType name="Rake" class="au.id.wolfe.bamboo.ruby.tasks.rake.RakeTask" key="task.builder.rake">
 
         <description>Build a project using rake.</description>

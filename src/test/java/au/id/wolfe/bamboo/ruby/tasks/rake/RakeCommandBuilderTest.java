@@ -1,18 +1,19 @@
 package au.id.wolfe.bamboo.ruby.tasks.rake;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
-import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Iterator;
-
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
+import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 
 /**
  * Test the rake command builder.

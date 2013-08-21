@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.tasks.rake;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.cli;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
 /**
  * Bamboo task which interfaces with RVM and runs ruby make (rake).
  */
-public class RakeTask extends AbstractRubyTask {
+public class BundlerCliTask extends AbstractRubyTask {
 
     public static final String RAKE_FILE = "rakefile";
     public static final String RAKE_LIB_DIR = "rakelibdir";
@@ -45,7 +45,7 @@ public class RakeTask extends AbstractRubyTask {
 
         final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
 
-        return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath)
+        return new BundlerCliCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addIfBundleExec(bundleExecFlag)
                 .addRakeExecutable(bundleExecFlag)

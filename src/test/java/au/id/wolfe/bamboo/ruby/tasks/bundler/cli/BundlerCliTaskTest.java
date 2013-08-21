@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.tasks.rake;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.cli;
 
 import static au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder.BUNDLE_EXEC_ARG;
 import static junit.framework.Assert.assertEquals;
@@ -25,20 +25,20 @@ import com.google.common.collect.Maps;
  * Do some basic checking of the rake task.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RakeTaskTest extends AbstractTaskTest {
+public class BundlerCliTaskTest extends AbstractTaskTest {
 
     private static final String DB_MIGRATE_TARGET = "db:migrate";
 
-    private RakeTask rakeTask = new RakeTask();
+    private BundlerCliTask bundlerCliTask = new BundlerCliTask();
 
     @Before
     public void setUp() throws Exception {
 
-        rakeTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
-        rakeTask.setProcessService(processService);
-        rakeTask.setCapabilityContext(capabilityContext);
-        rakeTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
-        rakeTask.setCapabilityContext(capabilityContext);
+        bundlerCliTask.setEnvironmentVariableAccessor(environmentVariableAccessor);
+        bundlerCliTask.setProcessService(processService);
+        bundlerCliTask.setCapabilityContext(capabilityContext);
+        bundlerCliTask.setRubyLocatorServiceFactory(rubyLocatorServiceFactory);
+        bundlerCliTask.setCapabilityContext(capabilityContext);
 
         when(capability.getValue()).thenReturn(rubyRuntime.getRubyExecutablePath());
         when(capabilitySet.getCapability(TaskUtils.buildCapabilityLabel(rubyLabel))).thenReturn(capability);
@@ -58,10 +58,10 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
 
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RakeCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RakeCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
-        final List<String> commandList = rakeTask.buildCommandList(rubyLabel, configurationMap);
+        final List<String> commandList = bundlerCliTask.buildCommandList(rubyLabel, configurationMap);
 
         assertEquals(5, commandList.size());
 
@@ -70,7 +70,7 @@ public class RakeTaskTest extends AbstractTaskTest {
         assertEquals(rubyRuntime.getRubyExecutablePath(), commandsIterator.next());
         assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
         assertEquals(BUNDLE_EXEC_ARG, commandsIterator.next());
-        assertEquals(RakeCommandBuilder.RAKE_COMMAND, commandsIterator.next());
+        assertEquals(BundlerCliCommandBuilder.RAKE_COMMAND, commandsIterator.next());
         assertEquals(DB_MIGRATE_TARGET, commandsIterator.next());
     }
 
@@ -84,7 +84,7 @@ public class RakeTaskTest extends AbstractTaskTest {
 
         when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 
-        final Map<String, String> envVars = rakeTask.buildEnvironment(rubyLabel, configurationMap);
+        final Map<String, String> envVars = bundlerCliTask.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
 

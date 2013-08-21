@@ -28,11 +28,14 @@ import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.utils.process.ExternalProcess;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Basis for ruby tasks.
  */
 public abstract class AbstractRubyTask implements CommonTaskType {
+
+    public static final String ENVIRONMENT = "environmentVariables";
 
     protected final Logger log = LoggerFactory.getLogger(AbstractRubyTask.class);
 
@@ -96,15 +99,6 @@ public abstract class AbstractRubyTask implements CommonTaskType {
     }
 
     /**
-     * Invoked as a part of the task execute routine to enable modifications to the environment.
-     *
-     * @param rubyRuntimeLabel The ruby runtime label.
-     * @param config           The configuration map.
-     * @return Map containing final env to be used when executing the task.
-     */
-    protected abstract Map<String, String> buildEnvironment(RubyLabel rubyRuntimeLabel, ConfigurationMap config);
-
-    /**
      * Invoked as a part of the task execute routine to enable building of a list of elements which will be executed.
      *
      * @param rubyRuntimeLabel The ruby runtime label.
@@ -142,6 +136,24 @@ public abstract class AbstractRubyTask implements CommonTaskType {
         final String rubyRuntimeExecutable = capability.getValue();
         Preconditions.checkNotNull(rubyRuntimeExecutable, "rubyRuntimeExecutable");
         return rubyRuntimeExecutable;
+    }
+
+    public Map<String, String> buildEnvironment( RubyLabel rubyRuntimeLabel, ConfigurationMap config ) {
+    
+        log.info("Using manager {} runtime {}", rubyRuntimeLabel.getRubyRuntimeManager(), rubyRuntimeLabel.getRubyRuntime());
+    
+        final Map<String, String> currentEnvVars = environmentVariableAccessor.getEnvironment();
+    
+        // Get the variables from our configuration
+        final String environmentVariables = config.get(ENVIRONMENT);
+    
+        Map<String, String> configEnvVars = environmentVariableAccessor.splitEnvironmentAssignments(environmentVariables);
+    
+        final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
+    
+        return rubyLocator.buildEnv(rubyRuntimeLabel.getRubyRuntime(),
+                getRubyExecutablePath(rubyRuntimeLabel),
+                ImmutableMap.<String, String>builder().putAll(currentEnvVars).putAll(configEnvVars).build());
     }
 
 }
