@@ -1,29 +1,23 @@
 package au.id.wolfe.bamboo.ruby.tasks.rake;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder;
 
 /**
  * Builder to assemble the rake command list.
  * <p/>
  * TODO Need to reconsider the design of this class, probably moving to properties over a list, with the command list being built in the build method.
  */
-public class RakeCommandBuilder {
+public class RakeCommandBuilder extends AbstractBundleExecCommandBuilder<RakeCommandBuilder> {
 
-    private final Logger log = LoggerFactory.getLogger(RakeCommandBuilder.class);
-
-    public static final String BUNDLE_COMMAND = "bundle";
     public static final String RAKE_COMMAND = "rake";
-
-    public static final String BUNDLE_EXEC_ARG = "exec";
 
     public static final String RAKEFILE_ARG = "-f";
     public static final String RAKELIBDIR_ARG = "--rakelibdir";
@@ -31,40 +25,9 @@ public class RakeCommandBuilder {
     public static final String VERBOSE_ARG = "--verbose";
     public static final String TRACE_ARG = "--trace";
 
-    private final RubyLocator rvmRubyLocator;
-    private final RubyRuntime rubyRuntime;
-    private final String rubyExecutablePath;
-
-    private List<String> commandList = Lists.newLinkedList();
-
     public RakeCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
-        this.rvmRubyLocator = rvmRubyLocator;
-        this.rubyRuntime = rubyRuntime;
-        this.rubyExecutablePath = rubyExecutablePath;
-    }
 
-    /**
-     * Append the ruby executable to the command list.
-     *
-     * @return Rake command builder.
-     */
-    public RakeCommandBuilder addRubyExecutable() {
-        commandList.add(rubyExecutablePath);
-        return this;
-    }
-
-    /**
-     * Will conditionally add bundle exec if bundle flag is "true".
-     *
-     * @param bundleFlag String which takes null or "true".
-     * @return Rake command builder.
-     */
-    public RakeCommandBuilder addIfBundleExec(@Nullable String bundleFlag) {
-        if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
-            commandList.add(BUNDLE_EXEC_ARG);
-        }
-        return this;
+        super( rvmRubyLocator, rubyRuntime, rubyExecutablePath );
     }
 
     /**
@@ -73,11 +36,13 @@ public class RakeCommandBuilder {
      * @param bundleFlag String which takes null or "true", this indicates whether to use short command or full path.
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addRakeExecutable(@Nullable String bundleFlag) {
-        if (BooleanUtils.toBoolean(bundleFlag)) {
-            commandList.add(RAKE_COMMAND);
-        } else {
-            commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, RAKE_COMMAND));
+    public RakeCommandBuilder addRakeExecutable( @Nullable String bundleFlag ) {
+
+        if ( BooleanUtils.toBoolean( bundleFlag ) ) {
+            getCommandList().add( RAKE_COMMAND );
+        }
+        else {
+            getCommandList().add( getRvmRubyLocator().buildExecutablePath( getRubyRuntime().getRubyRuntimeName(), getRubyExecutablePath(), RAKE_COMMAND ) );
         }
         return this;
     }
@@ -88,10 +53,11 @@ public class RakeCommandBuilder {
      * @param rakeFile String which takes either null or a file path.
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addIfRakeFile(@Nullable String rakeFile) {
-        if (StringUtils.isNotEmpty(rakeFile)) {
-            commandList.add(RAKEFILE_ARG);
-            commandList.add(rakeFile);
+    public RakeCommandBuilder addIfRakeFile( @Nullable String rakeFile ) {
+
+        if ( StringUtils.isNotEmpty( rakeFile ) ) {
+            getCommandList().add( RAKEFILE_ARG );
+            getCommandList().add( rakeFile );
         }
         return this;
     }
@@ -102,10 +68,11 @@ public class RakeCommandBuilder {
      * @param rakeLibDir String which takes either null or a directory path.
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addIfRakeLibDir(@Nullable String rakeLibDir) {
-        if (StringUtils.isNotEmpty(rakeLibDir)) {
-            commandList.add(RAKELIBDIR_ARG);
-            commandList.add(rakeLibDir);
+    public RakeCommandBuilder addIfRakeLibDir( @Nullable String rakeLibDir ) {
+
+        if ( StringUtils.isNotEmpty( rakeLibDir ) ) {
+            getCommandList().add( RAKELIBDIR_ARG );
+            getCommandList().add( rakeLibDir );
         }
         return this;
     }
@@ -116,9 +83,10 @@ public class RakeCommandBuilder {
      * @param verboseFlag String which takes null or "true".
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addIfVerbose(@Nullable String verboseFlag) {
-        if (BooleanUtils.toBoolean(verboseFlag)) {
-            commandList.add(VERBOSE_ARG);
+    public RakeCommandBuilder addIfVerbose( @Nullable String verboseFlag ) {
+
+        if ( BooleanUtils.toBoolean( verboseFlag ) ) {
+            getCommandList().add( VERBOSE_ARG );
         }
         return this;
     }
@@ -129,9 +97,10 @@ public class RakeCommandBuilder {
      * @param traceFlag String which takes null or "true".
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addIfTrace(@Nullable String traceFlag) {
-        if (BooleanUtils.toBoolean(traceFlag)) {
-            commandList.add(TRACE_ARG);
+    public RakeCommandBuilder addIfTrace( @Nullable String traceFlag ) {
+
+        if ( BooleanUtils.toBoolean( traceFlag ) ) {
+            getCommandList().add( TRACE_ARG );
         }
         return this;
     }
@@ -142,19 +111,10 @@ public class RakeCommandBuilder {
      * @param targets List of targets.
      * @return Rake command builder.
      */
-    public RakeCommandBuilder addTargets(List<String> targets) {
-        commandList.addAll(targets);
-        return this;
-    }
+    public RakeCommandBuilder addTargets( List<String> targets ) {
 
-    /**
-     * Builds the list of commands.
-     *
-     * @return The list of commands.
-     */
-    public List<String> build() {
-        log.info("commandList {}", commandList.toString());
-        return commandList;
+        getCommandList().addAll( targets );
+        return this;
     }
 
 }

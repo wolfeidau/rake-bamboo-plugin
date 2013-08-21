@@ -1,43 +1,26 @@
 package au.id.wolfe.bamboo.ruby.tasks.bundler.install;
 
-import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
-import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
+import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.tasks.AbstractCommandBuilder;
 
 /**
  * Builder to assemble the bundler command list.
  */
-public class BundlerInstallCommandBuilder {
-
-    private final Logger log = LoggerFactory.getLogger(BundlerInstallCommandBuilder.class);
+public class BundlerInstallCommandBuilder extends AbstractCommandBuilder<BundlerInstallCommandBuilder>{
 
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String PATH_ARG = "--path";
     public static final String BIN_STUBS_ARG = "--binstubs";
     public static final String INSTALL_ARG = "install";
 
-    private final RubyLocator rvmRubyLocator;
-    private final RubyRuntime rubyRuntime;
-    private final String rubyExecutablePath;
-
-    private final List<String> commandList = Lists.newLinkedList();
-
     public BundlerInstallCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
-        this.rvmRubyLocator = rvmRubyLocator;
-        this.rubyRuntime = rubyRuntime;
-        this.rubyExecutablePath = rubyExecutablePath;
-    }
 
-    public BundlerInstallCommandBuilder addRubyExecutable() {
-        commandList.add(rubyExecutablePath);
-        return this;
+        super( rvmRubyLocator, rubyRuntime, rubyExecutablePath );
     }
 
     /**
@@ -46,7 +29,7 @@ public class BundlerInstallCommandBuilder {
      * @return Bundler command builder.
      */
     public BundlerInstallCommandBuilder addBundleExecutable() {
-        commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
+        getCommandList().add(getRvmRubyLocator().buildExecutablePath(getRubyRuntime().getRubyRuntimeName(), getRubyExecutablePath(), BUNDLE_COMMAND));
         return this;
     }
 
@@ -58,8 +41,8 @@ public class BundlerInstallCommandBuilder {
      */
     public BundlerInstallCommandBuilder addPath(@Nullable String path) {
         if (StringUtils.isNotEmpty(path)) {
-            commandList.add(PATH_ARG);
-            commandList.add(path);
+            getCommandList().add(PATH_ARG);
+            getCommandList().add(path);
         }
 
         return this;
@@ -74,7 +57,7 @@ public class BundlerInstallCommandBuilder {
     public BundlerInstallCommandBuilder addIfBinStubs(@Nullable String binStubsFlag) {
 
         if (BooleanUtils.toBoolean(binStubsFlag)) {
-            commandList.add(BIN_STUBS_ARG);
+            getCommandList().add(BIN_STUBS_ARG);
         }
         return this;
 
@@ -86,18 +69,8 @@ public class BundlerInstallCommandBuilder {
      * @return Bundler command builder.
      */
     public BundlerInstallCommandBuilder addInstall() {
-        commandList.add(INSTALL_ARG);
+        getCommandList().add(INSTALL_ARG);
         return this;
-    }
-
-    /**
-     * Builds the list of commands.
-     *
-     * @return The list of commands.
-     */
-    public List<String> build() {
-        log.info("commandList {}", commandList.toString());
-        return commandList;
     }
 
 }
