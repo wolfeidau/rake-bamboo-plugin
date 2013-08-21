@@ -1,6 +1,5 @@
 package au.id.wolfe.bamboo.ruby.tasks.bundler.cli;
 
-import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Iterator;
@@ -15,10 +14,13 @@ import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
  * Test the rake command builder.
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith( MockitoJUnitRunner.class )
 public class BundlerCliCommandBuilderTest {
 
     @Mock
@@ -32,117 +34,84 @@ public class BundlerCliCommandBuilderTest {
     @Before
     public void setUp() throws Exception {
 
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when( rvmRubyLocator.buildExecutablePath( rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.BUNDLE_COMMAND ) ).thenReturn( RvmFixtures.BUNDLER_PATH );
 
-        bundlerCliCommandBuilder = new BundlerCliCommandBuilder(rvmRubyLocator, rubyRuntime, RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath());
+        bundlerCliCommandBuilder = new BundlerCliCommandBuilder( rvmRubyLocator, rubyRuntime, RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath() );
     }
 
     @Test
     public void testAddRubyExecutable() throws Exception {
 
         bundlerCliCommandBuilder.addRubyExecutable();
-        assertEquals(1, bundlerCliCommandBuilder.build().size());
+
+        assertThat( 1, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
         Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
 
-        assertEquals(rubyRuntime.getRubyExecutablePath(), commandsIterator.next());
+        assertThat( rubyRuntime.getRubyExecutablePath(), equalTo( commandsIterator.next() ) );
     }
 
+    //
+    //    @Test
+    //    public void testAddIfRakefile() throws Exception {
+    //
+    //        bundlerCliCommandBuilder.addIfRakeFile(null);
+    //        assertThat(0, equalTo(bundlerCliCommandBuilder.build().size()));
+    //
+    //        bundlerCliCommandBuilder.addIfRakeFile("Rakefile");
+    //
+    //        assertThat(2, equalTo(bundlerCliCommandBuilder.build().size()));
+    //
+    //        Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
+    //
+    //        assertThat(BundlerCliCommandBuilder.RAKEFILE_ARG, commandsIterator.next());
+    //        assertThat("Rakefile", equalTo(commandsIterator.next()));
+    //    }
 
     @Test
-    public void testAddIfRakefile() throws Exception {
+    public void testWithBundleExec() {
 
-        bundlerCliCommandBuilder.addIfRakeFile(null);
-        assertEquals(0, bundlerCliCommandBuilder.build().size());
-
-        bundlerCliCommandBuilder.addIfRakeFile("Rakefile");
-
-        assertEquals(2, bundlerCliCommandBuilder.build().size());
+        bundlerCliCommandBuilder.addBundleExecutable();
+        bundlerCliCommandBuilder.addIfBundleExec( "true" );
 
         Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
 
-        assertEquals(BundlerCliCommandBuilder.RAKEFILE_ARG, commandsIterator.next());
-        assertEquals("Rakefile", commandsIterator.next());
-    }
-
-    @Test
-    public void testAddRakeExecutableWithBundleExec(){
-
-        final String bundleExecFlag = "true";
-
-        bundlerCliCommandBuilder.addIfBundleExec(bundleExecFlag).addRakeExecutable(bundleExecFlag);
-
-        Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
-
-        assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
-        assertEquals(BundlerCliCommandBuilder.BUNDLE_EXEC_ARG, commandsIterator.next());
-        assertEquals(BundlerCliCommandBuilder.RAKE_COMMAND, commandsIterator.next());
-
-    }
-
-    @Test
-    public void testAddRakeExecutable(){
-
-        final String bundleExecFlag = "false";
-
-        bundlerCliCommandBuilder.addRakeExecutable(bundleExecFlag);
-
-        Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
-
-        assertEquals(RvmFixtures.RAKE_PATH, commandsIterator.next());
-
-    }
-
-
-    @Test
-    public void testAddIfRakeLibDir() throws Exception {
-
-        bundlerCliCommandBuilder.addIfRakeLibDir(null);
-        assertEquals(0, bundlerCliCommandBuilder.build().size());
-
-        bundlerCliCommandBuilder.addIfRakeLibDir("./rakelib");
-
-        assertEquals(2, bundlerCliCommandBuilder.build().size());
-
-        Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
-
-        assertEquals(BundlerCliCommandBuilder.RAKELIBDIR_ARG, commandsIterator.next());
-        assertEquals("./rakelib", commandsIterator.next());
+        assertThat( RvmFixtures.BUNDLER_PATH, equalTo( commandsIterator.next() ) );
+        assertThat( BundlerCliCommandBuilder.BUNDLE_EXEC_ARG, equalTo( commandsIterator.next() ) );
     }
 
     @Test
     public void testAddIfVerbose() throws Exception {
 
-        bundlerCliCommandBuilder.addIfVerbose(null);
-        assertEquals(0, bundlerCliCommandBuilder.build().size());
+        bundlerCliCommandBuilder.addIfVerbose( null );
+        assertThat( 0, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
-        bundlerCliCommandBuilder.addIfVerbose("false");
-        assertEquals(0, bundlerCliCommandBuilder.build().size());
+        bundlerCliCommandBuilder.addIfVerbose( "false" );
+        assertThat( 0, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
-        bundlerCliCommandBuilder.addIfVerbose("true");
+        bundlerCliCommandBuilder.addIfVerbose( "true" );
 
-        assertEquals(1, bundlerCliCommandBuilder.build().size());
+        assertThat( 1, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
         Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
 
-        assertEquals(BundlerCliCommandBuilder.VERBOSE_ARG, commandsIterator.next());
+        assertThat( BundlerCliCommandBuilder.VERBOSE_ARG, equalTo( commandsIterator.next() ) );
     }
 
     @Test
     public void testAddIfTrace() throws Exception {
 
-        bundlerCliCommandBuilder.addIfTrace(null);
-        assertEquals(0, bundlerCliCommandBuilder.build().size());
+        bundlerCliCommandBuilder.addIfTrace( null );
+        assertThat( 0, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
-        bundlerCliCommandBuilder.addIfTrace("false");
-        assertEquals(0, bundlerCliCommandBuilder.build().size());
+        bundlerCliCommandBuilder.addIfTrace( "false" );
+        assertThat( 0, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
-        bundlerCliCommandBuilder.addIfTrace("true");
-        assertEquals(1, bundlerCliCommandBuilder.build().size());
+        bundlerCliCommandBuilder.addIfTrace( "true" );
+        assertThat( 1, equalTo( bundlerCliCommandBuilder.build().size() ) );
 
         Iterator<String> commandsIterator = bundlerCliCommandBuilder.build().iterator();
 
-        assertEquals(BundlerCliCommandBuilder.TRACE_ARG, commandsIterator.next());
+        assertThat( BundlerCliCommandBuilder.TRACE_ARG, equalTo( commandsIterator.next() ) );
     }
 }

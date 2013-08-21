@@ -22,7 +22,6 @@ public class RakeCommandBuilder extends AbstractBundleExecCommandBuilder<RakeCom
     public static final String RAKEFILE_ARG = "-f";
     public static final String RAKELIBDIR_ARG = "--rakelibdir";
 
-    public static final String VERBOSE_ARG = "--verbose";
     public static final String TRACE_ARG = "--trace";
 
     public RakeCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
@@ -73,20 +72,6 @@ public class RakeCommandBuilder extends AbstractBundleExecCommandBuilder<RakeCom
         if ( StringUtils.isNotEmpty( rakeLibDir ) ) {
             getCommandList().add( RAKELIBDIR_ARG );
             getCommandList().add( rakeLibDir );
-        }
-        return this;
-    }
-
-    /**
-     * Will conditionally append the verbose switch if verbose flag is "true".
-     *
-     * @param verboseFlag String which takes null or "true".
-     * @return Rake command builder.
-     */
-    public RakeCommandBuilder addIfVerbose( @Nullable String verboseFlag ) {
-
-        if ( BooleanUtils.toBoolean( verboseFlag ) ) {
-            getCommandList().add( VERBOSE_ARG );
         }
         return this;
     }

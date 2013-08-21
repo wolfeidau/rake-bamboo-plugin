@@ -33,7 +33,7 @@ public class CapistranoTask extends AbstractRubyTask {
         final String verboseFlag = config.get(VERBOSE);
         final String debugFlag = config.get(DEBUG);
 
-        final List<String> tasksList = RvmUtils.splitRakeTargets(tasks);
+        final List<String> tasksList = RvmUtils.splitTokens(tasks);
 
         final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
 

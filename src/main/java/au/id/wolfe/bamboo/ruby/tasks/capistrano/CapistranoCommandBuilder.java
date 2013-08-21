@@ -15,8 +15,6 @@ import au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder;
 public class CapistranoCommandBuilder extends AbstractBundleExecCommandBuilder<CapistranoCommandBuilder> {
 
     public static final String CAP_COMMAND = "cap";
-
-    public static final String VERBOSE_ARG = "--verbose";
     public static final String DEBUG_ARG = "--debug";
 
     public CapistranoCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
@@ -36,20 +34,6 @@ public class CapistranoCommandBuilder extends AbstractBundleExecCommandBuilder<C
         }
         else {
             getCommandList().add( getRvmRubyLocator().buildExecutablePath( getRubyRuntime().getRubyRuntimeName(), getRubyExecutablePath(), CAP_COMMAND ) );
-        }
-        return this;
-    }
-
-    /**
-     * Will conditionally append the verbose switch if verbose flag is "true".
-     *
-     * @param verboseFlag String which takes null or "true".
-     * @return Capistrano command builder.
-     */
-    public CapistranoCommandBuilder addIfVerbose( @Nullable String verboseFlag ) {
-
-        if ( BooleanUtils.toBoolean( verboseFlag ) ) {
-            getCommandList().add( VERBOSE_ARG );
         }
         return this;
     }

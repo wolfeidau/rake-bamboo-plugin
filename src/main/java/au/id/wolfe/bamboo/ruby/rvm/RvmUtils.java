@@ -194,7 +194,7 @@ public final class RvmUtils {
      * @param targets String to split on one or more whitespace characters.
      * @return List containing the tokens
      */
-    public static List<String> splitRakeTargets(final String targets) {
+    public static List<String> splitTokens(final String targets) {
 
         if (targets.matches(".*\\s.*")) {
             return Arrays.asList(targets.split("\\s+"));

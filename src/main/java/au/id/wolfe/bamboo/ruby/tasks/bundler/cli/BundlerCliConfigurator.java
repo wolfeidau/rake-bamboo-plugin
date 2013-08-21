@@ -21,9 +21,7 @@ public class BundlerCliConfigurator extends AbstractRubyTaskConfigurator {
     private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
             RUBY_KEY,
             TaskConfigConstants.CFG_WORKING_SUB_DIRECTORY,
-            BundlerCliTask.RAKE_FILE,
-            BundlerCliTask.RAKE_LIB_DIR,
-            BundlerCliTask.TARGETS,
+            BundlerCliTask.ARGUMENTS,
             BundlerCliTask.BUNDLE_EXEC,
             AbstractRubyTask.ENVIRONMENT,
             BundlerCliTask.VERBOSE,
@@ -38,10 +36,10 @@ public class BundlerCliConfigurator extends AbstractRubyTaskConfigurator {
 
         super.validate( params, errorCollection );
 
-        final String targets = params.getString(BundlerCliTask.TARGETS);
+        final String arguments = params.getString(BundlerCliTask.ARGUMENTS);
 
-        if (StringUtils.isEmpty(targets)) {
-            errorCollection.addError("targets", "You must specify at least one target");
+        if (StringUtils.isEmpty(arguments)) {
+            errorCollection.addError(BundlerCliTask.ARGUMENTS, "You must specify at least one argument.");
         }
     }
 }

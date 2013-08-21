@@ -16,9 +16,7 @@ import com.google.common.base.Preconditions;
  */
 public class BundlerCliTask extends AbstractRubyTask {
 
-    public static final String RAKE_FILE = "rakefile";
-    public static final String RAKE_LIB_DIR = "rakelibdir";
-    public static final String TARGETS = "targets";
+    public static final String ARGUMENTS = "arguments";
     public static final String BUNDLE_EXEC = "bundleexec";
 
     public static final String VERBOSE = "verbose";
@@ -29,17 +27,14 @@ public class BundlerCliTask extends AbstractRubyTask {
 
         final RubyLocator rvmRubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
 
-        final String rakeFile = config.get(RAKE_FILE);
-        final String rakeLibDir = config.get(RAKE_LIB_DIR);
-
-        final String targets = config.get(TARGETS);
-        Preconditions.checkArgument(targets != null); // TODO Fix Error handling
+        final String arguments = config.get(ARGUMENTS);
+        Preconditions.checkArgument(arguments != null); // TODO Fix Error handling
 
         final String bundleExecFlag = config.get(BUNDLE_EXEC);
         final String verboseFlag = config.get(VERBOSE);
         final String traceFlag = config.get(TRACE);
 
-        final List<String> targetList = RvmUtils.splitRakeTargets(targets);
+        final List<String> argumentList = RvmUtils.splitTokens(arguments);
 
         final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
 
@@ -47,15 +42,11 @@ public class BundlerCliTask extends AbstractRubyTask {
 
         return new BundlerCliCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
+                .addBundleExecutable()
                 .addIfBundleExec(bundleExecFlag)
-                .addRakeExecutable(bundleExecFlag)
-                .addIfRakeFile(rakeFile)
-                .addIfRakeLibDir(rakeLibDir)
                 .addIfVerbose(verboseFlag)
                 .addIfTrace(traceFlag)
-                .addTargets(targetList)
+                .addArguments(argumentList)
                 .build();
-
     }
-
 }

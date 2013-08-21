@@ -80,7 +80,7 @@ public class RvmUtilsTest {
 
         String targets = "db:migrate spec";
 
-        List<String> targetList = RvmUtils.splitRakeTargets(targets);
+        List<String> targetList = RvmUtils.splitTokens(targets);
 
         assertEquals(2, targetList.size());
 

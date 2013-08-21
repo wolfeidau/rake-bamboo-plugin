@@ -1,7 +1,6 @@
 package au.id.wolfe.bamboo.ruby.tasks.bundler.cli;
 
 import static au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder.BUNDLE_EXEC_ARG;
-import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -21,13 +20,18 @@ import au.id.wolfe.bamboo.ruby.util.TaskUtils;
 
 import com.google.common.collect.Maps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
  * Do some basic checking of the rake task.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class BundlerCliTaskTest extends AbstractTaskTest {
 
-    private static final String DB_MIGRATE_TARGET = "db:migrate";
+    private static final String ARGS_BINSTUBS = "binstubs";
+    private static final String ARGS_ELASTIC_BEANSTALK = "elastic-beanstalk";
+    private static final String ARGS_BINSTUBS_ELASTIC_BEANSTALK = ARGS_BINSTUBS + " " + ARGS_ELASTIC_BEANSTALK;
 
     private BundlerCliTask bundlerCliTask = new BundlerCliTask();
 
@@ -48,30 +52,27 @@ public class BundlerCliTaskTest extends AbstractTaskTest {
     @Test
     public void testBuildCommandList() {
 
-        configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
-        configurationMap.put("targets", DB_MIGRATE_TARGET);
-        configurationMap.put("bundleexec", "true");
-        configurationMap.put("verbose", "false");
-        configurationMap.put("trace", "false");
+        configurationMap.put(BundlerCliTask.RUBY, rubyRuntime.getRubyRuntimeName());
+        configurationMap.put(BundlerCliTask.ARGUMENTS, ARGS_BINSTUBS_ELASTIC_BEANSTALK);
+        configurationMap.put(BundlerCliTask.BUNDLE_EXEC, "true");
+        configurationMap.put(BundlerCliTask.VERBOSE, "false");
+        configurationMap.put(BundlerCliTask.TRACE, "false");
 
         when(rubyLocatorServiceFactory.acquireRubyLocator(eq("RVM"))).thenReturn(rvmRubyLocator);
-
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.RAKE_COMMAND)).thenReturn(RvmFixtures.RAKE_PATH);
         when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCliCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         final List<String> commandList = bundlerCliTask.buildCommandList(rubyLabel, configurationMap);
 
-        assertEquals(5, commandList.size());
+        assertThat(5, equalTo(commandList.size()));
 
         final Iterator<String> commandsIterator = commandList.iterator();
 
-        assertEquals(rubyRuntime.getRubyExecutablePath(), commandsIterator.next());
-        assertEquals(RvmFixtures.BUNDLER_PATH, commandsIterator.next());
-        assertEquals(BUNDLE_EXEC_ARG, commandsIterator.next());
-        assertEquals(BundlerCliCommandBuilder.RAKE_COMMAND, commandsIterator.next());
-        assertEquals(DB_MIGRATE_TARGET, commandsIterator.next());
+        assertThat(rubyRuntime.getRubyExecutablePath(), equalTo(commandsIterator.next()));
+        assertThat(RvmFixtures.BUNDLER_PATH, equalTo(commandsIterator.next()));
+        assertThat(BUNDLE_EXEC_ARG, equalTo(commandsIterator.next()));
+        assertThat(ARGS_BINSTUBS, equalTo(commandsIterator.next()));
+        assertThat(ARGS_ELASTIC_BEANSTALK, equalTo(commandsIterator.next()));
     }
 
 
@@ -87,7 +88,5 @@ public class BundlerCliTaskTest extends AbstractTaskTest {
         final Map<String, String> envVars = bundlerCliTask.buildEnvironment(rubyLabel, configurationMap);
 
         assertTrue(envVars.size() == 0);
-
     }
-
 }

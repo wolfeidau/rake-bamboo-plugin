@@ -35,6 +35,8 @@ import com.google.common.collect.ImmutableMap;
  */
 public abstract class AbstractRubyTask implements CommonTaskType {
 
+    public static final String RUBY = "ruby";
+
     public static final String ENVIRONMENT = "environmentVariables";
 
     protected final Logger log = LoggerFactory.getLogger(AbstractRubyTask.class);
@@ -58,7 +60,7 @@ public abstract class AbstractRubyTask implements CommonTaskType {
         final TaskContext buildTaskContext = Narrow.to(taskContext, TaskContext.class);
 
         final ConfigurationMap config = taskContext.getConfigurationMap();
-        final String rubyRuntimeLabel = config.get("ruby");
+        final String rubyRuntimeLabel = config.get(RUBY);
 
         try {
 

@@ -39,7 +39,7 @@ public class RakeTask extends AbstractRubyTask {
         final String verboseFlag = config.get(VERBOSE);
         final String traceFlag = config.get(TRACE);
 
-        final List<String> targetList = RvmUtils.splitRakeTargets(targets);
+        final List<String> targetList = RvmUtils.splitTokens(targets);
 
         final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
 

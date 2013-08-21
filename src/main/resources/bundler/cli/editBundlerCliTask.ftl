@@ -6,11 +6,7 @@
 
 [@ww.textfield labelKey='ruby.workingSubDirectory' name='workingSubDirectory' required='false' cssClass="long-field" /]
 
-[@ww.textfield labelKey='rake.rakefile' name='rakefile' required='false' cssClass="long-field" /]
-
-[@ww.textfield labelKey='rake.rakelibdir' name='rakelibdir' required='false' cssClass="long-field" /]
-
-[@ww.textfield labelKey='rake.targets' name='targets' required='true' cssClass="long-field" /]
+[@ww.textfield labelKey='bundler.cli.arguments' name='arguments' required='true' cssClass="long-field" /]
 
 [@ww.textfield labelKey='rake.environment' name='environmentVariables' required='false' cssClass="long-field" /]
 
@@ -18,7 +14,7 @@
                   name='bundleexec'
                   toggle='true' /]
 
-[@ww.checkbox labelKey='rake.trace'
+[@ww.checkbox labelKey='bundler.cli.trace'
                   name='trace'
                   toggle='true' /]
 
