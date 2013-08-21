@@ -1,16 +1,17 @@
 package au.id.wolfe.bamboo.ruby.tasks.rake;
 
+import java.util.List;
+import java.util.Map;
+
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
+
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Bamboo task which interfaces with RVM and runs ruby make (rake).
