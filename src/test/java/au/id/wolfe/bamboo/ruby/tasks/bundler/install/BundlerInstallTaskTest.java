@@ -1,11 +1,15 @@
-package au.id.wolfe.bamboo.ruby.tasks.bundler;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.install;
 
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractTaskTest;
+import au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallCommandBuilder;
+import au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallTask;
 import au.id.wolfe.bamboo.ruby.util.TaskUtils;
+
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilitySet;
 import com.google.common.collect.Maps;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +29,9 @@ import static org.mockito.Mockito.when;
  * Do some basic checking of the bundler task.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BundlerTaskTest extends AbstractTaskTest {
+public class BundlerInstallTaskTest extends AbstractTaskTest {
 
-    BundlerTask bundlerTask = new BundlerTask();
+    BundlerInstallTask bundlerTask = new BundlerInstallTask();
 
     @Before
     public void setUp() throws Exception {
@@ -51,7 +55,7 @@ public class BundlerTaskTest extends AbstractTaskTest {
     public void testBuildCommandList() {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerInstallCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         List<String> commandList = bundlerTask.buildCommandList(rubyLabel, configurationMap);
 
@@ -67,7 +71,7 @@ public class BundlerTaskTest extends AbstractTaskTest {
     public void testBuildCommandListWithPathAndBinStubs() {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerInstallCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
 
         configurationMap.put("path", "gems");
         configurationMap.put("binstubs", "true");

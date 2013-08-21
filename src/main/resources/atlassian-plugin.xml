@@ -5,12 +5,12 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
     </plugin-info>
 
-    <taskType name="Bundler" class="au.id.wolfe.bamboo.ruby.tasks.bundler.BundlerTask" key="task.builder.bundler">
+    <taskType name="Bundler Install" class="au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallTask" key="task.builder.bundler.install">
 
         <description>Use Bundler to install project dependencies.</description>
 
         <!--This binds to the ui for create and edit and saves settings -->
-        <configuration class="au.id.wolfe.bamboo.ruby.tasks.bundler.BundlerConfigurator"/>
+        <configuration class="au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallConfigurator"/>
 
         <category name="builder"/>
 
@@ -18,8 +18,8 @@
         <executable key="ruby" nameKey="builder.ruby.executableName" pathHelpKey="builder.ruby.helpPath"/>
 
         <!--The UI fragments used to configure the plugin-->
-        <resource type="freemarker" name="edit" location="bundler/editBundlerTask.ftl"/>
-        <resource type="freemarker" name="view" location="bundler/viewBundlerTask.ftl"/>
+        <resource type="freemarker" name="edit" location="bundler/install/editBundlerInstallTask.ftl"/>
+        <resource type="freemarker" name="view" location="bundler/install/viewBundlerInstallTask.ftl"/>
 
     </taskType>
 

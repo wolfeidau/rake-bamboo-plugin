@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.tasks.bundler;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.install;
 
 import au.id.wolfe.bamboo.ruby.common.AbstractRubyTaskConfigurator;
 import com.atlassian.bamboo.collections.ActionParametersMap;
@@ -16,14 +16,14 @@ import java.util.Set;
 /**
  * Bundler configurator which acts as a binding to the task UI in bamboo.
  */
-public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
+public class BundlerInstallConfigurator extends AbstractRubyTaskConfigurator {
 
     private static final Set<String> FIELDS_TO_COPY = Sets.newHashSet(
             RUBY_KEY,
             TaskConfigConstants.CFG_WORKING_SUB_DIRECTORY,
-            BundlerTask.PATH,
-            BundlerTask.ENVIRONMENT,
-            BundlerTask.BIN_STUBS);
+            BundlerInstallTask.PATH,
+            BundlerInstallTask.ENVIRONMENT,
+            BundlerInstallTask.BIN_STUBS);
 
 
     @NotNull
@@ -41,7 +41,7 @@ public class BundlerConfigurator extends AbstractRubyTaskConfigurator {
 
         log.debug("populateContextForCreate");
 
-        context.put(BundlerTask.PATH, "vendor/bundle");
+        context.put(BundlerInstallTask.PATH, "vendor/bundle");
 
         context.put(MODE, CREATE_MODE);
         context.put(CTX_UI_CONFIG_BEAN, uiConfigBean);  // NOTE: This is not normally necessary and will be fixed in 3.3.3

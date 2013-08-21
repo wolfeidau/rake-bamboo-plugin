@@ -1,8 +1,10 @@
-package au.id.wolfe.bamboo.ruby.tasks.bundler;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.install;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.fixtures.RvmFixtures;
 import au.id.wolfe.bamboo.ruby.rvm.RvmRubyLocator;
+import au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallCommandBuilder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.when;
  * Test the bundler command builder.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BundlerCommandBuilderTest {
+public class BundlerInstallCommandBuilderTest {
 
     @Mock
     private RvmRubyLocator rvmRubyLocator;
@@ -28,13 +30,13 @@ public class BundlerCommandBuilderTest {
     private final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
     private final String rubyExecutablePath = RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath();
 
-    private BundlerCommandBuilder bundlerCommandBuilder;
+    private BundlerInstallCommandBuilder bundlerCommandBuilder;
 
     @Before
     public void setUp() throws Exception {
 
-        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
-        bundlerCommandBuilder = new BundlerCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath);
+        when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerInstallCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
+        bundlerCommandBuilder = new BundlerInstallCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath);
 
     }
 

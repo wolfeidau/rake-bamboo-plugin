@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.tasks.bundler;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.install;
 
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Bamboo task which interfaces with RVM and runs bundler to install the gems required by the project.
  */
-public class BundlerTask extends AbstractRubyTask {
+public class BundlerInstallTask extends AbstractRubyTask {
 
     public static final String PATH = "path";
     public static final String ENVIRONMENT = "environmentVariables";
@@ -31,7 +31,7 @@ public class BundlerTask extends AbstractRubyTask {
 
         final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
 
-        return new BundlerCommandBuilder(rubyLocator, rubyRuntime, rubyExecutablePath)
+        return new BundlerInstallCommandBuilder(rubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addBundleExecutable()
                 .addInstall()

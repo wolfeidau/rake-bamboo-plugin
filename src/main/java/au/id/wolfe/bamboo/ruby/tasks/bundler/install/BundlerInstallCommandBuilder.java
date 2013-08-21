@@ -1,4 +1,4 @@
-package au.id.wolfe.bamboo.ruby.tasks.bundler;
+package au.id.wolfe.bamboo.ruby.tasks.bundler.install;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Builder to assemble the bundler command list.
  */
-public class BundlerCommandBuilder {
+public class BundlerInstallCommandBuilder {
 
-    private final Logger log = LoggerFactory.getLogger(BundlerCommandBuilder.class);
+    private final Logger log = LoggerFactory.getLogger(BundlerInstallCommandBuilder.class);
 
     public static final String BUNDLE_COMMAND = "bundle";
     public static final String PATH_ARG = "--path";
@@ -29,13 +29,13 @@ public class BundlerCommandBuilder {
 
     private final List<String> commandList = Lists.newLinkedList();
 
-    public BundlerCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
+    public BundlerInstallCommandBuilder(RubyLocator rvmRubyLocator, RubyRuntime rubyRuntime, String rubyExecutablePath) {
         this.rvmRubyLocator = rvmRubyLocator;
         this.rubyRuntime = rubyRuntime;
         this.rubyExecutablePath = rubyExecutablePath;
     }
 
-    public BundlerCommandBuilder addRubyExecutable() {
+    public BundlerInstallCommandBuilder addRubyExecutable() {
         commandList.add(rubyExecutablePath);
         return this;
     }
@@ -45,7 +45,7 @@ public class BundlerCommandBuilder {
      *
      * @return Bundler command builder.
      */
-    public BundlerCommandBuilder addBundleExecutable() {
+    public BundlerInstallCommandBuilder addBundleExecutable() {
         commandList.add(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BUNDLE_COMMAND));
         return this;
     }
@@ -56,7 +56,7 @@ public class BundlerCommandBuilder {
      * @param path String which takes either null or a bundle path.
      * @return Bundler command builder.
      */
-    public BundlerCommandBuilder addPath(@Nullable String path) {
+    public BundlerInstallCommandBuilder addPath(@Nullable String path) {
         if (StringUtils.isNotEmpty(path)) {
             commandList.add(PATH_ARG);
             commandList.add(path);
@@ -71,7 +71,7 @@ public class BundlerCommandBuilder {
      * @param binStubsFlag String which takes null or "true".
      * @return Bundler command builder.
      */
-    public BundlerCommandBuilder addIfBinStubs(@Nullable String binStubsFlag) {
+    public BundlerInstallCommandBuilder addIfBinStubs(@Nullable String binStubsFlag) {
 
         if (BooleanUtils.toBoolean(binStubsFlag)) {
             commandList.add(BIN_STUBS_ARG);
@@ -85,7 +85,7 @@ public class BundlerCommandBuilder {
      *
      * @return Bundler command builder.
      */
-    public BundlerCommandBuilder addInstall() {
+    public BundlerInstallCommandBuilder addInstall() {
         commandList.add(INSTALL_ARG);
         return this;
     }
