@@ -4,9 +4,29 @@ This is a bamboo plugin project which when installed enables configuration of ta
 
 # Usage
 
-To use this plugin you will need a ruby runtime, this can either be the one installed by default on OSX or one installed
+To use this Bamboo plugin you will need a ruby runtime.  This can either be the one installed by default on OSX or one installed
 via package manager in for example Ubuntu. If your build server is not running as root, which is preferable, you will need
 to install all the gems used by your project prior to running a build.
+
+
+# Features
+Via a Bamboo task, this plugin enables you to run:
+* Bundler
+* Rake
+* Capistrano
+
+
+# Bundler Features
+
+## Bundler Install
+The `Bundler Install` taks by default is setup to quickly execute `bundle install` dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
+
+## Bundler CLI
+The `Bundler CLI` is setup to allow for any variations on command line execution of `bundler`
+
+## Bundle exec with Rake
+The `Rake` task has the option to be run from `bundle exec`
+
 
 # RVM Support
 
@@ -105,14 +125,6 @@ To enable test reporting do as follows.
         --out rspec.xml
 
 3. Add a JUnit test task to your Job and configure it to look for rspec.xml which contains the test results.
-
-# Bundler Features
-
-In version 1.3 I added some bundler related features, these are:
-
-1. Added an option to the Rake task to enable bundle exec when running the rake command.
-
-2. Bundler task has been added which runs bundle install to dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
 
 # Ruby Runtime Manager Support
 
