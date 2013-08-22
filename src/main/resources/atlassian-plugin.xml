@@ -5,7 +5,7 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
     </plugin-info>
 
-    <taskType name="Bundler Install" class="au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallTask" key="task.builder.bundler.install">
+    <taskType name="Bundler Install" class="au.id.wolfe.bamboo.ruby.tasks.bundler.install.BundlerInstallTask" key="task.builder.bundler">
 
         <description>Use Bundler to install project dependencies.</description>
 
