@@ -36,7 +36,7 @@ either OSX or Linux. If your on OSX you will need to install XCode, and if your 
 also need [GCC Installer](https://github.com/kennethreitz/osx-gcc-installer/downloads) as this version omits gcc in favor
 of llvm and clang.
 
-1. [Install RVM]((http://rvm.io))  (once installed it may list some dependencies you need to install).
+1. [Install RVM](http://rvm.io)  (once installed it may list some dependencies you need to install).
 
         $ curl -L https://get.rvm.io | bash -s stable
 
@@ -107,8 +107,9 @@ of llvm and clang.
 ruby and it's associated gemsets.
 16. Create a plan which uses the online project site and add a job with a Rake Task which runs the spec target using the 1.9.3@rails3 runtime.
 
-## Test Report
+## Test Reporting
 
+### RSpec
 To enable test reporting do as follows.
 
 1. Add the this fragment to your Gemfile.
@@ -123,6 +124,12 @@ To enable test reporting do as follows.
         --out rspec.xml
 
 3. Add a JUnit test task to your Job and configure it to look for rspec.xml which contains the test results.
+
+### Cucumber
+Edit the `config/cucumber.yml` and change the `std_opts` to include the `junit` formatter as well as specifiy the output directory. For example:
+
+	std_opts = "-r features/support/ -r features/step_definitions --quiet -f pretty -f junit -o test-reports --strict --tags ~@wip --tags ~@todo"
+
 
 ## Ruby Runtime Manager Support
 
