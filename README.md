@@ -29,17 +29,16 @@ The `Rake` task has the option to be run from `bundle exec`
 
 ## RVM Support
 
-Alternatively you could install RVM from the link below, install all the gems used by your project, preferably
-into it's own gem set.
+Alternatively you could [install RVM](http://rvm.io) and use a separate gemset for your project.
 
 As an example follow the following steps to setup a project and run some tests using this plugin. This assumes your using
 either OSX or Linux. If your on OSX you will need to install XCode, and if your installing version 4.1 then you will
 also need [GCC Installer](https://github.com/kennethreitz/osx-gcc-installer/downloads) as this version omits gcc in favor
 of llvm and clang.
 
-1. Install RVM, once installed it will list some dependencies you will need to install if your on linux.
+1. [Install RVM]((http://rvm.io))  (once installed it may list some dependencies you need to install).
 
-        bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+        $ curl -L https://get.rvm.io | bash -s stable
 
 2. Install a ruby.
 
