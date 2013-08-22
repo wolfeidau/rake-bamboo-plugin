@@ -1,34 +1,33 @@
-# Overview
+# Ruby Bamboo Plugin
 
-This is a bamboo plugin project which when installed enables configuration of tasks which run various ruby based build tools.
+This is a bamboo plugin project which when installed enables configuration of tasks which run various ruby based build tools including bundler, rake, and capistrano.
 
-# Usage
+## Features
+Via a Bamboo task, this plugin enables you to run:
+* Bundler
+* Rake
+* Capistrano
+
+## Usage
 
 To use this Bamboo plugin you will need a ruby runtime.  This can either be the one installed by default on OSX or one installed
 via package manager in for example Ubuntu. If your build server is not running as root, which is preferable, you will need
 to install all the gems used by your project prior to running a build.
 
 
-# Features
-Via a Bamboo task, this plugin enables you to run:
-* Bundler
-* Rake
-* Capistrano
+## Bundler Features
 
+#### Bundler Install
+The `Bundler Install` task by default is setup to quickly execute `bundle install` dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
 
-# Bundler Features
-
-## Bundler Install
-The `Bundler Install` taks by default is setup to quickly execute `bundle install` dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
-
-## Bundler CLI
+#### Bundler CLI
 The `Bundler CLI` is setup to allow for any variations on command line execution of `bundler`
 
-## Bundle exec with Rake
+#### Bundle exec with Rake
 The `Rake` task has the option to be run from `bundle exec`
 
 
-# RVM Support
+## RVM Support
 
 Alternatively you could install RVM from the link below, install all the gems used by your project, preferably
 into it's own gem set.
@@ -109,7 +108,7 @@ of llvm and clang.
 ruby and it's associated gemsets.
 16. Create a plan which uses the online project site and add a job with a Rake Task which runs the spec target using the 1.9.3@rails3 runtime.
 
-# Test Report
+## Test Report
 
 To enable test reporting do as follows.
 
@@ -126,7 +125,7 @@ To enable test reporting do as follows.
 
 3. Add a JUnit test task to your Job and configure it to look for rspec.xml which contains the test results.
 
-# Ruby Runtime Manager Support
+## Ruby Runtime Manager Support
 
 In version 1.5 I added support for more than one ruby version manager. The ones which were initially supported are:
 
@@ -137,7 +136,7 @@ To enable this feature a concept of runtime labels was introduced, these are in 
 
 When the plugin encounters a runtime label which has no ruby runtime manager as with existing installations it will just use RVM.
 
-# Windows Support
+## Windows Support
 
 As of version 1.6 I added a ruby runtime manager which supports detection of ruby on windows systems, there are some caveats on how this is done.
 
@@ -157,7 +156,7 @@ As of version 1.6 I added a ruby runtime manager which supports detection of rub
 
 I have tested this with a simple gem project built with bundler and a rails 3.2 project. The only issue I had was related ot the Javascript runtime used by the asset pipeline, however this won't be an issue if you create your project using `rails new` on windows.
 
-# Links
+## Links
 
 * [RSpec JUnit XML Formatter](https://github.com/sj26/rspec_junit_formatter)
 * [RVM](http://beginrescueend.com/)
