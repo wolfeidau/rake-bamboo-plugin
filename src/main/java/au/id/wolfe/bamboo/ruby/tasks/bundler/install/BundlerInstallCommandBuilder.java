@@ -9,7 +9,7 @@ import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractCommandBuilder;
 
 /**
- * Builder to assemble the bundler command list.
+ * Builder to assemble the bundle install command list.
  */
 public class BundlerInstallCommandBuilder extends AbstractCommandBuilder<BundlerInstallCommandBuilder>{
 

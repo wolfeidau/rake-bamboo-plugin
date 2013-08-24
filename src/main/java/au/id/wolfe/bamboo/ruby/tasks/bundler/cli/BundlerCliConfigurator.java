@@ -14,7 +14,7 @@ import com.atlassian.bamboo.utils.error.ErrorCollection;
 import com.google.common.collect.Sets;
 
 /**
- * Rake configurator which acts as a binding to the task UI in bamboo.
+ * Bundler CLI configurator which acts as a binding to the task UI in bamboo.
  */
 public class BundlerCliConfigurator extends AbstractRubyTaskConfigurator {
 

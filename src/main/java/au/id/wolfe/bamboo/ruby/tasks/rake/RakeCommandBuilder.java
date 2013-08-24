@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder;
+import au.id.wolfe.bamboo.ruby.tasks.bundler.AbstractBundleExecCommandBuilder;
 
 /**
  * Builder to assemble the rake command list.

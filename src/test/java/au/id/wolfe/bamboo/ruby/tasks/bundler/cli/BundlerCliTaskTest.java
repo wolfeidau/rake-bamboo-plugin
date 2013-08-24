@@ -1,6 +1,6 @@
 package au.id.wolfe.bamboo.ruby.tasks.bundler.cli;
 
-import static au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder.BUNDLE_EXEC_ARG;
+import static au.id.wolfe.bamboo.ruby.tasks.bundler.AbstractBundleExecCommandBuilder.BUNDLE_EXEC_ARG;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;

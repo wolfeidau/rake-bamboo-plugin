@@ -12,7 +12,7 @@ import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.google.common.base.Preconditions;
 
 /**
- * Bamboo task which interfaces with RVM and runs ruby make (rake).
+ * Bamboo task which interfaces with RVM and runs bundler.
  */
 public class BundlerCliTask extends AbstractRubyTask {
 
@@ -25,7 +25,7 @@ public class BundlerCliTask extends AbstractRubyTask {
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
-        final RubyLocator rvmRubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
+        final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
 
         final String arguments = config.get(ARGUMENTS);
         Preconditions.checkArgument(arguments != null); // TODO Fix Error handling
@@ -36,11 +36,11 @@ public class BundlerCliTask extends AbstractRubyTask {
 
         final List<String> argumentList = RvmUtils.splitTokens(arguments);
 
-        final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
+        final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
 
         final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
 
-        return new BundlerCliCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath)
+        return new BundlerCliCommandBuilder(rubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addBundleExecutable()
                 .addIfBundleExec(bundleExecFlag)

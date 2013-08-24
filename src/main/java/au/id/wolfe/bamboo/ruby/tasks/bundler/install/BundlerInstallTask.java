@@ -10,7 +10,7 @@ import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
 
 /**
- * Bamboo task which interfaces with RVM and runs bundler to install the gems required by the project.
+ * Bamboo task which runs bundler to install the gems required by the project.
  */
 public class BundlerInstallTask extends AbstractRubyTask {
 

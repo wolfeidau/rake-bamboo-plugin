@@ -7,10 +7,10 @@ import org.jetbrains.annotations.Nullable;
 
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
-import au.id.wolfe.bamboo.ruby.tasks.AbstractBundleExecCommandBuilder;
+import au.id.wolfe.bamboo.ruby.tasks.bundler.AbstractBundleExecCommandBuilder;
 
 /**
- * Builder to assemble the rake command list.
+ * Builder to assemble the bundle command list.
  * <p/>
  * TODO Need to reconsider the design of this class, probably moving to properties over a list, with the command list being built in the build method.
  */

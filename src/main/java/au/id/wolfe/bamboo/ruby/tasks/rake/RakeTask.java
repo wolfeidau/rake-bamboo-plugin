@@ -27,7 +27,7 @@ public class RakeTask extends AbstractRubyTask {
     @Override
     protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
 
-        final RubyLocator rvmRubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
+        final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
 
         final String rakeFile = config.get(RAKE_FILE);
         final String rakeLibDir = config.get(RAKE_LIB_DIR);
@@ -41,11 +41,11 @@ public class RakeTask extends AbstractRubyTask {
 
         final List<String> targetList = RvmUtils.splitTokens(targets);
 
-        final RubyRuntime rubyRuntime = rvmRubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
+        final RubyRuntime rubyRuntime = rubyLocator.getRubyRuntime(rubyRuntimeLabel.getRubyRuntime()); // TODO Fix Error handling
 
         final String rubyExecutablePath = getRubyExecutablePath(rubyRuntimeLabel);
 
-        return new RakeCommandBuilder(rvmRubyLocator, rubyRuntime, rubyExecutablePath)
+        return new RakeCommandBuilder(rubyLocator, rubyRuntime, rubyExecutablePath)
                 .addRubyExecutable()
                 .addIfBundleExec(bundleExecFlag)
                 .addRakeExecutable(bundleExecFlag)

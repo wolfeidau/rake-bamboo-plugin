@@ -1,5 +1,6 @@
-package au.id.wolfe.bamboo.ruby.tasks;
+package au.id.wolfe.bamboo.ruby.tasks.bundler;
 
+import au.id.wolfe.bamboo.ruby.tasks.AbstractCommandBuilder;
 import org.apache.commons.lang.BooleanUtils;
 import org.jetbrains.annotations.Nullable;
 

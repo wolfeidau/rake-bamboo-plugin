@@ -15,7 +15,7 @@ via package manager in for example Ubuntu. If your build server is not running a
 to install all the gems used by your project prior to running a build.
 
 
-## Bundler Features
+## Bundler
 
 #### Bundler Install
 The `Bundler Install` task by default is setup to quickly execute `bundle install` dependencies during the build process. Note will only work when RVM is installed in the home directory of the user the build server is running under.
@@ -107,6 +107,10 @@ of llvm and clang.
 ruby and it's associated gemsets.
 16. Create a plan which uses the online project site and add a job with a Rake Task which runs the spec target using the 1.9.3@rails3 runtime.
 
+## Rbenv Support
+
+This plugin should pickup ruby runtimes installed using rbenv, I use a subset of the rvm steps to test this.
+
 ## Test Reporting
 
 ### RSpec
@@ -114,53 +118,66 @@ To enable test reporting do as follows.
 
 1. Add the this fragment to your Gemfile.
 
-        group :test do
-            gem "rspec_junit_formatter"
-        end
+```ruby
+group :test do
+	gem "rspec_junit_formatter"
+end
+```
 
 2. Edit your the .rspec file in the base of your project and replace the contents with.
 
-        --format RspecJunitFormatter
-        --out rspec.xml
+```
+--format RspecJunitFormatter
+--out rspec.xml
+```
 
 3. Add a JUnit test task to your Job and configure it to look for rspec.xml which contains the test results.
 
 ### Cucumber
 Edit the `config/cucumber.yml` and change the `std_opts` to include the `junit` formatter as well as specifiy the output directory. For example:
 
-	std_opts = "-r features/support/ -r features/step_definitions --quiet -f pretty -f junit -o test-reports --strict --tags ~@wip --tags ~@todo"
-
+```
+std_opts = "-r features/support/ -r features/step_definitions --quiet -f pretty -f junit -o test-reports --strict --tags ~@wip --tags ~@todo"
+```
 
 ## Ruby Runtime Manager Support
 
 In version 1.5 I added support for more than one ruby version manager. The ones which were initially supported are:
 
-* System Ruby Runtime Manager which is a very primitive discovery routine which search /usr/bin and /usr/local/bin for ruby and gem commands. Note it is done this way to avoid PATH overrides in the default shell, commonly done by developers or RVM.
-* RVM Runtime Manager which as before supports RVM installed rubies.
+* System Ruby Runtime Manager which will search /usr/bin and /usr/local/bin for ruby and gem commands. Note it is done this way to avoid PATH overrides in the default shell, commonly done by developers or RVM.
+* RVM Runtime Manager.
+* rbenv Runtime Manager.
+* Windows Runtime Manager.
 
 To enable this feature a concept of runtime labels was introduced, these are in the form of ruby runtime manager then ruby version and gemset (for those without gemsets everything it is set to default) for example 'RVM 1.9.3-p0@rails32'.
 
 When the plugin encounters a runtime label which has no ruby runtime manager as with existing installations it will just use RVM.
 
+## System Ruby Support
+
+This will search /usr/bin and /usr/local/bin for ruby and gem commands. Note it is done this way to avoid PATH overrides in the default shell, commonly done by developers or RVM.
+
 ## Windows Support
 
-As of version 1.6 I added a ruby runtime manager which supports detection of ruby on windows systems, there are some caveats on how this is done.
+As of version 2.0 I added a ruby runtime manager which supports detection of ruby(s) on windows systems.
 
-1. I have tested this using the [rails installer](http://railsinstaller.org/) project as the ONLY ruby installed on the system. On my test system I verified there was only on installation of ruby.exe using the which command.
+1. I test this using the [rails installer](http://railsinstaller.org/) project installed on the system. On my test system I verified there was only on installation of ruby.exe using the which command.
 
-        Microsoft Windows [Version 6.1.7601]
-        Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+```
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
-        C:\Users\markw>where ruby.exe
-        C:\RailsInstaller\Ruby1.9.3\bin\ruby.exe
+C:\Users\markw>where ruby.exe
+C:\RailsInstaller\Ruby1.9.3\bin\ruby.exe
 
-        C:\Users\markw>
+C:\Users\markw>
+```
 
-2. The current release only supports detection of a single ruby runtime, being the first one in the %PATH%.
+2. I have also tested [jruby](http://jruby.org/) 1.7 on windows the only caveat is this must be added to the %PATH%.
 
-3. As the rails installer updates the %PATH% variable you will need to restart your bamboo server after installing the rails installer.
+*Note:* updates the %PATH% variable you will require you to restart your bamboo server.
 
-I have tested this with a simple gem project built with bundler and a rails 3.2 project. The only issue I had was related ot the Javascript runtime used by the asset pipeline, however this won't be an issue if you create your project using `rails new` on windows.
+I have tested this with a simple gem project built with bundler and a rails 3.2 project.
 
 ## Links
 
