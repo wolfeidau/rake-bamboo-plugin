@@ -50,7 +50,7 @@ public class BundlerCliTaskTest extends AbstractTaskTest {
     }
 
     @Test
-    public void testBuildCommandList() {
+    public void testBuildCommandList() throws Exception {
 
         configurationMap.put(BundlerCliTask.RUBY, rubyRuntime.getRubyRuntimeName());
         configurationMap.put(BundlerCliTask.ARGUMENTS, ARGS_BINSTUBS_ELASTIC_BEANSTALK);
@@ -77,7 +77,7 @@ public class BundlerCliTaskTest extends AbstractTaskTest {
 
 
     @Test
-    public void testBuildEnvironment() {
+    public void testBuildEnvironment() throws Exception {
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 

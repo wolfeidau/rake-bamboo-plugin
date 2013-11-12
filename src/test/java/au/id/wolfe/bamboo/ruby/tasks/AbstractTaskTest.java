@@ -40,9 +40,9 @@ public abstract class AbstractTaskTest {
     @Mock
     protected RvmRubyLocator rvmRubyLocator;
 
-    public abstract void testBuildCommandList();
+    public abstract void testBuildCommandList() throws Exception;
 
-    public abstract void testBuildEnvironment();
+    public abstract void testBuildEnvironment() throws Exception;
 
     protected final RubyRuntime rubyRuntime = RvmFixtures.getMRIRubyRuntimeDefaultGemSet();
     protected final String rubyExecutablePath = RvmFixtures.getMRIRubyRuntimeDefaultGemSet().getRubyExecutablePath();

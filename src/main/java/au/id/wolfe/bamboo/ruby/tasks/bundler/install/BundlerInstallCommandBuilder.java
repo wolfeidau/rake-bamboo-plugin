@@ -26,7 +26,7 @@ public class BundlerInstallCommandBuilder extends AbstractCommandBuilder<Bundler
     /**
      * Append the bundle executable to the command list.
      *
-     * @return Bundler command builder.
+     * @return BundlerInstallCommandBuilder command builder.
      */
     public BundlerInstallCommandBuilder addBundleExecutable() {
         getCommandList().add(getRvmRubyLocator().buildExecutablePath(getRubyRuntime().getRubyRuntimeName(), getRubyExecutablePath(), BUNDLE_COMMAND));
@@ -37,7 +37,7 @@ public class BundlerInstallCommandBuilder extends AbstractCommandBuilder<Bundler
      * Will conditionally append bundle path parameter if path is not empty.
      *
      * @param path String which takes either null or a bundle path.
-     * @return Bundler command builder.
+     * @return BundlerInstallCommandBuilder command builder.
      */
     public BundlerInstallCommandBuilder addPath(@Nullable String path) {
         if (StringUtils.isNotEmpty(path)) {
@@ -52,7 +52,7 @@ public class BundlerInstallCommandBuilder extends AbstractCommandBuilder<Bundler
      * Will conditionally append the bin stubs switch if the bin stubs flag is "true"
      *
      * @param binStubsFlag String which takes null or "true".
-     * @return Bundler command builder.
+     * @return BundlerInstallCommandBuilder command builder.
      */
     public BundlerInstallCommandBuilder addIfBinStubs(@Nullable String binStubsFlag) {
 
@@ -66,7 +66,7 @@ public class BundlerInstallCommandBuilder extends AbstractCommandBuilder<Bundler
     /**
      * Will append the install argument.
      *
-     * @return Bundler command builder.
+     * @return BundlerInstallCommandBuilder command builder.
      */
     public BundlerInstallCommandBuilder addInstall() {
         getCommandList().add(INSTALL_ARG);

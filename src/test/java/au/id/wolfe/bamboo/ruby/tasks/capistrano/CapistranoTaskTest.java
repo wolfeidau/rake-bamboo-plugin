@@ -46,7 +46,7 @@ public class CapistranoTaskTest extends AbstractTaskTest {
 
     @Test
     @Override
-    public void testBuildCommandList() {
+    public void testBuildCommandList() throws Exception {
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("tasks", DEPLOY_SETUP_TASKS);
@@ -75,7 +75,7 @@ public class CapistranoTaskTest extends AbstractTaskTest {
 
     @Test
     @Override
-    public void testBuildEnvironment() {
+    public void testBuildEnvironment() throws Exception {
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 

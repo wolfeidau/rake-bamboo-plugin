@@ -52,7 +52,7 @@ public class BundlerInstallTaskTest extends AbstractTaskTest {
     }
 
     @Test
-    public void testBuildCommandList() {
+    public void testBuildCommandList() throws Exception {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
         when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerInstallCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
@@ -89,7 +89,7 @@ public class BundlerInstallTaskTest extends AbstractTaskTest {
     }
 
     @Test
-    public void testBuildEnvironment() {
+    public void testBuildEnvironment() throws Exception {
 
         when(rvmRubyLocator.buildEnv(rubyRuntime.getRubyRuntimeName(),rubyExecutablePath,  Maps.<String, String>newHashMap())).thenReturn(Maps.<String, String>newHashMap());
 

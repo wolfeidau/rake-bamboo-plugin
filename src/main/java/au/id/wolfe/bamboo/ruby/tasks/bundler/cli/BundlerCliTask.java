@@ -5,6 +5,7 @@ import java.util.List;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.locator.RuntimeLocatorException;
 import au.id.wolfe.bamboo.ruby.rvm.RvmUtils;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 
@@ -23,9 +24,9 @@ public class BundlerCliTask extends AbstractRubyTask {
     public static final String TRACE = "trace";
 
     @Override
-    protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
+    protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) throws RuntimeLocatorException {
 
-        final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager()); // TODO Fix Error handling
+        final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 
         final String arguments = config.get(ARGUMENTS);
         Preconditions.checkArgument(arguments != null); // TODO Fix Error handling

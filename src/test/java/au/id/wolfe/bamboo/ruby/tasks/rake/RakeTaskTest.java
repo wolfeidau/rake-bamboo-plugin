@@ -46,7 +46,7 @@ public class RakeTaskTest extends AbstractTaskTest {
     }
 
     @Test
-    public void testBuildCommandList() {
+    public void testBuildCommandList() throws Exception {
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
         configurationMap.put("targets", DB_MIGRATE_TARGET);
@@ -76,7 +76,7 @@ public class RakeTaskTest extends AbstractTaskTest {
 
 
     @Test
-    public void testBuildEnvironment() {
+    public void testBuildEnvironment() throws Exception {
 
         configurationMap.put("ruby", rubyRuntime.getRubyRuntimeName());
 
