@@ -33,9 +33,9 @@
         <developerConnection>scm:git:ssh://git@github.com/wolfeidau/rake-bamboo-plugin.git</developerConnection>
     </scm>
     <properties>
-        <bamboo.version>5.1.0</bamboo.version>
+        <bamboo.version>5.2</bamboo.version>
         <bamboo.data.version>3.2.2</bamboo.data.version>
-        <amps.version>4.2.9</amps.version>
+        <amps.version>4.2.10</amps.version>
     </properties>
     <dependencies>
         <!-- Seriously you still use this piece of shit -->

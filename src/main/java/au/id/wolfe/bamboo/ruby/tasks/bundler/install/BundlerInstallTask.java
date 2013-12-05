@@ -5,6 +5,7 @@ import java.util.List;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.common.RubyRuntime;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
+import au.id.wolfe.bamboo.ruby.locator.RuntimeLocatorException;
 import au.id.wolfe.bamboo.ruby.tasks.AbstractRubyTask;
 
 import com.atlassian.bamboo.configuration.ConfigurationMap;
@@ -18,7 +19,7 @@ public class BundlerInstallTask extends AbstractRubyTask {
     public static final String BIN_STUBS = "binstubs";
 
     @Override
-    protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) {
+    protected List<String> buildCommandList(RubyLabel rubyRuntimeLabel, ConfigurationMap config) throws RuntimeLocatorException {
 
         final RubyLocator rubyLocator = getRubyLocator(rubyRuntimeLabel.getRubyRuntimeManager());
 

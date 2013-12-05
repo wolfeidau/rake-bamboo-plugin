@@ -68,7 +68,7 @@ public class BundlerInstallTaskTest extends AbstractTaskTest {
     }
 
     @Test
-    public void testBuildCommandListWithPathAndBinStubs() {
+    public void testBuildCommandListWithPathAndBinStubs() throws Exception {
 
         when(rvmRubyLocator.getRubyRuntime(rubyRuntime.getRubyRuntimeName())).thenReturn(rubyRuntime);
         when(rvmRubyLocator.buildExecutablePath(rubyRuntime.getRubyRuntimeName(), rubyExecutablePath, BundlerInstallCommandBuilder.BUNDLE_COMMAND)).thenReturn(RvmFixtures.BUNDLER_PATH);
