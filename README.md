@@ -182,6 +182,6 @@ I have tested this with a simple gem project built with bundler and a rails 3.2 
 ## Links
 
 * [RSpec JUnit XML Formatter](https://github.com/sj26/rspec_junit_formatter)
-* [RVM](http://beginrescueend.com/)
+* [RVM](http://rvm.io/)
 * [bamboo](http://www.atlassian.com/software/bamboo/overview)
 * [rake](http://martinfowler.com/articles/rake.html)
