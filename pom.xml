@@ -5,7 +5,7 @@
     <groupId>au.id.wolfe.bamboo</groupId>
     <artifactId>rake-bamboo-plugin</artifactId>
     <!-- Leaving this the OLD name to ensure we don't loose anyone -->
-    <version>2.4-SNAPSHOT</version>
+    <version>2.4</version>
     <name>Bamboo Ruby Plugin</name>
     <description>Plugin for Atlassian Bamboo which contains an array of ruby tasks.</description>
     <packaging>atlassian-plugin</packaging>
@@ -31,7 +31,8 @@
         <connection>scm:git:ssh://git@github.com:wolfeidau/rake-bamboo-plugin.git</connection>
         <url>scm:git:ssh://git@github.com/wolfeidau/rake-bamboo-plugin.git</url>
         <developerConnection>scm:git:ssh://git@github.com/wolfeidau/rake-bamboo-plugin.git</developerConnection>
-    </scm>
+      <tag>rake-bamboo-plugin-2.4</tag>
+  </scm>
     <properties>
         <bamboo.version>5.4.2</bamboo.version>
         <bamboo.data.version>3.2.2</bamboo.data.version>
