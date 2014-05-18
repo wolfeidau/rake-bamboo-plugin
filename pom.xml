@@ -34,7 +34,7 @@
       <tag>rake-bamboo-plugin-2.4</tag>
   </scm>
     <properties>
-        <bamboo.version>5.4.2</bamboo.version>
+        <bamboo.version>5.5.0</bamboo.version>
         <bamboo.data.version>3.2.2</bamboo.data.version>
         <amps.version>4.2.10</amps.version>
     </properties>
@@ -150,18 +150,18 @@
             -->
         </plugins>
         <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>2.1</version>
-            </extension>
+          <extension>
+            <groupId>org.springframework.build.aws</groupId>
+            <artifactId>org.springframework.build.aws.maven</artifactId>
+            <version>3.0.0.RELEASE</version>
+          </extension>
         </extensions>
     </build>
     <distributionManagement>
         <repository>
             <id>wolfeidau.repo</id>
             <name>Mark Wolfe's Repository</name>
-            <url>file:///Users/markw/repository</url>
+            <url>s3://repo.wolfe.id.au</url>
             <layout>default</layout>
         </repository>
     </distributionManagement>
