@@ -150,18 +150,18 @@
             -->
         </plugins>
         <extensions>
-          <extension>
-              <groupId>org.kuali.maven.wagons</groupId>
-              <artifactId>maven-s3-wagon</artifactId>
-            <version>1.2.1</version>
-          </extension>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
         </extensions>
     </build>
     <distributionManagement>
         <repository>
             <id>wolfeidau.repo</id>
             <name>Mark Wolfe's Repository</name>
-            <url>s3://repo.wolfe.id.au</url>
+            <url>s3://repo.wolfe.id.au/release</url>
             <layout>default</layout>
         </repository>
     </distributionManagement>
