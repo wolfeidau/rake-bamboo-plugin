@@ -1,22 +1,14 @@
 package au.id.wolfe.bamboo.ruby.tasks;
 
-import java.util.List;
-import java.util.Map;
-
-import au.id.wolfe.bamboo.ruby.locator.RuntimeLocatorException;
-import com.atlassian.bamboo.build.logger.BuildLogger;
-import com.atlassian.bamboo.logger.ErrorUpdateHandler;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import au.id.wolfe.bamboo.ruby.common.PathNotFoundException;
 import au.id.wolfe.bamboo.ruby.common.RubyLabel;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocator;
 import au.id.wolfe.bamboo.ruby.locator.RubyLocatorServiceFactory;
+import au.id.wolfe.bamboo.ruby.locator.RuntimeLocatorException;
 import au.id.wolfe.bamboo.ruby.util.TaskUtils;
-
+import com.atlassian.bamboo.build.logger.BuildLogger;
 import com.atlassian.bamboo.configuration.ConfigurationMap;
+import com.atlassian.bamboo.logger.ErrorUpdateHandler;
 import com.atlassian.bamboo.process.EnvironmentVariableAccessor;
 import com.atlassian.bamboo.process.ExternalProcessBuilder;
 import com.atlassian.bamboo.process.ProcessService;
@@ -26,12 +18,17 @@ import com.atlassian.bamboo.task.TaskContext;
 import com.atlassian.bamboo.task.TaskException;
 import com.atlassian.bamboo.task.TaskResult;
 import com.atlassian.bamboo.task.TaskResultBuilder;
-import com.atlassian.bamboo.util.Narrow;
 import com.atlassian.bamboo.v2.build.agent.capability.Capability;
 import com.atlassian.bamboo.v2.build.agent.capability.CapabilityContext;
 import com.atlassian.utils.process.ExternalProcess;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Basis for ruby tasks.
@@ -63,8 +60,8 @@ public abstract class AbstractRubyTask implements CommonTaskType {
     @NotNull
     public TaskResult execute(@NotNull CommonTaskContext taskContext) throws TaskException {
 
+        final BuildLogger buildLogger = taskContext.getBuildLogger();
         final TaskResultBuilder taskResultBuilder = TaskResultBuilder.newBuilder(taskContext);
-        final TaskContext buildTaskContext = Narrow.to(taskContext, TaskContext.class);
 
         final ConfigurationMap config = taskContext.getConfigurationMap();
         final String rubyRuntimeLabel = config.get(RUBY);
@@ -81,31 +78,28 @@ public abstract class AbstractRubyTask implements CommonTaskType {
                     new ExternalProcessBuilder()
                             .env(envVars)
                             .command(commandsList)
-                            .workingDirectory(taskContext.getWorkingDirectory()));
+                            .workingDirectory(taskContext.getWorkingDirectory())
+            );
 
             externalProcess.execute();
 
             taskResultBuilder.checkReturnCode(externalProcess, 0);
 
         } catch (IllegalArgumentException e) {
-            logError("Could not run ruby task: " + e.getMessage(), e, buildTaskContext);
-            return taskResultBuilder.failedWithError().build();
+            buildLogger.addErrorLogEntry("Could not run ruby task: " + e.getLocalizedMessage(), e);
+            taskResultBuilder.failed();
         } catch (PathNotFoundException e) {
-            logError("Could not run ruby task: " + e.getMessage(), e, buildTaskContext);
-            return taskResultBuilder.failedWithError().build();
+            buildLogger.addErrorLogEntry("Could not run ruby task: " + e.getLocalizedMessage(), e);
+            taskResultBuilder.failed();
         } catch (RuntimeLocatorException e) {
-            logError("Could not run ruby task: " + e.getMessage(), e, buildTaskContext);
-            return taskResultBuilder.failedWithError().build();
+            buildLogger.addErrorLogEntry("Could not run ruby task: " + e.getLocalizedMessage(), e);
+            taskResultBuilder.failed();
         }
 
         return taskResultBuilder.build();
     }
 
     private void logError(String error, Throwable e, TaskContext commonTaskContext) {
-        final TaskContext taskContext = Narrow.to(commonTaskContext, TaskContext.class);
-        if (taskContext != null) {
-            errorUpdateHandler.recordError(taskContext.getBuildContext(), error, e);
-        }
         commonTaskContext.getBuildLogger().addErrorLogEntry("Could not run task: " + e.getMessage(), e);
     }
 
@@ -139,14 +133,6 @@ public abstract class AbstractRubyTask implements CommonTaskType {
 
     public void setEnvironmentVariableAccessor(EnvironmentVariableAccessor environmentVariableAccessor) {
         this.environmentVariableAccessor = environmentVariableAccessor;
-    }
-
-    public void setErrorUpdateHandler(ErrorUpdateHandler errorUpdateHandler) {
-        this.errorUpdateHandler = errorUpdateHandler;
-    }
-
-    public void setBuildLogger(BuildLogger buildLogger) {
-        this.buildLogger = buildLogger;
     }
 
     protected String getRubyExecutablePath(final RubyLabel rubyRuntimeLabel) {
