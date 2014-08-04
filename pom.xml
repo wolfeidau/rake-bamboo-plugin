@@ -34,7 +34,7 @@
       <tag>rake-bamboo-plugin-2.4</tag>
   </scm>
     <properties>
-        <bamboo.version>5.5.0</bamboo.version>
+        <bamboo.version>5.6.0</bamboo.version>
         <bamboo.data.version>3.2.2</bamboo.data.version>
         <amps.version>4.2.10</amps.version>
     </properties>
