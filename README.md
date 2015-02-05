@@ -1,3 +1,9 @@
+# DEPRECATION NOTICE
+
+I don't want to maintain this plugin anymore since I don't use bamboo at all now, and rarely write Ruby code, and even less so Java code.
+
+I have had this plugin archived in the marketplace, hopefully this frees up space for someone else to start a new plugin for ruby.
+
 # Ruby Bamboo Plugin
 
 This is a bamboo plugin project which when installed enables configuration of tasks which run various ruby based build tools including bundler, rake, and capistrano.
